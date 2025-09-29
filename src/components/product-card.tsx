@@ -2,7 +2,6 @@ import { ShoppingCart, Star } from "lucide-react"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
 import { ClipLoader } from "react-spinners"
 
 const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:{className:string , src:string , name:string, price:string,id:number , addToCart:any,isAdding:boolean}) => {

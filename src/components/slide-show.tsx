@@ -43,7 +43,7 @@ export function MultiCarousel() {
               key={index}
               className="flex-[0_0_80%] md:flex-[0_0_28%]  p-2" 
             >
-              <ProductCard id={0} src="" price="" name="" className="h-[330px] items-center justify-center rounded-lg border bg-white shadow-sm font-semibold"/>
+              <ProductCard addToCart={() => 'hello'} isAdding id={0} src="" price="" name="" className="h-[330px] items-center justify-center rounded-lg border bg-white shadow-sm font-semibold"/>
             </div>
           ))}
         </div>
