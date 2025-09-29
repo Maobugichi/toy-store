@@ -34,7 +34,7 @@ export function MultiCarousel() {
   }, [emblaApi])
 
   return (
-    <div className=" w-full  mx-auto relative space-y-5">
+    <div className="font-sans w-full  mx-auto relative space-y-5">
      
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
@@ -53,7 +53,7 @@ export function MultiCarousel() {
       <div className="flex justify-between mt-4">
         <Button
           variant="outline"
-          className="rounded-full bg-white border-black md:border-none h-10 absolute top-32 -left-5 md:-left-10"
+          className="rounded-full bg-white border-black md:border-none h-10 absolute top-32 -left-4 md:-left-10"
           onClick={() => emblaApi?.scrollPrev()}
           disabled={selectedIndex === 0}
         >
@@ -62,7 +62,7 @@ export function MultiCarousel() {
         <Button
           variant="outline"
           onClick={() => emblaApi?.scrollNext()}
-          className="rounded-full border-black md:border-none h-10 absolute top-32 -right-5 md:-right-10"
+          className="rounded-full border-black md:border-none h-10 absolute top-32 -right-4 md:-right-10"
           disabled={selectedIndex === slides.length - 1} 
         >
          <ChevronRight/>
@@ -70,7 +70,7 @@ export function MultiCarousel() {
       </div>
 
       
-      <div className="md:w-1/2 mx-auto">
+      <div className="md:w-1/2 w-[90%] mx-auto">
         <Progress value={scrollProgress} className="h-1" />
       </div>
     

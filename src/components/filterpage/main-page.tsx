@@ -8,6 +8,7 @@ import ProductFilterDialog from "./filter-dialog";
 import ModernNav from "../sticky-nav";
 import type { Product } from '@/types';
 import { useAuth } from '@/context/authContext';
+import ScrollToTop from '@/scroll-to-top';
 
 interface FilterState {
   search: string;
@@ -132,6 +133,7 @@ const MainPage: React.FC = () => {
  
   return (
     <div>
+      <ScrollToTop/>
       <TopSlide />
       <ModernNav />
       

@@ -12,7 +12,7 @@ const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:
     };
 
     return(
-        <div id={id.toString()} className={`${className} border rounded-2xl shadow  p-3 space-y-5`}>
+        <div id={id.toString()} className={`${className} font-family-sans border rounded-2xl shadow  p-3 space-y-5`}>
             <div className="h-[45%] w-full border rounded-sm">
                 <img src={src} className="h-full rounded-sm w-full object-fill"/>
             </div>
@@ -32,15 +32,15 @@ const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:
 
                 <div className="w-full">
                     <h4 className="text-xl">{name}</h4>
-                    <p className="text-lg">{Number(price).toLocaleString("en-NG", {
+                    <p className="text-lg font-light">{Number(price).toLocaleString("en-NG", {
                         style: "currency",
                         currency: "NGN",
                     })}</p>
                 </div>
 
 
-                <div className="w-full flex items-center gap-2">
-                    <Button className="w-[80%]" onClick={handleNavigate}>
+                <div className="w-full  flex items-center gap-2">
+                    <Button className="w-[80%] font-family-heading" onClick={handleNavigate}>
                         Buy Now
                     </Button>
 

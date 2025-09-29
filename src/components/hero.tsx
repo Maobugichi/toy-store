@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
  
  
   return (
-    <section className="font-sans relative h-fit py-10  w-full bg-red-500">
+    <section className="font-family-sans relative h-fit py-10  w-full bg-red-500">
     
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat "
@@ -45,12 +45,13 @@ const Hero: React.FC = () => {
 
              
               <div className="space-y-4">
-                <h1 className="font-family-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Time. Of.{' '}
-                  <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                    YOUth.
-                  </span>
-                </h1>
+               <h1 className="font-family-heading font-bold text-white leading-tight text-[clamp(2.5rem,5vw,4rem)] lg:text-[clamp(3rem,5vw,5rem)]">
+                Time. Of.{' '}
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  YOUth.
+                </span>
+              </h1>
+
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white/90">
                   Shop Style Like No Other.
                 </h2>

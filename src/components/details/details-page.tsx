@@ -16,6 +16,7 @@ import { useAuth } from '@/context/authContext';
 import { addToCart } from '../cart/cart';
 import TopSlide from '../top-slide';
 import ModernNav from '../sticky-nav';
+import ScrollToTop from '@/scroll-to-top';
 
 
 export default function ProductDetailsPage() {
@@ -69,6 +70,7 @@ export default function ProductDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+      <ScrollToTop/>
       <TopSlide/>
       <ModernNav/>
       <div className="w-[95%] mx-auto px-4 space-y-8 py-8">

@@ -17,7 +17,7 @@ const CategorySection = () => {
     return(
         <section className="w-full h-[110vh] py-10">
             <div className="h-full w-[90%] mx-auto space-y-10">
-                <h2 className="text-4xl">Collections</h2>
+                <h2 className="text-3xl font-family-heading font-semibold md:text-4xl">Collections</h2>
                 <div className="flex flex-col md:flex-row w-full h-full  gap-5">
                     {categoryItem.map((item:any) => <Category gender={item.gender} src={item.src}/>)}
                 </div>

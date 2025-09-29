@@ -1,7 +1,13 @@
 import App from "@/App";
 
+
 const Root = () => {
-    return <App/>
+    return (
+        <>
+        
+          <App/>
+        </>
+    )
 }
 
 export default Root

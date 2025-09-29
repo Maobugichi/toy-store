@@ -15,6 +15,7 @@ import SignUp from "./auth/signup";
 import { AuthProvider } from "./context/authContext";
 import Login from "./auth/login";
 
+
 const queryClient = new QueryClient();
 
 const router = createHashRouter([
@@ -46,6 +47,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
+          
           <RouterProvider router={router} />
         </CartProvider>
       </AuthProvider>

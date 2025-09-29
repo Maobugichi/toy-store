@@ -13,7 +13,7 @@ const Banner = () => {
         >
              <div className=" bg-black/30 inset-0 absolute z-10 rounded-2xl"></div>
              <div className="h-1/2 relative z-20 w-[90%] text-white  space-y-5">
-                <h2 className="text-5xl ">The Hood Tees</h2>
+                <h2 className="text-3xl font-family-heading font-bold md:text-5xl ">The Hood Tees</h2>
                 <p className="text-2xl">Catch Our latest Drop...</p>
                 <Link to="/details">
                     <Button className="h-12 px-5 hover:bg-white hover:text-black transition-colors">
