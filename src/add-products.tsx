@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Upload, X, ImageIcon, Loader2, AlertCircle, Plus, Trash2, Eye, Edit, Save, ShoppingBag } from 'lucide-react';
+import { Upload, X, ImageIcon, Loader2, AlertCircle, Plus, Trash2,  Edit, Save, ShoppingBag } from 'lucide-react';
 import axios from "axios";
 
 const MultipleImageUpload = ({ productId, existingImages = [], onUploadComplete }:any) => {
@@ -270,9 +270,7 @@ const MultipleImageUpload = ({ productId, existingImages = [], onUploadComplete 
   );
 };
 
-// =============================================
-// PRODUCT FORM COMPONENT
-// =============================================
+
 const ProductForm = ({ product, onSave, onCancel }:any) => {
   const [formData, setFormData] = useState<any>({
     name: '',

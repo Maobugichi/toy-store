@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { 
   CreditCard, 
   Truck, 
@@ -5,50 +6,35 @@ import {
   Lock, 
   ChevronRight, 
   Check, 
-  Edit, 
+ 
   Trash2, 
   Plus,
   Minus,
   Tag,
   Gift,
-  AlertCircle
-} from 'lucide-react';import React, { useState } from 'react';
-import { 
-  CreditCard, 
-  Truck, 
-  Shield, 
-  Lock, 
-  ChevronRight, 
-  Check, 
-  Edit, 
-  Trash2, 
-  Plus,
-  Minus,
-  Tag,
-  Gift,
-  AlertCircle,
-  PaypalIcon
+ 
+
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
+
 import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const CheckoutPage = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [shippingMethod, setShippingMethod] = useState('standard');
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [promoCode, setPromoCode] = useState('');
-  const [promoApplied, setPromoApplied] = useState(false);
-  const [giftMessage, setGiftMessage] = useState('');
-  const [saveInfo, setSaveInfo] = useState(true);
-  const [newsletter, setNewsletter] = useState(false);
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [shippingMethod, setShippingMethod] = useState<string>('standard');
+  const [paymentMethod, setPaymentMethod] = useState<string>('card');
+  const [promoCode, setPromoCode] = useState<string>('');
+  const [promoApplied, setPromoApplied] = useState<boolean>(false);
+  const [giftMessage, setGiftMessage] = useState<string>('');
+  const [saveInfo, setSaveInfo] = useState<boolean | 'indeterminate'>(true);
+  const [newsletter, setNewsletter] = useState<boolean | 'indeterminate'>(false);
 
   const [cartItems, setCartItems] = useState([
     {
@@ -146,7 +132,7 @@ const CheckoutPage = () => {
   const tax = (subtotal - discount + shippingCost) * 0.08;
   const total = subtotal - discount + shippingCost + tax;
 
-  const updateQuantity = (id, change) => {
+  const updateQuantity = (id:number, change:any) => {
     setCartItems(items => 
       items.map(item => 
         item.id === id 
@@ -156,7 +142,7 @@ const CheckoutPage = () => {
     );
   };
 
-  const removeItem = (id) => {
+  const removeItem = (id:number) => {
     setCartItems(items => items.filter(item => item.id !== id));
   };
 
@@ -166,7 +152,7 @@ const CheckoutPage = () => {
     }
   };
 
-  const handleInputChange = (section, field, value) => {
+  const handleInputChange = (section:string, field:any, value:any) => {
     if (section === 'shipping') {
       setShippingInfo(prev => ({ ...prev, [field]: value }));
     } else if (section === 'billing') {
@@ -526,7 +512,7 @@ const CheckoutPage = () => {
                       <Checkbox 
                         id="sameAsShipping" 
                         checked={billingInfo.sameAsShipping}
-                        onCheckedChange={(checked) => setBillingInfo(prev => ({ ...prev, sameAsShipping: checked }))}
+                        onCheckedChange={(checked) => setBillingInfo((prev:any) => ({ ...prev, sameAsShipping: checked }))}
                       />
                       <Label htmlFor="sameAsShipping">Billing address same as shipping</Label>
                     </div>
@@ -715,7 +701,7 @@ const CheckoutPage = () => {
                   <textarea
                     id="giftMessage"
                     className="w-full mt-2 p-2 border rounded-md text-sm"
-                    rows="3"
+                    rows={3}
                     placeholder="Add a personal message..."
                     value={giftMessage}
                     onChange={(e) => setGiftMessage(e.target.value)}

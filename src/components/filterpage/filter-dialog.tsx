@@ -23,7 +23,7 @@ import {
   DialogTrigger, 
   DialogFooter 
 } from '@/components/ui/dialog';
-import type { FilterState , FilterOptions, ExpandedSections, ProductFilterDialogProps } from './types';
+import type { FilterState ,  ExpandedSections, ProductFilterDialogProps } from './types';
 import { applyFilters, clearFilters, resetTempFilters, toggleTempArrayFilter, updateTempFilter } from './utils';
 
 

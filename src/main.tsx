@@ -9,7 +9,7 @@ import "./index.css";
 import ProductDetails from "./components/details/details-page";
 import { filterLoader } from "./components/filterpage/filter-loader";
 import MainPage from "./components/filterpage/main-page";
-import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SignUp from "./auth/signup";
 import { AuthProvider } from "./context/authContext";
 import Login from "./auth/login";

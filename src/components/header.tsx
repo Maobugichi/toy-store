@@ -1,4 +1,3 @@
-import ModernNav from "./sticky-nav"
 import TopSlide from "./top-slide"
 
 const Header = () => {

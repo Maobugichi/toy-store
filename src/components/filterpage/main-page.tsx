@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useLoaderData } from "react-router-dom";
-import FilterAndSort from "@/routes/filterandsort";
 import TopSlide from "../top-slide";
 import Footer from "@/footer";
 import NewsLetter from "../newsletter";

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 
 const TopSlide = () => {
-     const [slides, setSlides] = useState([
+     const slides = [
         <motion.div
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
@@ -35,8 +35,8 @@ const TopSlide = () => {
         >
            <p className="lg:text-[12px] text-[10px] tracking-wider"> Exclsive wears for all age groups</p>
         </motion.div>
-    ]);
-    const [ amount, setAmount] = useState(0)
+    ];
+   
     const [currentIndex,setCurrentIndex] = useState(0)
  
     useEffect(() => {

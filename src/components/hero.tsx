@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import heroBackground from '@/assets/up.png';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Play, Sparkles, TrendingUp, Users, Award } from 'lucide-react';
+import { ArrowRight,  Sparkles, TrendingUp, Users, Award } from 'lucide-react';
 import HeroFeature from './ui/features';
 
 const Hero: React.FC = () => {
@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
 
   return (
     <section className="relative h-fit py-10  w-full bg-red-500">
-      {/* Background Image with Parallax Effect */}
+    
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat "
         style={{
@@ -23,17 +23,16 @@ const Hero: React.FC = () => {
          
         }}
       />
-      
-      
+        
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent top-0" />
      
       <div className="relative z-10 h-full flex flex-col justify-center px-6 space-y-5 sm:px-10 lg:px-16">
         <div className="max-w-7xl mx-auto w-full">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             
-            {/* Left Content */}
+           
             <div className="space-y-8">
-              {/* Badge */}
+           
               <Badge 
                 variant="secondary" 
                 className="bg-white/10 text-white border-white/20 backdrop-blur-sm hover:bg-white/20 transition-all duration-300"
@@ -42,7 +41,7 @@ const Hero: React.FC = () => {
                 New Collection 2024
               </Badge>
 
-              {/* Main Heading */}
+             
               <div className="space-y-4">
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   Time. Of.{' '}
@@ -55,7 +54,7 @@ const Hero: React.FC = () => {
                 </h2>
               </div>
 
-              {/* Subtitle */}
+          
               <p className="text-lg sm:text-xl text-white/80 max-w-2xl leading-relaxed">
                 Discover timeless pieces with clean lines and effortless style. 
                 Curated collections that define your unique fashion journey.
