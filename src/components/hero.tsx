@@ -6,13 +6,14 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowRight,  Sparkles, TrendingUp, Users, Award } from 'lucide-react';
 import HeroFeature from './ui/features';
 
+
 const Hero: React.FC = () => {
   const stats = [
     { icon: Users, label: '10K+', sublabel: 'Happy Customers' },
     { icon: Award, label: '5 Star', sublabel: 'Rated Products' },
     { icon: TrendingUp, label: '99%', sublabel: 'Satisfaction' }
   ];
-
+   
   return (
     <section className="relative h-fit py-10  w-full bg-red-500">
     
@@ -74,7 +75,7 @@ const Hero: React.FC = () => {
               </div>
 
             
-              <div className="flex flex-wrap gap-6 pt-8">
+              <div className="md:flex flex-wrap gap-6 pt-8 hidden ">
                 {stats.map((stat, index) => (
                   <div key={index} className="flex items-center space-x-3 text-white/80">
                     <div className="p-2 bg-white/10 rounded-full backdrop-blur-sm">
@@ -88,15 +89,11 @@ const Hero: React.FC = () => {
                 ))}
               </div>
             </div>
-
-          
-            
           </div>
         </div>
         <HeroFeature/>
       </div>
-
-    
+     
     </section>
   );
 };

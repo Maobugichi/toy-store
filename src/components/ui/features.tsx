@@ -26,12 +26,12 @@ const HeroFeature = () => {
 
   return (
     <div className="w-full mx-auto">
-      {/* Mobile Slideshow */}
+  
       <div className="md:hidden" ref={emblaRef}>
         <div className="flex">
           <div className="flex-[0_0_100%] min-w-0">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 mx-2 h-44">
-              <CardContent className="p-6">
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 mx-2  h-40">
+              <CardContent className="pt-2">
                 <div className="flex items-start space-x-4">
                   <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
                     <Sparkles className="w-6 h-6 text-white" />
@@ -47,8 +47,8 @@ const HeroFeature = () => {
             </Card>
           </div>
           <div className="flex-[0_0_100%] min-w-0">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 mx-2 h-44">
-              <CardContent className="p-6">
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 mx-2 h-40">
+              <CardContent className="pt-2">
                 <div className="flex items-start space-x-4">
                   <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg">
                     <TrendingUp className="w-6 h-6 text-white" />
@@ -64,8 +64,8 @@ const HeroFeature = () => {
             </Card>
           </div>
           <div className="flex-[0_0_100%] min-w-0">
-            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 mx-2 h-44">
-              <CardContent className="p-6">
+            <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 mx-2 h-40">
+              <CardContent className="pt-3">
                 <div className="flex items-start space-x-4">
                   <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg">
                     <Award className="w-6 h-6 text-white" />

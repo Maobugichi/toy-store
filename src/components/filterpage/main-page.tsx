@@ -7,6 +7,7 @@ import FilterItems from "./items";
 import ProductFilterDialog from "./filter-dialog";
 import ModernNav from "../sticky-nav";
 import type { Product } from '@/types';
+import { useAuth } from '@/context/authContext';
 
 interface FilterState {
   search: string;
@@ -32,7 +33,7 @@ const MainPage: React.FC = () => {
     featured: false
   });
 
-  // Calculate max price from actual product data
+  
   const maxPrice = useMemo(() => {
     if (!data || data.length === 0) return 50000;
     return Math.max(...data.map(product => parseFloat(product.price)));
@@ -126,6 +127,8 @@ const MainPage: React.FC = () => {
     setFilters(newFilters);
   };
 
+  const { cartId } = useAuth();
+
  
   return (
     <div>
@@ -153,7 +156,7 @@ const MainPage: React.FC = () => {
         
       
         {filteredProducts.length > 0 ? (
-          <FilterItems data={filteredProducts} />
+          <FilterItems data={filteredProducts} cartId={cartId} />
         ) : (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">

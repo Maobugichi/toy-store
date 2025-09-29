@@ -3,7 +3,6 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link, useNavigate } from "react-router-dom"
 import { FcGoogle } from "react-icons/fc"
-
 import {
   Form,
   FormField,
@@ -16,6 +15,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import axios from "axios"
 import { useAuth } from "@/context/authContext"
+import { useState } from "react"
+import { ClipLoader } from "react-spinners"
 
 const formSchema = z.object({
   username: z.string().min(2, { message: "Username must be at least 2 characters" }),
@@ -26,6 +27,8 @@ const formSchema = z.object({
 function SignUp() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const url = import.meta.env.VITE_API_URL
+  const [loading , setLoading ] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,14 +39,15 @@ function SignUp() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true)
      try {
-        const response = await axios.post('http://localhost:3000/auth/signup',values,{withCredentials:true});
-       
-      
+        const response = await axios.post(`${url}/auth/signup`,values,{withCredentials:true});
+        setLoading(false)
         login(response.data)
         navigate('/')   
      } catch(err) {
         console.log(err)
+        setLoading(false)
      }
     
   }
@@ -97,11 +101,11 @@ function SignUp() {
             )}
           />
 
-          <Button type="submit" className="bg-black text-white text-sm md:text-lg h-8 md:h-12 w-[90%]">
-            Submit
+          <Button type="submit" className={`${loading ? "bg-black/20" : "bg-black" }  text-white text-sm md:text-lg h-8 md:h-12 md:w-[90%] w-full`}>
+            {loading ? <ClipLoader size={10} color="black"/> : 'Submit' }
           </Button>
 
-          <div className="bg-white shadow w-[90%] border flex h-7 md:h-8 items-center justify-center gap-2 rounded-sm">
+          <div className="bg-white shadow w-full md:w-[90%] border flex h-7 md:h-8 items-center justify-center gap-2 rounded-sm">
             <FcGoogle />
             <Button
               type="button"

@@ -15,6 +15,8 @@ import axios from "axios";
 import { useAuth } from "@/context/authContext";
 import { useNavigate ,Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
+import { useState } from "react";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -23,9 +25,11 @@ const formSchema = z.object({
    password:z.string().min(6,{message: 'password must be at least 6 characters'})
 });
 
+
 const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
+    const [loading , setLoading ] = useState<boolean>(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver:zodResolver(formSchema),
         defaultValues: {
@@ -33,12 +37,14 @@ const Login = () => {
         password: "",
         },
     })
+    const url = import.meta.env.VITE_API_URL
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+      setLoading(true)
      try {
-        const response = await axios.post('http://localhost:3000/auth/login',values,{withCredentials:true});
+        const response = await axios.post(`${url}/auth/login`,values,{withCredentials:true});
         console.log(response.data) 
-      
+        setLoading(false)
         login(response.data)
         navigate('/')   
      } catch(err) {
@@ -83,11 +89,11 @@ const Login = () => {
             )}
           />
 
-          <Button type="submit" className="bg-black text-white text-sm md:text-lg h-8 md:h-12 w-[90%]">
-            Submit
+          <Button type="submit" className={`${loading ? "bg-black/80" : "bg-black"}  text-white text-sm md:text-lg h-8 md:h-12 md:w-[90%] w-full`}>
+            {loading ? <ClipLoader size={20} color="white"/> : 'Submit' }
           </Button>
 
-          <div className="bg-white shadow w-[90%] border flex h-7 md:h-8 items-center justify-center gap-2 rounded-sm">
+          <div className="bg-white shadow md:w-[90%] w-full border flex h-7 md:h-8 items-center justify-center gap-2 rounded-sm">
             <FcGoogle />
             <Button
               type="button"

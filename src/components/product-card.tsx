@@ -2,13 +2,17 @@ import { ShoppingCart, Star } from "lucide-react"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import { ClipLoader } from "react-spinners"
 
-const ProductCard = ({className, src , name , price, id}:{className:string , src:string , name:string, price:string,id:number}) => {
+const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:{className:string , src:string , name:string, price:string,id:number , addToCart:any,isAdding:boolean}) => {
     const navigate = useNavigate();
-
+    
     const handleNavigate = () => {
         navigate(`/product/${id}`);
     };
+
+   console.log(isAdding)
 
     return(
         <div id={id.toString()} className={`${className} border rounded-2xl shadow  p-3 space-y-5`}>
@@ -43,8 +47,8 @@ const ProductCard = ({className, src , name , price, id}:{className:string , src
                         Buy Now
                     </Button>
 
-                    <Button className="w-[17%]">
-                        <ShoppingCart/>
+                    <Button onClick={addToCart} className={`${isAdding ? "bg-black/80" : "bg-black"} w-[17%]`}>
+                        {isAdding ? <ClipLoader color="white" size={10}/>   : <ShoppingCart/> }
                     </Button>
                 </div>
              </div>

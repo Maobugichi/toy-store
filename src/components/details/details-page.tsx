@@ -14,12 +14,15 @@ import Footer from '@/footer';
 import type { Product , UIData } from './types';
 import { useAuth } from '@/context/authContext';
 import { addToCart } from '../cart/cart';
+import TopSlide from '../top-slide';
+import ModernNav from '../sticky-nav';
 
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
- const { data: products, isLoading, error } = useProducts();
+  const [ loading , setLoading ] = useState<boolean>(false)
+  const { data: products, isLoading, error } = useProducts();
 
   if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
   if (error) return <p>Failed to load products</p>;
@@ -29,12 +32,14 @@ export default function ProductDetailsPage() {
  
 
   const handleAddToCart = async () => {
+
     if (!cartId) {
       alert('You need to log in first')
       return
     }
-
+    setLoading(true)
     await addToCart(cartId, product.id, quantity);
+    setLoading(false)
     alert("Added to cart!");
   }
 
@@ -64,6 +69,8 @@ export default function ProductDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+      <TopSlide/>
+      <ModernNav/>
       <div className="w-[95%] mx-auto px-4 space-y-8 py-8">
       
        <BreadcrumbNav productName={product.base_name}/>
@@ -174,9 +181,9 @@ export default function ProductDetailsPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button onClick={handleAddToCart} size="lg" className="flex-1 h-14 text-lg font-semibold">
-                  <ShoppingCart className="w-5 h-5 mr-2" />
-                  Add to Cart
+                <Button onClick={handleAddToCart} size="lg" className={`${loading ? "bg-black/80" : "bg-black"} flex-1 h-14 text-lg font-semibold`}>
+                 {loading ? <ClipLoader size={20} color="white"/> :<><ShoppingCart className="w-5 h-5 mr-2" /> <span>Add to Cart</span></> 
+                   }
                 </Button>
                 <Button 
                   variant="outline" 
@@ -192,7 +199,7 @@ export default function ProductDetailsPage() {
               </div>
             </div>
 
-            {/* Features */}
+           
             <div className="grid grid-cols-2 gap-4">
               <Card>
                 <CardContent className="p-4 text-center">

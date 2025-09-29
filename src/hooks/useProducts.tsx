@@ -2,7 +2,8 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchProducts = async () => {
-  const res = await axios.get("http://localhost:3000/api/products/");
+  const url = import.meta.env.VITE_API_URL
+  const res = await axios.get(`${url}/api/products/`);
   return res.data;
 };
 

@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/sheet';
 import { 
   Search, 
-  ShoppingCart, 
+
   User, 
   Menu, 
   Heart,
@@ -27,6 +27,8 @@ import {
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/authContext';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import CartSheet from './cart/cart-list';
 
 interface NavItem {
   label: string;
@@ -44,7 +46,6 @@ interface ModernNavProps {
 }
 
 const ModernNav: React.FC<ModernNavProps> = ({ 
-  cartCount = 0, 
   wishlistCount = 0 
 }) => {
   const navItems: NavDropdownItem[] = [
@@ -79,9 +80,11 @@ const ModernNav: React.FC<ModernNavProps> = ({
     }
   ];
   const { user } = useAuth();
+ 
 
   console.log(user)
 
+ 
   return (
     <nav className="w-full bg-white border-b relative  z-50 border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,7 +158,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
           </div>
 
          
-          <div className="flex items-center md:space-x-4">
+          <div className="flex items-center ">
            
             <Button variant="ghost" size="icon" className="relative">
               <Heart className="w-5 h-5" />
@@ -170,23 +173,21 @@ const ModernNav: React.FC<ModernNavProps> = ({
             </Button>
 
            
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="w-5 h-5" />
-              {cartCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
-                >
-                  {cartCount}
-                </Badge>
-              )}
-            </Button>
+            <CartSheet/>
 
            
+            {user ? (
+            <Avatar>
+            
+              <AvatarFallback>
+                {user.email?.slice(0, 2).toUpperCase() || "US"}
+              </AvatarFallback>
+            </Avatar>
+          ) : (
             <Button variant="ghost" size="icon">
               <User className="w-5 h-5" />
             </Button>
-
+          )}
            
             <div className="block md:hidden">
               <Sheet>
@@ -255,21 +256,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
       </div>
 
     
-      <div className="hidden md:block bg-gray-50 border-t">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center py-3 space-x-8 text-sm">
-            <Link to="/sale" className="text-red-600 font-medium hover:text-red-700">
-              🔥 Sale up to 70% off
-            </Link>
-            <Link to="/free-shipping" className="text-gray-600 hover:text-gray-800">
-              Free shipping over $100
-            </Link>
-            <Link to="/returns" className="text-gray-600 hover:text-gray-800">
-              30-day returns
-            </Link>
-          </div>
-        </div>
-      </div>
+      
     </nav>
   );
 };
