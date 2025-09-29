@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import heroBackground from '@/assets/up.png';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +13,12 @@ const Hero: React.FC = () => {
     { icon: Award, label: '5 Star', sublabel: 'Rated Products' },
     { icon: TrendingUp, label: '99%', sublabel: 'Satisfaction' }
   ];
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    console.log('hola')
+     navigate('/filter')
+  }
    
   return (
     <section className="font-sans relative h-fit py-10  w-full bg-red-500">

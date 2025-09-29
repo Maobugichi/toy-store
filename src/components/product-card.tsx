@@ -44,7 +44,7 @@ const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:
                         Buy Now
                     </Button>
 
-                    <Button onClick={addToCart} className={`${isAdding ? "bg-black/80" : "bg-black"} w-[17%]`}>
+                    <Button onClick={() => addToCart({ productId: id, base_name: name, price, images: { primary: src } })} className={`${isAdding ? "bg-black/80" : "bg-black"} w-[17%]`} style={{ pointerEvents: "auto" }}>
                         {isAdding ? <ClipLoader color="white" size={10}/>   : <ShoppingCart/> }
                     </Button>
                 </div>
