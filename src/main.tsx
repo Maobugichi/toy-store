@@ -1,0 +1,51 @@
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
+import {
+  createHashRouter,
+  RouterProvider,
+} from "react-router-dom";
+import Root from "@/routes/root";
+import "./index.css";
+import ProductDetails from "./components/details/details-page";
+import { filterLoader } from "./components/filterpage/filter-loader";
+import MainPage from "./components/filterpage/main-page";
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import SignUp from "./auth/signup";
+import { AuthProvider } from "./context/authContext";
+import Login from "./auth/login";
+const queryClient = new QueryClient();
+
+
+const router = createHashRouter([
+  {
+    path: "/signup",
+    element: <SignUp />,
+  },
+   {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/",
+    element: <Root />,
+  },
+  {
+    path: "filter",
+    element: <MainPage />,
+    loader:filterLoader
+  },
+  {
+    path: "/product/:id",
+    element: <ProductDetails />,
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
+  </React.StrictMode>
+);
