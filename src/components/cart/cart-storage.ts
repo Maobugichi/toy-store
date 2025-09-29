@@ -33,9 +33,17 @@ export function addGuestItem(item: {
     });
   }
 
-  setGuestCart(cart);
-  return cart;
+  try {
+    setGuestCart(cart);
+  } catch(err) {
+    
+    console.error("Failed to add guest item:", err);
+    throw new Error('error')
+  }
+
+  return Promise.resolve(cart); // ensure it returns a promise
 }
+
 
 export function updateGuestItem(itemId: number, quantity: number) {
   const cart = getGuestCart();
