@@ -185,14 +185,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       value={{
         items,
         isLoading,
-        addItem: ({ productId, quantity = 1, base_name, price, images }:AddItemArgs) =>
+        addItem: ({ productId, quantity = 1, base_name, price, images }:AddItemArgs) =>{
+          const existingItem = items.find(i => i.product_id === productId);
+
+        
+          if (existingItem?.stock_quantity !== undefined && existingItem.quantity + quantity > existingItem.stock_quantity) {
+           
+            console.warn("Cannot add more than available stock");
+            return;
+          }
             addMutation.mutate({
             product_id: productId, 
             quantity,
             base_name,
             price,
             images,
-        }),
+        })},
         updateItem: (itemId, quantity) =>
           updateMutation.mutate({ itemId, quantity }),
         removeItem: (itemId) => removeMutation.mutate(itemId),

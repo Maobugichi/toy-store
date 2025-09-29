@@ -10,7 +10,7 @@ interface FilterItemsProps {
 
 const FilterItems: React.FC<FilterItemsProps> = ({ data   }) => {
     const { addItem , addingId } = useCart();
-    console.log(addingId)
+   
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-[95%] mx-auto md:w-full">
             {data?.map((item: Product) => (
@@ -26,7 +26,7 @@ const FilterItems: React.FC<FilterItemsProps> = ({ data   }) => {
                         base_name: item.base_name,
                         price: item.price,
                         images: item.images});
-                                            }}
+                    }}
                    
                     isAdding={addingId == item.id}
                     className="h-[330px] items-center justify-center rounded-lg border bg-white shadow-sm font-semibold"

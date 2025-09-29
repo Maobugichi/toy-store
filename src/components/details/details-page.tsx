@@ -12,37 +12,28 @@ import BreadcrumbNav from '../crumb';
 import NewsLetter from '../newsletter';
 import Footer from '@/footer';
 import type { Product , UIData } from './types';
-import { useAuth } from '@/context/authContext';
-import { addToCart } from '../cart/cart';
+
 import TopSlide from '../top-slide';
 import ModernNav from '../sticky-nav';
 import ScrollToTop from '@/scroll-to-top';
+import { useCart } from '@/hooks/useCart';
 
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
-  const [ loading , setLoading ] = useState<boolean>(false)
+
   const { data: products, isLoading, error } = useProducts();
 
   if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
   if (error) return <p>Failed to load products</p>;
   const { id } = useParams();
-  const { cartId } = useAuth();
   const product: Product = products.find((p:any) => p.id == id)
  
 
-  const handleAddToCart = async () => {
+  const { addItem , addingId } = useCart();
 
-    if (!cartId) {
-      alert('You need to log in first')
-      return
-    }
-    setLoading(true)
-    await addToCart(cartId, product.id, quantity);
-    setLoading(false)
-    alert("Added to cart!");
-  }
+  
 
   const uiData: UIData = {
     rating: 4.8,
@@ -53,14 +44,7 @@ export default function ProductDetailsPage() {
     setQuantity(Math.max(1, Math.min(product.stock_quantity, quantity + change)));
   };
 
-  const formatPrice = (price: string): string => {
-    const numPrice = parseFloat(price) / 100; // Convert cents to dollars
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(numPrice);
-  };
-
+  
  
   const getPrimaryImage = (): string => {
     return product.primary_image || product.images.primary;
@@ -113,7 +97,7 @@ export default function ProductDetailsPage() {
               <p className="text-lg text-muted-foreground">{product.short_description}</p>
             </div>
 
-            {/* Rating */}
+            
             <div className="flex items-center gap-3">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -130,7 +114,10 @@ export default function ProductDetailsPage() {
            
             <div className="space-y-1">
               <div className="text-3xl font-bold text-foreground">
-                {formatPrice(product.price)}
+                {Number(product.price).toLocaleString("en-NG", {
+                        style: "currency",
+                        currency: "NGN",
+                    })}
               </div>
               <p className="text-sm text-muted-foreground">Free shipping on orders over $100</p>
             </div>
@@ -183,8 +170,14 @@ export default function ProductDetailsPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button onClick={handleAddToCart} size="lg" className={`${loading ? "bg-black/80" : "bg-black"} flex-1 h-14 text-lg font-semibold`}>
-                 {loading ? <ClipLoader size={20} color="white"/> :<><ShoppingCart className="w-5 h-5 mr-2" /> <span>Add to Cart</span></> 
+                <Button onClick={() => (
+                  addItem({productId: product.id,
+                        quantity: quantity,
+                        base_name: product.base_name,
+                        price: product.price,
+                        images: product.images})
+                )} size="lg" className={`${product.id == addingId ? "bg-black/80" : "bg-black"} flex-1 h-14 text-lg font-semibold`}>
+                 {product.id == addingId ? <ClipLoader size={20} color="white"/> :<><ShoppingCart className="w-5 h-5 mr-2" /> <span>Add to Cart</span></> 
                    }
                 </Button>
                 <Button 
@@ -202,7 +195,7 @@ export default function ProductDetailsPage() {
             </div>
 
            
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
                 <CardContent className="p-4 text-center">
                   <Truck className="w-8 h-8 mx-auto mb-2 text-green-600" />
