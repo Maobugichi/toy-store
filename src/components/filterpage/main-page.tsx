@@ -8,6 +8,7 @@ import ProductFilterDialog from "./filter-dialog";
 import ModernNav from "../sticky-nav";
 import type { Product } from '@/types';
 import ScrollToTop from '@/scroll-to-top';
+import { ClipLoader } from 'react-spinners';
 
 interface FilterState {
   search: string;
@@ -22,6 +23,8 @@ interface FilterState {
 
 const MainPage: React.FC = () => {
   const data = useLoaderData() as Product[];
+
+  if (!data) return <div><ClipLoader size={40}/></div>
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     priceRange: [0],
