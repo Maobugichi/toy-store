@@ -7,6 +7,7 @@ import {
   removeCartItem,
 } from "@/components/cart/cart"
 import { useAuth } from "@/context/authContext"
+import { getGuestCart, addGuestItem, updateGuestItem, removeGuestItem } from "@/components/cart/cart-storage"
 
 // Types
 interface ProductImage {
@@ -16,13 +17,13 @@ interface ProductImage {
 
 interface CartItem {
   id: number;
-  cart_id: number;
+  cart_id?: number;
   product_id: number;
   quantity: number;
-  created_at: string;
+  created_at?: string;
   base_name: string;
   price: string;
-  stock_quantity: number;
+  stock_quantity?: number;
   variant?: string;
   images: ProductImage;
   optimistic?:boolean
@@ -30,7 +31,7 @@ interface CartItem {
 type CartContextType = {
   items: CartItem[]
   isLoading: boolean
-  addItem: (productId: number, quantity?: number) => void
+  addItem:  (item: AddItemArgs) => void 
   updateItem: (itemId: number, quantity: number) => void
   removeItem: (itemId: number) => void
   updatingId: number | null
@@ -40,80 +41,101 @@ type CartContextType = {
   totalQuantity: number
 }
 
+type AddItemArgs = {
+  productId: number;
+  quantity?: number;
+  base_name: string;
+  price: string;
+  images: { primary: string; gallery?: { public_id: string }[] };
+};
+
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  const { cartId, user } = useAuth()
+  const isGuest = !user
   const queryClient = useQueryClient()
-  const { cartId } = useAuth()
+  const [addingId, setAddingId] = useState<number | null>(null);
+  const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [removingId, setRemovingId] = useState<number | null>(null);
 
-  // Stable query key
-  const cartKey = useMemo(() => ["cart", String(cartId ?? "no-cart")], [cartId])
-
-  const [updatingId, setUpdatingId] = useState<number | null>(null)
-  const [removingId, setRemovingId] = useState<number | null>(null)
+  const cartKey = useMemo(
+    () => ["cart", isGuest ? "guest" : String(cartId ?? "no-cart")],
+    [isGuest, cartId]
+  )
 
   // ---- QUERY ----
   const { data: items = [], isLoading } = useQuery<CartItem[]>({
     queryKey: cartKey,
     queryFn: async () => {
+      if (isGuest) {
+        return getGuestCart()
+      }
       if (!cartId) return []
       return await getCartItems(cartId)
     },
-    enabled: !!cartId,
-    placeholderData: (prev) => prev, // keeps UI stable during refetch
+    enabled: isGuest || !!cartId,
+    placeholderData: (prev) => prev,
   })
 
- 
-  // inside CartProvider
-const [addingId, setAddingId] = useState<number | null>(null)
 
-const addMutation = useMutation({
-  mutationFn: ({ productId, quantity }: { productId: number; quantity: number }) =>
-    addToCart(cartId, productId, quantity),
-  onMutate: async ({ productId, quantity }) => {
-    setAddingId(productId) // 👈 mark which product is being added
-    await queryClient.cancelQueries({ queryKey: cartKey })
-    const prevItems = queryClient.getQueryData<any[]>(cartKey) ?? []
+  const addMutation = useMutation({
+  mutationFn: async (item: { product_id: number;
+    quantity: number;
+    base_name: string;
+    price: string;
+    images: { primary: string; gallery?: { public_id: string }[] };
+   }) => {
+    if (isGuest) {
+      await new Promise(res => setTimeout(res, 200)); 
+      return addGuestItem(item)}
+     return addToCart(cartId, item.product_id, item.quantity);
+  },
+  onMutate: async (item) => {
+    setAddingId(item.product_id);
+    await queryClient.cancelQueries({ queryKey: cartKey });
+    const prevItems = queryClient.getQueryData<CartItem[]>(cartKey) ?? [];
 
-    const existing = prevItems.find(i => i.product_id === productId)
-    let newItems
+    let newItems: CartItem[];
+
+    const existing = prevItems.find((i) => i.product_id === item.product_id);
     if (existing) {
-      newItems = prevItems.map(i =>
-        i.product_id === productId ? { ...i, quantity: i.quantity + quantity } : i
-      )
+      newItems = prevItems.map((i) =>
+        i.product_id === item.product_id ? { ...i, quantity: i.quantity + item.quantity } : i
+      );
     } else {
+     
       newItems = [
         ...prevItems,
         {
           id: Date.now(),
-          product_id: productId,
-          quantity,
-          base_name: "…",
-          price: "0",
-          images: { primary: "" },
+          ...item,
           optimistic: true,
         },
-      ]
+      ];
     }
-    queryClient.setQueryData(cartKey, newItems)
-    return { prevItems }
+
+    queryClient.setQueryData(cartKey, newItems);
+    
+    return { prevItems };
   },
-  onError: (_err, _vars, ctx) => {
-    if (ctx?.prevItems) queryClient.setQueryData(cartKey, ctx.prevItems)
+  onSettled: (_data, _error) => {
+    setAddingId(null);
+    queryClient.invalidateQueries({ queryKey: cartKey });
   },
-  onSettled: () => {
-    setAddingId(null) // 👈 reset
-    queryClient.invalidateQueries({ queryKey: cartKey })
-  },
-})
+  });
 
 
-  // ---- UPDATE ----
+ 
   const updateMutation = useMutation({
-    mutationFn: ({ itemId, quantity }: { itemId: number; quantity: number }) =>
-      updateCartItem(itemId, quantity),
+    mutationFn: async ({ itemId, quantity }: { itemId: number; quantity: number }) => {
+      if (isGuest) {
+          await new Promise(res => setTimeout(res, 200)); 
+          updateGuestItem(itemId, quantity)
+      }
+         return updateCartItem(itemId, quantity)},
     onMutate: async ({ itemId, quantity }) => {
-      setUpdatingId(itemId)
+      setUpdatingId(itemId);
       await queryClient.cancelQueries({ queryKey: cartKey })
       const prevItems = queryClient.getQueryData<CartItem[]>(cartKey) ?? []
       const newItems = prevItems.map((i) =>
@@ -126,14 +148,15 @@ const addMutation = useMutation({
       if (ctx?.prevItems) queryClient.setQueryData(cartKey, ctx.prevItems)
     },
     onSettled: () => {
-      setUpdatingId(null)
+      setUpdatingId(null);
       queryClient.invalidateQueries({ queryKey: cartKey })
     },
   })
 
   // ---- REMOVE ----
   const removeMutation = useMutation({
-    mutationFn: (itemId: number) => removeCartItem(itemId),
+    mutationFn: (itemId: number) =>
+      isGuest ? removeGuestItem(itemId) : removeCartItem(itemId),
     onMutate: async (itemId) => {
       setRemovingId(itemId)
       await queryClient.cancelQueries({ queryKey: cartKey })
@@ -151,7 +174,7 @@ const addMutation = useMutation({
     },
   })
 
-  // ---- TOTAL ----
+
   const totalQuantity = useMemo(
     () => items.reduce((sum, it) => sum + (it.quantity || 0), 0),
     [items]
@@ -162,8 +185,14 @@ const addMutation = useMutation({
       value={{
         items,
         isLoading,
-        addItem: (productId, quantity = 1) =>
-          addMutation.mutate({ productId, quantity }),
+        addItem: ({ productId, quantity = 1, base_name, price, images }:AddItemArgs) =>
+            addMutation.mutate({
+            product_id: productId, 
+            quantity,
+            base_name,
+            price,
+            images,
+        }),
         updateItem: (itemId, quantity) =>
           updateMutation.mutate({ itemId, quantity }),
         removeItem: (itemId) => removeMutation.mutate(itemId),
@@ -178,6 +207,7 @@ const addMutation = useMutation({
     </CartContext.Provider>
   )
 }
+
 
 export function useCart() {
   const ctx = useContext(CartContext)

@@ -17,6 +17,7 @@ import { useNavigate ,Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
+import { handleLoginSuccess } from "./hook";
 
 
 
@@ -43,9 +44,10 @@ const Login = () => {
       setLoading(true)
      try {
         const response = await axios.post(`${url}/auth/login`,values,{withCredentials:true});
-        console.log(response.data) 
+        
         setLoading(false)
-        login(response.data)
+        login(response.data);
+        handleLoginSuccess();
         navigate('/')   
      } catch(err) {
         console.log(err)

@@ -15,7 +15,7 @@ const Hero: React.FC = () => {
   ];
    
   return (
-    <section className="relative h-fit py-10  w-full bg-red-500">
+    <section className="font-sans relative h-fit py-10  w-full bg-red-500">
     
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat "
@@ -44,7 +44,7 @@ const Hero: React.FC = () => {
 
              
               <div className="space-y-4">
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                <h1 className="font-family-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   Time. Of.{' '}
                   <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                     YOUth.

@@ -17,6 +17,7 @@ import axios from "axios"
 import { useAuth } from "@/context/authContext"
 import { useState } from "react"
 import { ClipLoader } from "react-spinners"
+import { handleLoginSuccess } from "./hook"
 
 const formSchema = z.object({
   username: z.string().min(2, { message: "Username must be at least 2 characters" }),
@@ -43,7 +44,8 @@ function SignUp() {
      try {
         const response = await axios.post(`${url}/auth/signup`,values,{withCredentials:true});
         setLoading(false)
-        login(response.data)
+        login(response.data);
+        handleLoginSuccess();
         navigate('/')   
      } catch(err) {
         console.log(err)

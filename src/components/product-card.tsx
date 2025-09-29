@@ -11,8 +11,6 @@ const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:
         navigate(`/product/${id}`);
     };
 
-   console.log(isAdding)
-
     return(
         <div id={id.toString()} className={`${className} border rounded-2xl shadow  p-3 space-y-5`}>
             <div className="h-[45%] w-full border rounded-sm">

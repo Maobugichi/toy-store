@@ -2,14 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuLink
-} from '@/components/ui/navigation-menu';
 import { 
   Sheet, 
   SheetContent, 
@@ -80,17 +72,14 @@ const ModernNav: React.FC<ModernNavProps> = ({
     }
   ];
   const { user } = useAuth();
- 
 
-  console.log(user)
-
- 
   return (
     <nav className="w-full bg-white border-b relative  z-50 border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        
         <div className="flex items-center justify-between h-16">
-         
+         <div className='flex space-x-4 items-center'>
+
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               
@@ -116,35 +105,9 @@ const ModernNav: React.FC<ModernNavProps> = ({
             </Link>
 
          
-            <NavigationMenu>
-              <NavigationMenuList className="space-x-2">
-                {navItems.map((navItem: NavDropdownItem) => (
-                  <NavigationMenuItem key={navItem.label}>
-                    <NavigationMenuTrigger className="text-gray-700 hover:text-gray-900 font-medium">
-                      {navItem.label}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-48 p-4">
-                        <div className="space-y-2">
-                          {navItem.items.map((item: NavItem) => (
-                            <NavigationMenuLink key={item.label} asChild>
-                              <Link
-                                to={item.href}
-                                className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-                              >
-                                {item.label}
-                              </Link>
-                            </NavigationMenuLink>
-                          ))}
-                        </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+          
           </div>
-
+          </div>
         
           <div className="hidden lg:flex items-center flex-1 max-w-md mx-8">
             <div className="relative w-full">
