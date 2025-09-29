@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const addToCart = async ({ userId, productId, quantity }) => {
+const addToCart = async ({ userId, productId, quantity } :{ userId:number | string, productId: number | string , quantity:number | string}) => {
   const res = await fetch("/api/cart/add", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
