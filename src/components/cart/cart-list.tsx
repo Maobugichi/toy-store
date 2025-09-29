@@ -24,7 +24,7 @@ interface CartItem {
   created_at: string;
   base_name: string;
   price: string;
-  stock_quantity: number;
+  stock_quantity?: number | undefined;
   variant?: string;
   images: ProductImage;
 }
@@ -144,7 +144,7 @@ const CartSheet: React.FC = () => {
                 ) : (
                 <div className="space-y-4">
                     {items.map((item) => {
-                    const stockStatus = getStockStatus(item.quantity, item.stock_quantity);
+                    const stockStatus = getStockStatus(item.quantity, item.stock_quantity ?? 0);
                     const isLoading = loadingItems[item.id];
                     
                     return (
@@ -213,7 +213,7 @@ const CartSheet: React.FC = () => {
                                     variant="outline"
                                     size="icon"
                                     onClick={() =>  updateItem(item.id, item.quantity + 1)}
-                                    disabled={item.quantity >= item.stock_quantity || isLoading}
+                                    disabled={item.quantity >= (item.stock_quantity ?? 0)  || isLoading}
                                     className="h-7 w-7"
                                 >
                                     <Plus className="w-3 h-3" />

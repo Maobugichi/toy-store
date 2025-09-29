@@ -23,7 +23,7 @@ interface CartItem {
   created_at?: string;
   base_name: string;
   price: string;
-  stock_quantity?: number;
+  stock_quantity?: number | undefined;
   variant?: string;
   images: ProductImage;
   optimistic?:boolean

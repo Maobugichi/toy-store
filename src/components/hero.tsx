@@ -13,13 +13,8 @@ const Hero: React.FC = () => {
     { icon: Award, label: '5 Star', sublabel: 'Rated Products' },
     { icon: TrendingUp, label: '99%', sublabel: 'Satisfaction' }
   ];
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    console.log('hola')
-     navigate('/filter')
-  }
-   
+ 
+ 
   return (
     <section className="font-sans relative h-fit py-10  w-full bg-red-500">
     
