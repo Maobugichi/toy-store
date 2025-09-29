@@ -10,7 +10,7 @@ import FaqSection from './components/faq-section'
 import BannerSection from './components/banner-section'
 import ScrollToTop from './scroll-to-top'
 
-function App() {
+function App({data}:any) {
   return (
     <div className='overflow-hidden '>
       <ScrollToTop/>
@@ -19,7 +19,7 @@ function App() {
       <Hero/>
       <div className='w-[90%] mx-auto space-y-8 md:py-5  h-fit py-10 md:h-[100vh]  flex flex-col justify-center'>
         <h2 className='text-3xl font-semibold font-family-heading md:text-4xl'>Featured</h2>
-         <MultiCarousel/>
+         <MultiCarousel data={data}/>
       </div>
      
       <CategorySection/>

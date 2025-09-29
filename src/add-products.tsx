@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { Upload, X, ImageIcon, Loader2, AlertCircle, Plus, Trash2,  Edit, Save, ShoppingBag } from 'lucide-react';
 import axios from "axios";
+ const url = import.meta.env.VITE_API_URL
 
 const MultipleImageUpload = ({ productId, existingImages = [], onUploadComplete }:any) => {
   const [files, setFiles] = useState<any>([]);
@@ -8,7 +9,7 @@ const MultipleImageUpload = ({ productId, existingImages = [], onUploadComplete 
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<any>(null);
-
+ 
 
   const handleDrag = useCallback((e:any) => {
     e.preventDefault();
@@ -102,7 +103,7 @@ const MultipleImageUpload = ({ productId, existingImages = [], onUploadComplete 
     });
 
     try {
-      const response = await axios.post(`http://localhost:3000/api/products/${productId}/images`, formData);
+      const response = await axios.post(`${url}/api/products/${productId}/images`, formData);
 
       const result = await response.data;
 
@@ -605,7 +606,7 @@ const ProductAdminPanel = () => {
 
   async function getProducts() {
     try {
-      const response = await axios.get('http://localhost:3000/api/products/');
+      const response = await axios.get(`${url}/api/products/`);
       console.log(response)
       if (isMounted) {
         setProducts(response.data);
@@ -650,7 +651,7 @@ const ProductAdminPanel = () => {
 
   const handleSaveProduct = async (productData:any) => {
     
-     await axios.post("http://localhost:3000/api/products/upload-product", productData);
+     await axios.post(`${url}/api/products/upload-product`, productData);
      alert("✅ Category created successfully!");
     if (selectedProduct?.id) {
       // Update existing

@@ -14,7 +14,7 @@ import { CartProvider } from "./hooks/useCart";
 import SignUp from "./auth/signup";
 import { AuthProvider } from "./context/authContext";
 import Login from "./auth/login";
-
+import { rootLoader } from "./routes/utils";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +30,7 @@ const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
+    loader:rootLoader
   },
   {
     path: "filter",

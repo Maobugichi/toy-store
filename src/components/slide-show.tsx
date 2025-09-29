@@ -5,15 +5,16 @@ import { Progress } from "@/components/ui/progress"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from "./product-card"
 import { Link } from "react-router-dom"
+import { useCart } from "@/hooks/useCart"
 
 const slides = Array.from({ length: 10 }, (_, i) => `Slide ${i + 1}`)
 
-export function MultiCarousel() {
+export function MultiCarousel({data}:any) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, slidesToScroll: 1 })
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollProgress, setScrollProgress] = useState(0)
 
- 
+  const { addItem , addingId } = useCart();
   useEffect(() => {
     if (!emblaApi) return
 
@@ -38,12 +39,26 @@ export function MultiCarousel() {
      
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {slides.map(( index) => (
+          {data.slice(0,5).map((item:any,index:number) => (
             <div
               key={index}
               className="flex-[0_0_80%] md:flex-[0_0_28%]  p-2" 
             >
-              <ProductCard addToCart={() => 'hello'} isAdding id={0} src="" price="" name="" className="h-[330px] items-center justify-center rounded-lg border bg-white shadow-sm font-semibold"/>
+              <ProductCard 
+                    key={item.id} 
+                    id={item.id}
+                    name={item.base_name}
+                    price={item.price}
+                    src={item.images?.primary}
+                    addToCart={async () => {
+                        addItem({productId: item.id,
+                        quantity: 1,
+                        base_name: item.base_name,
+                        price: item.price,
+                        images: item.images});
+                    }}
+                   
+                  isAdding={addingId == item.id} className="h-[330px] items-center justify-center rounded-lg border bg-white shadow-sm font-semibold"/>
             </div>
           ))}
         </div>
@@ -74,7 +89,7 @@ export function MultiCarousel() {
         <Progress value={scrollProgress} className="h-1" />
       </div>
     
-      <Link className="flex md:w-[15%] items-center justify-center py-3 bg-transparent hover:border text-black text-lg mx-auto mt-8" to='filter'>
+      <Link className="flex md:w-[15%] items-center justify-center py-3 bg-transparent hover:border text-black text-lg mx-auto mt-8" to='/filter'>
           View More 
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
        

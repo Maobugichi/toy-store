@@ -190,7 +190,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         
           if (existingItem?.stock_quantity !== undefined && existingItem.quantity + quantity > existingItem.stock_quantity) {
-           
             console.warn("Cannot add more than available stock");
             return;
           }

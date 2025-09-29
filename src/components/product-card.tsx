@@ -13,7 +13,7 @@ const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:
 
     return(
         <div id={id.toString()} className={`${className} font-family-sans border rounded-2xl shadow  p-3 space-y-5`}>
-            <div className="h-[45%] w-full border rounded-sm">
+            <div className="h-[45%] w-full border-2 rounded-sm">
                 <img src={src} className="h-full rounded-sm w-full object-fill"/>
             </div>
 

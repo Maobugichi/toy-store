@@ -7,7 +7,6 @@ import FilterItems from "./items";
 import ProductFilterDialog from "./filter-dialog";
 import ModernNav from "../sticky-nav";
 import type { Product } from '@/types';
-import { useAuth } from '@/context/authContext';
 import ScrollToTop from '@/scroll-to-top';
 
 interface FilterState {
@@ -127,9 +126,6 @@ const MainPage: React.FC = () => {
   const handleFiltersChange = (newFilters: FilterState): void => {
     setFilters(newFilters);
   };
-
-  const { cartId } = useAuth();
-
  
   return (
     <div>
@@ -158,7 +154,7 @@ const MainPage: React.FC = () => {
         
       
         {filteredProducts.length > 0 ? (
-          <FilterItems data={filteredProducts} cartId={cartId} />
+          <FilterItems data={filteredProducts}  />
         ) : (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">

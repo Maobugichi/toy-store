@@ -159,9 +159,9 @@ const CartSheet: React.FC = () => {
                            
                             <div className="flex-shrink-0 relative">
                             <img
-                                src={item.images.primary}
+                                src={item.images?.primary}
                                 alt={item.base_name}
-                                className="w-32 h-full object-cover rounded-md bg-gray-100"
+                                className="w-32 h-32 object-fit rounded-md bg-gray-100"
                             />
                             <Badge className={`absolute -top-1 -right-1 h-4 px-1 text-[10px] ${stockStatus.color}`}>
                                 {stockStatus.text}
