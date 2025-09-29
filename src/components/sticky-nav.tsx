@@ -175,20 +175,22 @@ const ModernNav: React.FC<ModernNavProps> = ({
            
             <CartSheet/>
 
-           
-            {user ? (
-            <Avatar>
+          
+          
+              {user ? (
+              <Avatar>
+                <AvatarFallback>
+                  {user.email?.slice(0, 2).toUpperCase() || "US"}
+                </AvatarFallback>
+              </Avatar>
+                ) : (
+               <Link to={`/signup`}>    
+                <Button variant="ghost" size="icon">
+                  <User className="w-5 h-5" />
+                </Button>
+             </Link> 
+             )}
             
-              <AvatarFallback>
-                {user.email?.slice(0, 2).toUpperCase() || "US"}
-              </AvatarFallback>
-            </Avatar>
-          ) : (
-            <Button variant="ghost" size="icon">
-              <User className="w-5 h-5" />
-            </Button>
-          )}
-           
             <div className="block md:hidden">
               <Sheet>
                 <SheetTrigger asChild>
