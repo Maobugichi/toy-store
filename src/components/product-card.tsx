@@ -31,7 +31,7 @@ const ProductCard = ({className, src , name , price, id , addToCart , isAdding}:
                 </div>
 
                 <div className="w-full">
-                    <h4 className="text-xl">{name}</h4>
+                    <h4 className="text-lg md:text-xl whitespace-nowrap overflow-hidden">{name}</h4>
                     <p className="text-lg font-light">{Number(price).toLocaleString("en-NG", {
                         style: "currency",
                         currency: "NGN",
