@@ -62,7 +62,9 @@ const Login = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="h-fit p-6  rounded-2xl border-2 md:h-fit md:py-6 gap-3 flex flex-col w-[90%] items-center justify-center md:w-1/2 space-y-2 mx-auto"
         >
-          
+          <div>
+            <img src='https://res.cloudinary.com/dao2a3ib4/image/upload/v1759248907/toy-logoo_qt8unk.png' alt='toyshop logo' className='object-cover h-28 w-32'/>
+          </div>
           <FormField
             control={form.control}
             name="email"

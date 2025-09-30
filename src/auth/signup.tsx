@@ -57,10 +57,14 @@ function SignUp() {
   return (
     <div className="h-screen grid place-items-center font-inter">
       <Form {...form}>
+        
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="h-fit p-6  rounded-2xl border-2 md:h-fit md:py-6 gap-3 flex flex-col w-[90%] items-center justify-center md:w-1/2 space-y-2 mx-auto"
         >
+          <div>
+            <img src='https://res.cloudinary.com/dao2a3ib4/image/upload/v1759248907/toy-logoo_qt8unk.png' alt='toyshop logo' className='object-cover h-28 w-32'/>
+          </div>
           <FormField
             control={form.control}
             name="username"
@@ -68,7 +72,7 @@ function SignUp() {
               <FormItem className="w-full">
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="username" {...field} />
+                  <Input className="py-6" placeholder="username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -82,7 +86,7 @@ function SignUp() {
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="email" type="email" {...field} />
+                  <Input className="py-6" placeholder="email" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,14 +100,14 @@ function SignUp() {
               <FormItem className="w-full">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="password" type="password" {...field} />
+                  <Input className="py-6" placeholder="password" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className={`${loading ? "bg-black/20" : "bg-black" }  text-white text-sm md:text-lg h-8 md:h-12 md:w-[90%] w-full`}>
+          <Button type="submit" className={`${loading ? "bg-black/20" : "bg-black" }  text-white text-sm md:text-lg h-8 md:h-12 py-5 md:w-[90%] w-full`}>
             {loading ? <ClipLoader size={10} color="black"/> : 'Submit' }
           </Button>
 
