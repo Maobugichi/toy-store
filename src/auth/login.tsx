@@ -44,11 +44,11 @@ const Login = () => {
       setLoading(true)
      try {
         const response = await axios.post(`${url}/auth/login`,values,{withCredentials:true});
-        
+        console.log(response.data)
         setLoading(false)
         login(response.data);
-        handleLoginSuccess();
         navigate('/')   
+        handleLoginSuccess();
      } catch(err) {
         console.log(err)
      }

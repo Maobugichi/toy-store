@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useLocation } from "react-router-dom";
 import TopSlide from "../top-slide";
 import Footer from "@/footer";
 import NewsLetter from "../newsletter";
@@ -22,7 +22,10 @@ interface FilterState {
 }
 
 const MainPage: React.FC = () => {
-  const data = useLoaderData() as Product[];
+  const location = useLocation();
+  const passedData = location.state?.data;
+  const data = passedData || (useLoaderData() as Product[]);
+
 
   if (!data) return <div><ClipLoader size={40}/></div>
   const [filters, setFilters] = useState<FilterState>({
@@ -39,7 +42,7 @@ const MainPage: React.FC = () => {
   
   const maxPrice = useMemo(() => {
     if (!data || data.length === 0) return 50000;
-    return Math.max(...data.map(product => parseFloat(product.price)));
+    return Math.max(...data.map((product:any) => parseFloat(product.price)));
   }, [data]);
 
   
@@ -51,12 +54,12 @@ const MainPage: React.FC = () => {
       colors: []
     };
 
-    const materials = [...new Set(data.map(p => p.material).filter(Boolean))];
-    const sizes = [...new Set(data.map(p => p.size).filter(Boolean))];
+    const materials = [...new Set(data.map((p:any) => p.material).filter(Boolean))];
+    const sizes = [...new Set(data.map((p:any) => p.size).filter(Boolean))];
     
   
-    // or get category names from your API. For now, using a placeholder
-    const categories = [...new Set(data.map(p => {
+    
+    const categories = [...new Set(data.map((p:any) => {
     
       if (p.category_id === 1) return 'Accessories';
       if (p.category_id === 2) return 'Clothing';
@@ -64,7 +67,7 @@ const MainPage: React.FC = () => {
       return 'Accessories'; 
     }))];
     
-    const colors = [...new Set(data.map(p => p.color).filter(Boolean))];
+    const colors = [...new Set(data.map((p:any) => p.color).filter(Boolean))];
 
     return { materials, sizes, categories, colors };
   }, [data]);

@@ -24,17 +24,15 @@ export default function ProductDetailsPage() {
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
 
   const { data: products, isLoading, error } = useProducts();
-
-  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
-  if (error) return <p>Failed to load products</p>;
   const { id } = useParams();
-  const product: Product = products.find((p:any) => p.id == id)
- 
-
   const { addItem , addingId } = useCart();
 
+  const product: Product = products.find((p:any) => p.id == id)
+  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
+  if (error) return <p>Failed to load products</p>;
   
 
+ 
   const uiData: UIData = {
     rating: 4.8,
     reviewCount: 127

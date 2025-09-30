@@ -20,19 +20,27 @@ export function useProductSearch(query: string) {
         });
         const products = res.data;
 
-        console.log(query)
-        // Simple case-insensitive filter
-        const filtered = products.filter((p: any) =>
-          p.base_name.toLowerCase().includes(query.toLowerCase())
-        );
-       
+        // Search in multiple fields
+        const filtered = products.filter((p: any) => {
+          const searchQuery = query.toLowerCase();
+          return (
+            p.name?.toLowerCase().includes(searchQuery) ||
+            p.base_name?.toLowerCase().includes(searchQuery) ||
+            p.color?.toLowerCase().includes(searchQuery) ||
+            p.description?.toLowerCase().includes(searchQuery) || 
+            p.short_description?.toLowerCase().includes(searchQuery) || 
+            p.sku?.toLowerCase().includes(searchQuery)
+          );
+        });
+        
+        console.log("Filtered results:", filtered);
         setResults(filtered);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
-    }, 400); // debounce 400ms
+    }, 400);
 
     return () => clearTimeout(delayDebounce);
   }, [query]);

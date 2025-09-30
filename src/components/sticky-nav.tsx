@@ -11,6 +11,7 @@ import { useAuth } from '@/context/authContext';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import CartSheet from './cart/cart-list';
 import SearchCommand from './search';
+import { UserMenu } from './avatar-drop';
 
 
 
@@ -88,11 +89,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
           
               <div className=''>
                 {user ? (
-                <Avatar>
-                  <AvatarFallback>
-                    {user.email?.slice(0, 2).toUpperCase() || "US"}
-                  </AvatarFallback>
-                </Avatar>
+                 <UserMenu />
                   ) : (
                 <Link to={`/signup`}>    
                   <Button variant="ghost" size="icon">

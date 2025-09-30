@@ -22,7 +22,7 @@ function App({data}:any) {
          <MultiCarousel data={data}/>
       </div>
      
-      <CategorySection/>
+      <CategorySection data={data}/>
       <BannerSection/>
       <FaqSection/>
       <NewsLetter/>
