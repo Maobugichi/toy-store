@@ -21,6 +21,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/authContext';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import CartSheet from './cart/cart-list';
+import SearchCommand from './search';
 
 interface NavItem {
   label: string;
@@ -109,19 +110,12 @@ const ModernNav: React.FC<ModernNavProps> = ({
           </div>
           </div>
         
-          <div className="hidden lg:flex items-center flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input
-                type="search"
-                placeholder="Search products..."
-                className="pl-10 pr-4 w-full bg-gray-50 border-0 focus:bg-white focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
+          <div className="flex items-center flex-1  mx-8">
+            <SearchCommand/>
           </div>
 
          
-          <div className="flex items-center ">
+          <div className="flex items-center">
            
             <Button variant="ghost" size="icon" className="relative">
               <Heart className="w-5 h-5" />
@@ -139,83 +133,23 @@ const ModernNav: React.FC<ModernNavProps> = ({
             <CartSheet/>
 
           
-          
-              {user ? (
-              <Avatar>
-                <AvatarFallback>
-                  {user.email?.slice(0, 2).toUpperCase() || "US"}
-                </AvatarFallback>
-              </Avatar>
-                ) : (
-               <Link to={`/signup`}>    
-                <Button variant="ghost" size="icon">
-                  <User className="w-5 h-5" />
-                </Button>
-             </Link> 
-             )}
-            
-            <div className="block md:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
+              <div className=''>
+                {user ? (
+                <Avatar>
+                  <AvatarFallback>
+                    {user.email?.slice(0, 2).toUpperCase() || "US"}
+                  </AvatarFallback>
+                </Avatar>
+                  ) : (
+                <Link to={`/signup`}>    
                   <Button variant="ghost" size="icon">
-                    <Menu className="w-5 h-5" />
+                    <User className="w-5 h-5" />
                   </Button>
-                </SheetTrigger>
-                <SheetContent side="right" className="w-80">
-                  <SheetHeader>
-                    <SheetTitle className="flex items-center space-x-2">
-                      <div className="w-6 h-6 bg-gradient-to-r from-purple-600 to-pink-600 rounded flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-white" />
-                      </div>
-                      <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                        theTOYshop
-                      </span>
-                    </SheetTitle>
-                  </SheetHeader>
-                  
-                  <div className="mt-8 space-y-6">
-                    {/* Mobile Search */}
-                    <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Input
-                        type="search"
-                        placeholder="Search products..."
-                        className="pl-10"
-                      />
-                    </div>
-
-                    {/* New Arrivals */}
-                    <Link to="/new-arrivals">
-                      <Button variant="ghost" className="w-full justify-start text-left">
-                        New Arrivals
-                        <Badge variant="secondary" className="ml-auto">Hot</Badge>
-                      </Button>
-                    </Link>
-
-                   
-                    {navItems.map((navItem: NavDropdownItem) => (
-                      <div key={navItem.label} className="space-y-2">
-                        <h3 className="font-semibold text-gray-900 px-3 py-2 border-b">
-                          {navItem.label}
-                        </h3>
-                        <div className="space-y-1 pl-4">
-                          {navItem.items.map((item: NavItem) => (
-                            <Link key={item.label} to={item.href}>
-                              <Button 
-                                variant="ghost" 
-                                className="w-full justify-start text-sm text-gray-600"
-                              >
-                                {item.label}
-                              </Button>
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+              </Link> 
+              )}
+              </div>
+            
+           
           </div>
         </div>
       </div>
