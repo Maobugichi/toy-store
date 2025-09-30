@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo, useState } from "react"
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useMutation } from "@tanstack/react-query"
 import {
   getCartItems,
   addToCart,
@@ -8,6 +8,7 @@ import {
 } from "@/components/cart/cart"
 import { useAuth } from "@/context/authContext"
 import { getGuestCart, addGuestItem, updateGuestItem, removeGuestItem } from "@/components/cart/cart-storage"
+import { queryClient } from "@/lib/query-client"
 
 // Types
 interface ProductImage {
@@ -54,7 +55,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { cartId, user } = useAuth()
   const isGuest = !user
-  const queryClient = useQueryClient()
+  
   const [addingId, setAddingId] = useState<number | null>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [removingId, setRemovingId] = useState<number | null>(null);

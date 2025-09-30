@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import heroBackground from '@/assets/up.png';
+
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight,  Sparkles, TrendingUp, Users, Award } from 'lucide-react';
@@ -17,14 +17,18 @@ const Hero: React.FC = () => {
  
   return (
     <section className="font-family-sans relative h-fit py-10  w-full bg-red-500">
-    
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat "
-        style={{
-          backgroundImage: `url(${heroBackground})`,
-         
-        }}
+      
       />
+      <img
+        src="https://res.cloudinary.com/dao2a3ib4/image/upload/f_auto,q_auto,w_auto/v1759243127/toy-hero_jwodbh.jpg"
+        alt="Hero background"
+        className="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+     
+      />
+
         
       <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent top-0" />
      
@@ -40,14 +44,14 @@ const Hero: React.FC = () => {
                 className="bg-white/10 text-white border-white/20 backdrop-blur-sm hover:bg-white/20 transition-all duration-300"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
-                New Collection 2024
+                New Collection 2025
               </Badge>
 
              
               <div className="space-y-4">
                <h1 className="font-family-heading font-bold text-white leading-tight text-[clamp(2.5rem,5vw,4rem)] lg:text-[clamp(3rem,5vw,5rem)]">
                 Time. Of.{' '}
-                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r font-extrabold from-purple-400 to-pink-400 bg-clip-text text-transparent">
                   YOUth.
                 </span>
               </h1>

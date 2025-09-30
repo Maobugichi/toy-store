@@ -32,7 +32,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
     <nav className="w-full bg-white border-b relative  z-50 border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
        
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center md:justify-between h-16">
          <div className='flex space-x-4 items-center'>
 
           <div className="flex items-center">
@@ -64,48 +64,40 @@ const ModernNav: React.FC<ModernNavProps> = ({
           </div>
           </div>
         
-          <div className="flex items-center flex-1  mx-8">
+          <div className="flex items-center md:flex-1  mx-3">
             <SearchCommand/>
           </div>
 
          
-          <div className="flex items-center">
-           
-            <Button variant="ghost" size="icon" className="relative">
-              <Heart className="w-5 h-5" />
-              {wishlistCount > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs"
-                >
-                  {wishlistCount}
-                </Badge>
-              )}
-            </Button>
+          <div className="flex items-center space-x-3 shrink-0">
+           <Button variant="ghost" className=" relative p-0  w-10 h-10">
+            <Heart  className="w-7 h-7" />
+            {wishlistCount > 0 && (
+              <Badge className="absolute -top-2 -right-2 w-5 h-5 p-0 flex items-center justify-center text-xs">
+                {wishlistCount}
+              </Badge>
+            )}
+          </Button>
 
-           
-            <CartSheet/>
 
-          
-              <div className=''>
-                {user ? (
-                 <UserMenu />
-                  ) : (
+            <CartSheet />
+
+            <div>
+              {user ? (
+                <UserMenu />
+              ) : (
                 <Link to={`/signup`}>    
-                  <Button variant="ghost" size="icon">
-                    <User className="w-5 h-5" />
-                  </Button>
-              </Link> 
+                 <Button variant="ghost" size="icon" className="w-10  md:border rounded-full h-10">
+                  <User className="w-7 h-7" />
+                </Button>
+                </Link> 
               )}
-              </div>
-            
-           
+            </div>
           </div>
+
         </div>
       </div>
 
-    
-      
     </nav>
   );
 };

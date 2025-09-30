@@ -32,14 +32,6 @@ const Footer = () => {
   ];
 
   
-  const categories = [
-    { name: 'Electronics', href: '#' },
-    { name: 'Fashion', href: '#' },
-    { name: 'Home & Garden', href: '#' },
-    { name: 'Sports & Outdoors', href: '#' },
-    { name: 'Books & Media', href: '#' }
-  ];
-
   const socialLinks = [
     { icon: Facebook, href: '#', label: 'Facebook' },
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -146,23 +138,6 @@ const Footer = () => {
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-         
-          <div>
-            <h3 className="font-semibold text-white mb-4 font-family-heading">Categories</h3>
-            <ul className="space-y-3">
-              {categories.map((category, index) => (
-                <li key={index}>
-                  <a
-                    href={category.href}
-                    className="text-gray-300 hover:text-white transition-colors"
-                  >
-                    {category.name}
                   </a>
                 </li>
               ))}
