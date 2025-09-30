@@ -27,12 +27,14 @@ export default function ProductDetailsPage() {
   const { id } = useParams();
   const { addItem , addingId } = useCart();
 
-  const product: Product = products.find((p:any) => p.id == id)
-  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
-  if (error) return <p>Failed to load products</p>;
   
 
- 
+
+  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
+  if (error) return <p>Failed to load products</p>;
+
+  const product: Product = products.find((p:any) => p.id == id);
+  
   const uiData: UIData = {
     rating: 4.8,
     reviewCount: 127
