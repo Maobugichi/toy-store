@@ -87,7 +87,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
                 <UserMenu />
               ) : (
                 <Link to={`/signup`}>    
-                 <Button variant="ghost" size="icon" className="w-10  md:border rounded-full h-10">
+                 <Button variant="ghost" size="icon" className="w-10 border rounded-full h-10">
                   <User className="w-7 h-7" />
                 </Button>
                 </Link> 
