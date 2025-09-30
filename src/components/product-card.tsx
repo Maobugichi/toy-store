@@ -27,7 +27,7 @@ const ProductCard = ({
     const navigate = useNavigate();
     
     const handleNavigate = () => {
-        navigate(`/product/${id}`);
+        navigate(`/checkout`);
     };
 
     return (

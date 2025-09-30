@@ -8,6 +8,7 @@ import { Trash2, Plus, Minus, ShoppingBag, ShoppingCart, Heart, Loader2, Package
 import { useCart } from '@/hooks/useCart';
 import { ClipLoader } from 'react-spinners';
 import { ScrollArea } from '../ui/scroll-area';
+import { Link } from 'react-router-dom';
 
 interface ProductImage {
   gallery: Array<{
@@ -41,8 +42,6 @@ interface StockStatus {
 const CartSheet: React.FC = () => {
   const { items, updatingId,  updateItem, removeItem , totalQuantity} = useCart()
    
-
-  console.log(items)
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -316,10 +315,13 @@ const CartSheet: React.FC = () => {
                 </div>
 
                 <div className="space-y-2">
-                    <Button className="w-full" size="lg">
+                  <Link to={'/checkout'}>
+                   <Button className="w-full" size="lg">
                     <Package className="w-4 h-4 mr-2" />
                     Proceed to Checkout
                     </Button>
+                  </Link>
+                    
                     <Button 
                     variant="outline" 
                     className="w-full" 

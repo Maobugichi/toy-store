@@ -25,6 +25,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useCart } from '@/hooks/useCart';
 
 const CheckoutPage = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -35,6 +36,7 @@ const CheckoutPage = () => {
   const [giftMessage, setGiftMessage] = useState<string>('');
   const [saveInfo, setSaveInfo] = useState<boolean | 'indeterminate'>(true);
   const [newsletter, setNewsletter] = useState<boolean | 'indeterminate'>(false);
+  const { items } = useCart();
 
   const [cartItems, setCartItems] = useState([
     {
@@ -142,6 +144,21 @@ const CheckoutPage = () => {
     );
   };
 
+   const formatPrice = (price: string): string => {
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0
+    }).format(parseFloat(price));
+  };
+
+  const calculateSubtotal = (price: string, quantity: number): number => {
+    return parseFloat(price) * quantity;
+  };
+
+  const calculateTotal = (): number => {
+    return items.reduce((sum, item) => sum + calculateSubtotal(item.price, item.quantity), 0);
+  };
   const removeItem = (id:number) => {
     setCartItems(items => items.filter(item => item.id !== id));
   };
@@ -582,16 +599,16 @@ const CheckoutPage = () => {
               <CardContent className="space-y-4">
                 {/* Cart Items */}
                 <div className="space-y-4">
-                  {cartItems.map((item) => (
+                  {items.map((item) => (
                     <div key={item.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={item.images.primary}
+                        alt={item.base_name}
                         className="w-16 h-16 object-cover rounded-md"
                       />
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-sm truncate">{item.name}</h4>
-                        <p className="text-sm text-gray-600">{item.color} • {item.size}</p>
+                        <h4 className="font-medium text-sm truncate">{item.base_name}</h4>
+                       
                         <div className="flex items-center gap-2 mt-2">
                           <div className="flex items-center border rounded">
                             <Button
@@ -623,12 +640,10 @@ const CheckoutPage = () => {
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
-                        {item.originalPrice > item.price && (
-                          <p className="text-xs text-gray-500 line-through">
-                            ${(item.originalPrice * item.quantity).toFixed(2)}
-                          </p>
-                        )}
+                       <p className="font-medium">
+                          ${ (parseFloat(item.price) * item.quantity).toFixed(2) }
+                        </p>
+
                       </div>
                     </div>
                   ))}
@@ -669,7 +684,7 @@ const CheckoutPage = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{formatPrice(calculateTotal().toString())}</span>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-sm text-green-600">
@@ -683,7 +698,7 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Tax</span>
-                    <span>${tax.toFixed(2)}</span>
+                    <span>{tax.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">

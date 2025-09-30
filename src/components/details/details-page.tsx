@@ -1,11 +1,11 @@
 import  { useState } from 'react';
-import { Heart, Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler } from 'lucide-react';
+import { Heart, Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useProducts } from '@/hooks/useProducts';
 import { ClipLoader } from 'react-spinners';
 import BreadcrumbNav from '../crumb';
@@ -192,6 +192,12 @@ export default function ProductDetailsPage() {
                   <Share2 className="w-5 h-5" />
                 </Button>
               </div>
+              <Link to={`/checkout`}>
+                <Button className="w-full bg-black text-white py-5" size="lg">
+                      <Package className="w-4 h-4 mr-2" />
+                      Proceed to Checkout
+                </Button>
+              </Link>
             </div>
 
            

@@ -42,7 +42,7 @@ export function MultiCarousel({data}:any) {
           {data.slice(0,5).map((item:any,index:number) => (
             <div
               key={index}
-              className="flex-[0_0_80%] md:flex-[0_0_28%]  p-2" 
+              className="flex-[0_0_70%] md:flex-[0_0_28%]  p-2" 
             >
               <ProductCard 
                     key={item.id} 
@@ -58,7 +58,7 @@ export function MultiCarousel({data}:any) {
                         images: item.images});
                     }}
                    
-                  isAdding={addingId == item.id} className="h-fit md:h-[350px] py-2 pb-3  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
+                  isAdding={addingId == item.id} className="h-fit md:h-[350px] pt-3 pb-4  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
             </div>
           ))}
         </div>

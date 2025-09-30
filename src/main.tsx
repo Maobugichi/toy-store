@@ -15,6 +15,7 @@ import SignUp from "./auth/signup";
 import { AuthProvider } from "./context/authContext";
 import Login from "./auth/login";
 import { rootLoader } from "./routes/utils";
+import CheckoutPage from "./components/checkout/checkout";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,10 @@ const router = createHashRouter([
   {
     path: "/product/:id",
     element: <ProductDetails />,
+  },
+  {
+    path: "/checkout",
+    element: <CheckoutPage />,
   },
 ]);
 
