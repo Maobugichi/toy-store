@@ -70,7 +70,7 @@ const Login = () => {
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input className="py-4" placeholder="email" type="email" {...field} />
+                  <Input className="py-6" placeholder="email" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -84,14 +84,14 @@ const Login = () => {
               <FormItem className="w-full">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input className="py-4" placeholder="password" type="password" {...field} />
+                  <Input className="py-6" placeholder="password" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className={`${loading ? "bg-black/80" : "bg-black"}  text-white text-sm font-bold py-4 md:text-lg h-8 md:h-12 md:w-[95%] w-full`}>
+          <Button type="submit" className={`${loading ? "bg-black/80" : "bg-black"}  text-white text-sm font-bold py-5 md:text-lg h-8 md:h-12 md:w-[95%] w-full`}>
             {loading ? <ClipLoader size={20} color="white"/> : 'Submit' }
           </Button>
 
@@ -106,12 +106,7 @@ const Login = () => {
             </Button>
           </div>
 
-          <span>
-            Already have an account?{" "}
-            <Link className="text-blue-700 underline" to="/login/">
-              Login
-            </Link>
-          </span>
+          
         </form>
       </Form>
     </div>

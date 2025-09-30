@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 export function UserMenu() {
-  const { user, setUser } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate()
 
   const handleLogout = async () => {
@@ -23,7 +23,7 @@ export function UserMenu() {
         {},
         { withCredentials: true }
       )
-      setUser(null) 
+      logout() 
       navigate("/")
     } catch (err) {
       console.error("Logout failed:", err)
