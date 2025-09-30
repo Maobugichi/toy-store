@@ -2,36 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetTrigger, 
-  SheetHeader, 
-  SheetTitle 
-} from '@/components/ui/sheet';
-import { 
-  Search, 
 
+import { 
   User, 
-  Menu, 
   Heart,
-  Sparkles
 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/authContext';
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import CartSheet from './cart/cart-list';
 import SearchCommand from './search';
 
-interface NavItem {
-  label: string;
-  href: string;
-}
 
-interface NavDropdownItem {
-  label: string;
-  items: NavItem[];
-}
+
+
 
 interface ModernNavProps {
   cartCount?: number;
@@ -41,37 +24,7 @@ interface ModernNavProps {
 const ModernNav: React.FC<ModernNavProps> = ({ 
   wishlistCount = 0 
 }) => {
-  const navItems: NavDropdownItem[] = [
-    {
-      label: 'Men',
-      items: [
-        { label: "Shirts", href: "/men/shirts" },
-        { label: "Shoes", href: "/men/shoes" },
-        { label: "Accessories", href: "/men/accessories" },
-        { label: "Jackets", href: "/men/jackets" },
-        { label: "Pants", href: "/men/pants" },
-      ]
-    },
-    {
-      label: 'Women',
-      items: [
-        { label: "Dresses", href: "/women/dresses" },
-        { label: "Heels", href: "/women/heels" },
-        { label: "Bags", href: "/women/bags" },
-        { label: "Jewelry", href: "/women/jewelry" },
-        { label: "Tops", href: "/women/tops" },
-      ]
-    },
-    {
-      label: 'Kids',
-      items: [
-        { label: "Boys", href: "/kids/boys" },
-        { label: "Girls", href: "/kids/girls" },
-        { label: "Toys", href: "/kids/toys" },
-        { label: "School", href: "/kids/school" },
-      ]
-    }
-  ];
+  
   const { user } = useAuth();
 
   return (
