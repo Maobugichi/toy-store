@@ -69,7 +69,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
           </div>
 
          
-          <div className="flex items-center space-x-3 shrink-0">
+          <div className="flex items-center space-x-2 pr-3 shrink-0">
            <Button variant="ghost" className=" relative p-0  w-10 h-10">
             <Heart  className="w-7 h-7" />
             {wishlistCount > 0 && (
