@@ -8,7 +8,7 @@ import {
   Heart,
 } from 'lucide-react';
 import { useAuth } from '@/context/authContext';
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+
 import CartSheet from './cart/cart-list';
 import SearchCommand from './search';
 import { UserMenu } from './avatar-drop';
