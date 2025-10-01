@@ -30,7 +30,7 @@ export default function ProductDetailsPage() {
   
 
 
-  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader color="#3b82f6" size={40} /></div>;
+  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
   if (error) return <p>Failed to load products</p>;
 
   const product: Product = products.find((p:any) => p.id == id);

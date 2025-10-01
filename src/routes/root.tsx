@@ -1,10 +1,11 @@
 import App from "@/App";
 import { useLoaderData } from "react-router-dom";
-
+import { ClipLoader } from "react-spinners";
 
 const Root = () => {
     const data = useLoaderData();
-    console.log(data)
+    
+    if (!data) return <ClipLoader/>
     return (
         <>
           <App data={data}/>
@@ -12,4 +13,17 @@ const Root = () => {
     )
 }
 
-export default Root
+export function HydrateFallback() {
+  return (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      height: '100vh' 
+    }}>
+      <ClipLoader />
+    </div>
+  );
+}
+
+export default Root;

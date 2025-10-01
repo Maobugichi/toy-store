@@ -4,11 +4,11 @@ import {
   createHashRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root from "@/routes/root";
+import Root, { HydrateFallback } from "@/routes/root";
 import "./index.css";
 import ProductDetails from "./components/details/details-page";
 import { filterLoader } from "./components/filterpage/filter-loader";
-import MainPage from "./components/filterpage/main-page";
+import MainPage, { FilterHydrateFallback } from "./components/filterpage/main-page";
 import {  QueryClientProvider } from '@tanstack/react-query';
 import { CartProvider } from "./hooks/useCart";
 import SignUp from "./auth/signup";
@@ -31,12 +31,14 @@ const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
-    loader:rootLoader
+    loader:rootLoader,
+    HydrateFallback: HydrateFallback,
   },
   {
     path: "filter",
     element: <MainPage />,
-    loader:filterLoader
+    loader:filterLoader,
+    HydrateFallback:FilterHydrateFallback
   },
   {
     path: "/product/:id",
