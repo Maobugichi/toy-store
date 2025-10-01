@@ -104,7 +104,7 @@ const ProductFilterDialog: React.FC<ProductFilterDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="h-[05vh] pr-4">
+        <ScrollArea className="h-[50vh] pr-4">
           <div className="space-y-6">
           
             <div className="space-y-2">
