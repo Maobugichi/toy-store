@@ -12,8 +12,6 @@ const Category: React.FC<CategoryProps> = ({ gender, src, collection }) => {
   const [filtered, setFiltered] = useState<any[]>([])
   const navigate = useNavigate()
  
-  console.log(gender)
-  console.log(collection)
   const handleNavigate = () => {
    
     const filteredItems = collection.filter(
@@ -27,9 +25,8 @@ const Category: React.FC<CategoryProps> = ({ gender, src, collection }) => {
   }
 
   useEffect(() => {
-    console.log(filtered)
     if (filtered.length > 0) {
-      navigate("/filter", { state: { data: filtered } })
+      navigate("/filter", { state: { data: gender } })
     }
   }, [filtered])
 

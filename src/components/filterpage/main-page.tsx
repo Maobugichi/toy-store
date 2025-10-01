@@ -26,9 +26,7 @@ const MainPage: React.FC = () => {
   const { data: products, isLoading, error } = useProducts();
   const location = useLocation();
   const passedData = location.state?.data;
-  const data = passedData || (products as Product[]);
-  
-
+  console.log(products)
 
   const [filters, setFilters] = useState<FilterState>({
     search: '',
@@ -41,6 +39,10 @@ const MainPage: React.FC = () => {
     featured: false
   });
 
+  const data = (products as Product[] | undefined)?.filter(
+  p => passedData ? p.name.toLowerCase().includes(passedData.toLowerCase()) : true
+) ?? (products as Product[] ?? []);
+  
   
   const maxPrice = useMemo(() => {
     if (!data || data.length === 0) return 50000;
@@ -56,8 +58,7 @@ const MainPage: React.FC = () => {
       colors: []
     };
 
-    if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
-    if (error) return <p>Failed to load products</p>;
+    
 
       for (let i = products.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -136,6 +137,12 @@ const MainPage: React.FC = () => {
     });
   }, [data, filters]);
 
+  
+if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
+if (error) return <p>Failed to load products</p>;
+
+
+  
   const handleFiltersChange = (newFilters: FilterState): void => {
     setFilters(newFilters);
   };

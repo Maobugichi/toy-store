@@ -26,6 +26,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useCart } from '@/hooks/useCart';
+import axios from 'axios';
 
 const CheckoutPage = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -89,6 +90,41 @@ const CheckoutPage = () => {
     state: '',
     zip: ''
   });
+
+
+  
+
+const handleCheckout = async () => {
+  try {
+    const payload = {
+      cartItems: items.map((item) => ({
+        product_id: item.id,  
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      shippingInfo,
+      billingInfo,
+      shippingMethod,
+      promoCode: promoApplied ? promoCode : null,
+    };
+      const url = import.meta.env.VITE_API_URL;
+
+    const response = await axios.post(
+
+      `${url}/api/checkout`,
+      payload,
+      { withCredentials: true }
+    );
+
+    if (response.data.success) {
+      alert(`Order created! ID: ${response.data.orderId}`);
+      
+    }
+  } catch (error: any) {
+    console.error(error);
+    alert(error.response?.data?.error || "Checkout failed");
+  }
+};
 
   const [paymentInfo, setPaymentInfo] = useState({
     cardNumber: '',
@@ -579,11 +615,12 @@ const CheckoutPage = () => {
                     </Button>
                     <Button 
                       className="bg-green-600 hover:bg-green-700"
-                      onClick={() => console.log('Complete Order')}
+                      onClick={handleCheckout}
                     >
                       Complete Order - ${total.toFixed(2)}
                       <Lock className="ml-2 h-4 w-4" />
                     </Button>
+
                   </div>
                 </CardContent>
               </Card>

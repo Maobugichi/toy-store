@@ -26,7 +26,7 @@ const updateTempFilter = <K extends keyof FilterState>(
   };
 
   const applyFilters = (setFilters:React.Dispatch<SetStateAction<FilterState>>,tempFilters:FilterState,onFiltersChange:any,setIsDialogOpen:React.Dispatch<SetStateAction<boolean>>): void => {
-    console.log('Applying filters:', tempFilters);
+   
     setFilters(tempFilters);
     if (onFiltersChange) {
       onFiltersChange(tempFilters);
