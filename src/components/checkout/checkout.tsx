@@ -707,7 +707,6 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
-                {/* Gift Message */}
                 <div className="pt-4">
                   <Label htmlFor="giftMessage" className="text-sm flex items-center gap-2">
                     <Gift className="h-4 w-4" />

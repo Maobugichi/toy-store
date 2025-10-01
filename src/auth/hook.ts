@@ -13,7 +13,7 @@ export async function handleLoginSuccess() {
         { guestCart },
         { withCredentials: true }
       );
-      console.log(response)
+      alert(response.data)
 
       clearGuestCart();
       queryClient.invalidateQueries({ queryKey: ["cart"] });
