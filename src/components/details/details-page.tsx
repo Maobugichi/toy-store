@@ -27,9 +27,6 @@ export default function ProductDetailsPage() {
   const { id } = useParams();
   const { addItem , addingId } = useCart();
 
-  
-
-
   if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
   if (error) return <p>Failed to load products</p>;
 

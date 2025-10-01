@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "sonner";
 const url = import.meta.env.VITE_API_URL
 export async function addToCart(cartId: number | null, productId: number, quantity: number = 1) {
 
@@ -8,6 +9,9 @@ export async function addToCart(cartId: number | null, productId: number, quanti
       productId,
       quantity,
     } , { withCredentials:true });
+    toast.success("Item added to cart 🎉", {
+          description: "Successfully Added Item to cart",
+      });
     return res.data;
   } catch(err) {
      console.log(err)
@@ -30,13 +34,16 @@ export async function getCartItems(cartId: number | null) {
 
 
 export async function updateCartItem(cartItemId: number, quantity: number) {
-  console.log(cartItemId)
+  
   try {
     const res = await axios.put(
       `${url}/api/cart/${cartItemId}`,
       { quantity },
       { withCredentials: true }
     );
+    toast.success("Item quantity updated 🎉", {
+          description: "Successfully updated item quantity",
+      });
     return res.data;
   } catch (err) {
     console.error("Update cart item error:", err);

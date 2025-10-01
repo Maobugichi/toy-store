@@ -7,8 +7,7 @@ import {
 import Root, { HydrateFallback } from "@/routes/root";
 import "./index.css";
 import ProductDetails from "./components/details/details-page";
-import { filterLoader } from "./components/filterpage/filter-loader";
-import MainPage, { FilterHydrateFallback } from "./components/filterpage/main-page";
+import MainPage from "./components/filterpage/main-page";
 import {  QueryClientProvider } from '@tanstack/react-query';
 import { CartProvider } from "./hooks/useCart";
 import SignUp from "./auth/signup";
@@ -17,6 +16,7 @@ import Login from "./auth/login";
 import { rootLoader } from "./routes/utils";
 import CheckoutPage from "./components/checkout/checkout";
 import { queryClient } from "./lib/query-client";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const router = createHashRouter([
@@ -37,8 +37,7 @@ const router = createHashRouter([
   {
     path: "filter",
     element: <MainPage />,
-    loader:filterLoader,
-    HydrateFallback:FilterHydrateFallback
+    
   },
   {
     path: "/product/:id",
@@ -55,6 +54,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
+          <Toaster richColors closeButton/> 
           <RouterProvider router={router} />
         </CartProvider>
       </AuthProvider>

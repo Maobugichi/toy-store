@@ -1,4 +1,4 @@
-import { ShoppingCart } from "lucide-react"
+import { ShoppingCart, Sparkle } from "lucide-react"
 import { Badge } from "./ui/badge"
 import { Button } from "./ui/button"
 import { Link, useNavigate } from "react-router-dom"
@@ -27,7 +27,7 @@ const ProductCard = ({
     const navigate = useNavigate();
     
     const handleNavigate = () => {
-        navigate(`/checkout`);
+        navigate(`/product/${id}`);
     };
 
     return (
@@ -46,12 +46,27 @@ const ProductCard = ({
 
             <div className="w-full space-y-2 md:space-y-3">
                 
-                <div className="flex w-full justify-between items-center">
+                <div className="flex w-full relative justify-between items-center">
                     <Badge className="rounded-full px-2 md:px-3 text-[9px] md:text-[10px] bg-gradient-to-r from-slate-100 to-slate-200 text-black">
                         TOY
                     </Badge>
                     
-                    <Link to={`/product/${id}`} className="flex items-center gap-1">
+                    
+                  <Sparkle 
+                    size={14} 
+                    className="animate-pulse absolute right-2 hidden md:block" 
+                    stroke="url(#sparkleGradient)" 
+                    />
+                    <svg width="0" height="0">
+                    <defs>
+                        <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#ec4899" /> {/* pink-400 */}
+                        <stop offset="100%" stopColor="#a78bfa" /> {/* purple-500 */}
+                        </linearGradient>
+                    </defs>
+                    </svg>
+
+                    <Link to={`/product/${id}`} className="md:hidden flex items-center gap-1">
                         <FiInfo size={18}/>
                     </Link>
                 </div>

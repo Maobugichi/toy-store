@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useLoaderData, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import TopSlide from "../top-slide";
 import Footer from "@/footer";
 import NewsLetter from "../newsletter";
@@ -9,6 +9,7 @@ import ModernNav from "../sticky-nav";
 import type { Product } from '@/types';
 import ScrollToTop from '@/scroll-to-top';
 import { ClipLoader } from 'react-spinners';
+import { useProducts } from '@/hooks/useProducts';
 
 interface FilterState {
   search: string;
@@ -22,12 +23,13 @@ interface FilterState {
 }
 
 const MainPage: React.FC = () => {
+  const { data: products, isLoading, error } = useProducts();
   const location = useLocation();
   const passedData = location.state?.data;
-  const data = passedData || (useLoaderData() as Product[]);
+  const data = passedData || (products as Product[]);
+  
 
 
-  if (!data) return <div><ClipLoader size={40}/></div>
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     priceRange: [0],
@@ -54,13 +56,18 @@ const MainPage: React.FC = () => {
       colors: []
     };
 
+    if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
+    if (error) return <p>Failed to load products</p>;
+
+      for (let i = products.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [products[i], products[j]] = [products[j], products[i]];
+      }
     const materials = [...new Set(data.map((p:any) => p.material).filter(Boolean))];
     const sizes = [...new Set(data.map((p:any) => p.size).filter(Boolean))];
     
   
-    
-    const categories = [...new Set(data.map((p:any) => {
-    
+    const categories = [...new Set(data.map((p:any) => {  
       if (p.category_id === 1) return 'Accessories';
       if (p.category_id === 2) return 'Clothing';
       if (p.category_id === 3) return 'Footwear';
@@ -134,7 +141,9 @@ const MainPage: React.FC = () => {
   };
  
   return (
+
     <div>
+      
       <ScrollToTop/>
       <TopSlide />
       <ModernNav />
@@ -187,6 +196,7 @@ const MainPage: React.FC = () => {
 
       <NewsLetter />
       <Footer />
+    
     </div>
   );
 };

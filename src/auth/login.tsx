@@ -9,6 +9,7 @@ import {
   FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
@@ -45,12 +46,20 @@ const Login = () => {
      try {
         const response = await axios.post(`${url}/auth/login`,values,{withCredentials:true});
         
-        setLoading(false)
+        setLoading(false);
         login(response.data);
+        await handleLoginSuccess();
+        toast.success("Login Successful! 🎉", {
+          description: "Welcome back! Redirecting you now...",
+        });
         navigate('/')   
-        handleLoginSuccess();
-     } catch(err) {
-        console.log(err)
+       
+     } catch(err:any) {
+        console.log(err);
+        setLoading(false);
+         toast.error("Login Failed", {
+          description: err.response?.data?.message || "Invalid email or password. Please try again.",
+        });
      }
     
   }

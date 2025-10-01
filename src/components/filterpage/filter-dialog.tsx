@@ -83,7 +83,7 @@ const ProductFilterDialog: React.FC<ProductFilterDialogProps> = ({
   };
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={handleDialogOpen}>
+    <Dialog  open={isDialogOpen} onOpenChange={handleDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" className="gap-2">
           <SlidersHorizontal className="w-4 h-4" />
@@ -104,7 +104,7 @@ const ProductFilterDialog: React.FC<ProductFilterDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
         
-        <ScrollArea className="h-[70vh] pr-4">
+        <ScrollArea className="h-[05vh] pr-4">
           <div className="space-y-6">
           
             <div className="space-y-2">

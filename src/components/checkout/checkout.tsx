@@ -219,7 +219,7 @@ const CheckoutPage = () => {
         <StepIndicator />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Checkout Form */}
+         
           <div className="lg:col-span-2">
             {/* Step 1: Information */}
             {currentStep === 1 && (
@@ -651,7 +651,7 @@ const CheckoutPage = () => {
 
                 <Separator />
 
-                {/* Promo Code */}
+              
                 <div>
                   <div className="flex gap-2">
                     <Input
@@ -680,7 +680,7 @@ const CheckoutPage = () => {
 
                 <Separator />
 
-                {/* Order Totals */}
+              
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
@@ -696,10 +696,7 @@ const CheckoutPage = () => {
                     <span>Shipping</span>
                     <span>{shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Tax</span>
-                    <span>{tax.toFixed(2)}</span>
-                  </div>
+                 
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">
                     <span>Total</span>
@@ -722,16 +719,13 @@ const CheckoutPage = () => {
                   />
                 </div>
 
-                {/* Security Badges */}
+               
                 <div className="pt-4 space-y-2">
                   <div className="flex items-center gap-2 text-xs text-gray-600">
                     <Shield className="h-4 w-4 text-green-600" />
                     <span>SSL encrypted checkout</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600">
-                    <Truck className="h-4 w-4 text-blue-600" />
-                    <span>Free returns within 30 days</span>
-                  </div>
+                 
                   <div className="flex items-center gap-2 text-xs text-gray-600">
                     <Lock className="h-4 w-4 text-purple-600" />
                     <span>Secure payment processing</span>

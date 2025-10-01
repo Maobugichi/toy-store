@@ -8,13 +8,11 @@ export async function handleLoginSuccess() {
 
   try {
     if (guestCart.length > 0) {
-      const response  = await axios.post(
+       await axios.post(
         `${url}/api/cart/merge`,
         { guestCart },
         { withCredentials: true }
       );
-      alert(response.data)
-
       clearGuestCart();
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     }
