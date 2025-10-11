@@ -5,14 +5,11 @@ import {
   Lock, 
   ChevronRight, 
   Check, 
- 
   Trash2, 
   Plus,
   Minus,
   Tag,
   Gift,
- 
-
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,113 +17,22 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
-import axios from 'axios';
 import StepOne from './steps/step-one';
 import StepTwo from './steps/step-two';
 import StepThree from './steps/step-three';
+import { ClipLoader } from 'react-spinners';
+import { Badge } from '../ui/badge';
 
 const CheckoutPage = () => {
+  const { items, updatingId,  updateItem, removeItem , totalQuantity} = useCart();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [shippingMethod, setShippingMethod] = useState<string>('standard');
-  const [paymentMethod, setPaymentMethod] = useState<string>('card');
+ 
   const [promoCode, setPromoCode] = useState<string>('');
   const [promoApplied, setPromoApplied] = useState<boolean>(false);
   const [giftMessage, setGiftMessage] = useState<string>('');
-  const [saveInfo, setSaveInfo] = useState<boolean | 'indeterminate'>(true);
-  const [newsletter, setNewsletter] = useState<boolean | 'indeterminate'>(false);
-  const { items } = useCart();
-
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: "Premium Urban Hoodie",
-      color: "Black",
-      size: "M",
-      price: 149.99,
-      originalPrice: 199.99,
-      quantity: 1,
-      image: "/api/placeholder/100/100",
-      inStock: true
-    },
-    {
-      id: 2,
-      name: "Classic Denim Jacket",
-      color: "Blue",
-      size: "L",
-      price: 89.99,
-      originalPrice: 120.99,
-      quantity: 2,
-      image: "/api/placeholder/100/100",
-      inStock: true
-    }
-  ]);
-
-  const [shippingInfo, setShippingInfo] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    company: '',
-    address: '',
-    apartment: '',
-    city: '',
-    country: 'United States',
-    state: '',
-    zip: '',
-    phone: ''
-  });
-
-  const [billingInfo, setBillingInfo] = useState({
-    sameAsShipping: true,
-    firstName: '',
-    lastName: '',
-    company: '',
-    address: '',
-    apartment: '',
-    city: '',
-    country: 'United States',
-    state: '',
-    zip: ''
-  });
 
 
-  
-
-const handleCheckout = async () => {
-  try {
-    const payload = {
-      cartItems: items.map((item) => ({
-        product_id: item.id,  
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      shippingInfo,
-      billingInfo,
-      shippingMethod,
-      promoCode: promoApplied ? promoCode : null,
-    };
-      const url = import.meta.env.VITE_API_URL;
-      const response = await axios.post(
-      `${url}/api/checkout`,
-      payload,
-      { withCredentials: true }
-    );
-
-    if (response.data.success) {
-      alert(`Order created! ID: ${response.data.orderId}`);
-      
-    }
-  } catch (error: any) {
-    console.error(error);
-    alert(error.response?.data?.error || "Checkout failed");
-  }
-};
-
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: ''
-  });
 
   const steps = [
     { number: 1, title: "Information", description: "Contact & shipping" },
@@ -198,24 +104,8 @@ const formatPrice = (amount: number): string =>
   }).format(amount);
 
 
-  const updateQuantity = (id:number, change:any) => {
-    setCartItems(items => 
-      items.map(item => 
-        item.id === id 
-          ? { ...item, quantity: Math.max(1, item.quantity + change) }
-          : item
-      )
-    );
-  };
-
-   
-
- 
-
   
-  const removeItem = (id:number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
+  
 
   const applyPromoCode = () => {
     if (promoCode.toLowerCase() === 'save10') {
@@ -223,15 +113,7 @@ const formatPrice = (amount: number): string =>
     }
   };
 
-  const handleInputChange = (section:string, field:any, value:any) => {
-    if (section === 'shipping') {
-      setShippingInfo(prev => ({ ...prev, [field]: value }));
-    } else if (section === 'billing') {
-      setBillingInfo(prev => ({ ...prev, [field]: value }));
-    } else if (section === 'payment') {
-      setPaymentInfo(prev => ({ ...prev, [field]: value }));
-    }
-  };
+ 
 
   const StepIndicator = () => (
     <div className="flex items-center justify-center mb-8">
@@ -268,6 +150,9 @@ const formatPrice = (amount: number): string =>
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
           <p className="text-gray-600 mt-2">Complete your purchase securely</p>
+          {items.length > 0 && (
+              <Badge  variant="secondary">{totalQuantity} {totalQuantity === 1 ? 'item' : 'items'}</Badge>
+          )}
         </div>
 
         <StepIndicator />
@@ -308,16 +193,18 @@ const formatPrice = (amount: number): string =>
                               variant="ghost"
                               size="sm"
                               className="h-6 w-6 p-0"
-                              onClick={() => updateQuantity(item.id, -1)}
+                             onClick={() => updateItem(item.id, Math.max(item.quantity - 1, 1))}
                             >
                               <Minus className="h-3 w-3" />
                             </Button>
-                            <span className="px-2 text-sm">{item.quantity}</span>
+                             <span className="w-8 text-center text-sm font-medium">
+                                  {updatingId === item.id ? <ClipLoader size={10}/> : item.quantity}
+                            </span>
                             <Button
                               variant="ghost"
                               size="sm"
                               className="h-6 w-6 p-0"
-                              onClick={() => updateQuantity(item.id, 1)}
+                              onClick={() =>  updateItem(item.id, item.quantity + 1)}
                             >
                               <Plus className="h-3 w-3" />
                             </Button>
