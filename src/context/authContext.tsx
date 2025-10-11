@@ -1,7 +1,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-type User = {
+interface User {
   id: number;
   email: string;
   name: string;
@@ -27,13 +27,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (saved) {
       const { user, cartId } = JSON.parse(saved);
       setUser(user);
-     
       setCartId(cartId);
     }
   }, []);
+  
   const login = (data: { user: any; cartId: number }) => {
     setUser(data.user);
-   
     setCartId(data.cartId);
     localStorage.setItem("auth", JSON.stringify(data));
   };

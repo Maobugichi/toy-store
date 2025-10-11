@@ -10,9 +10,9 @@ import { useAuth } from "@/context/authContext"
 import { getGuestCart, addGuestItem, updateGuestItem, removeGuestItem } from "@/components/cart/cart-storage"
 import { queryClient } from "@/lib/query-client"
 
-// Types
+
 interface ProductImage {
-  gallery?: Array<{ public_id: string }>
+  gallery?: { public_id: string }[]
   primary: string
 }
 
@@ -29,6 +29,7 @@ interface CartItem {
   images: ProductImage;
   optimistic?:boolean
 }
+
 type CartContextType = {
   items: CartItem[]
   isLoading: boolean
@@ -60,12 +61,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [removingId, setRemovingId] = useState<number | null>(null);
 
-  const cartKey = useMemo(
-    () => ["cart", isGuest ? "guest" : String(cartId ?? "no-cart")],
-    [isGuest, cartId]
-  )
+  const cartKey = useMemo(() => 
+    ["cart", isGuest ? "guest" : String(cartId ?? "no-cart")],
+    [isGuest, cartId])
 
-  // ---- QUERY ----
+
   const { data: items = [], isLoading } = useQuery<CartItem[]>({
     queryKey: cartKey,
     queryFn: async () => {
@@ -81,49 +81,51 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
 
   const addMutation = useMutation({
-  mutationFn: async (item: { product_id: number;
-    quantity: number;
-    base_name: string;
-    price: string;
-    images: { primary: string; gallery?: { public_id: string }[] };
-   }) => {
-    if (isGuest) {
-      await new Promise(res => setTimeout(res, 200)); 
-      return addGuestItem(item)}
-     return addToCart(cartId, item.product_id, item.quantity);
-  },
-  onMutate: async (item) => {
-    setAddingId(item.product_id);
-    await queryClient.cancelQueries({ queryKey: cartKey });
-    const prevItems = queryClient.getQueryData<CartItem[]>(cartKey) ?? [];
+    mutationFn: async (item: {
+      product_id: number;
+      quantity: number;
+      base_name: string;
+      price: string;
+      images: { primary: string; gallery?: { public_id: string }[] };
+    }) => {
+      if (isGuest) {
+        await new Promise(res => setTimeout(res, 200)); 
+        return addGuestItem(item)
+      }
+       return addToCart(cartId, item.product_id, item.quantity);
+    },
+    onMutate: async (item) => {
+      setAddingId(item.product_id);
+      await queryClient.cancelQueries({ queryKey: cartKey });
+      const prevItems = queryClient.getQueryData<CartItem[]>(cartKey) ?? [];
 
-    let newItems: CartItem[];
+      let newItems: CartItem[];
 
-    const existing = prevItems.find((i) => i.product_id === item.product_id);
-    if (existing) {
-      newItems = prevItems.map((i) =>
-        i.product_id === item.product_id ? { ...i, quantity: i.quantity + item.quantity } : i
-      );
-    } else {
-     
-      newItems = [
-        ...prevItems,
-        {
-          id: Date.now(),
-          ...item,
-          optimistic: true,
-        },
-      ];
-    }
+      const existing = prevItems.find((i) => i.product_id === item.product_id);
+      if (existing) {
+        newItems = prevItems.map((i) =>
+          i.product_id === item.product_id ? { ...i, quantity: i.quantity + item.quantity } : i
+        );
+      } else {
+      
+        newItems = [
+          ...prevItems,
+          {
+            id: Date.now(),
+            ...item,
+            optimistic: true,
+          },
+        ];
+      }
 
-    queryClient.setQueryData(cartKey, newItems);
-    
-    return { prevItems };
-  },
-  onSettled: (_data, _error) => {
-    setAddingId(null);
-    queryClient.invalidateQueries({ queryKey: cartKey });
-  },
+      queryClient.setQueryData(cartKey, newItems);
+      
+      return { prevItems };
+    },
+    onSettled: (_data, _error) => {
+      setAddingId(null);
+      queryClient.invalidateQueries({ queryKey: cartKey });
+    },
   });
 
 
@@ -154,7 +156,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     },
   })
 
-  // ---- REMOVE ----
+ 
   const removeMutation = useMutation({
     mutationFn: (itemId: number) =>
       isGuest ? removeGuestItem(itemId) : removeCartItem(itemId),
@@ -186,10 +188,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       value={{
         items,
         isLoading,
-        addItem: ({ productId, quantity = 1, base_name, price, images }:AddItemArgs) =>{
-          const existingItem = items.find(i => i.product_id === productId);
-
-        
+        addItem: ({ productId, quantity = 1, base_name, price, images }:AddItemArgs) => {
+          const existingItem = items.find(i => i.product_id === productId);        
           if (existingItem?.stock_quantity !== undefined && existingItem.quantity + quantity > existingItem.stock_quantity) {
             console.warn("Cannot add more than available stock");
             return;
