@@ -70,13 +70,11 @@ export default function StepThree({
       duration: 3000,
     });
     
-    // Close modal after a short delay
     setTimeout(() => {
       setShowPaymentModal(false);
       
-      
       setTimeout(() => {
-        window.location.href = "/"; // Change to your success route
+        window.location.href = "/"; 
       }, 500);
     }, 2000);
   };
@@ -139,21 +137,12 @@ export default function StepThree({
     onSuccess: (data) => {
       toast.dismiss("create-payment");
       
-     
       setPaymentData(data);
       setShowPaymentModal(true);
       
       toast.success("Payment invoice created! Please complete the payment.", {
         duration: 4000,
       });
-      
-      // Optional: If you want to also redirect to NOWPayments hosted page
-      // Uncomment the lines below
-      // if (data.invoice_url) {
-      //   setTimeout(() => {
-      //     window.open(data.invoice_url, '_blank');
-      //   }, 1000);
-      // }
     },
     onError: (error: any) => {
       toast.dismiss("create-payment");
@@ -206,7 +195,7 @@ export default function StepThree({
               <TabsContent value="crypto" className="space-y-4">
                 <Label>Select Cryptocurrency</Label>
 
-                <Popover open={open} onOpenChange={setOpen}>
+                <Popover open={open} onOpenChange={setOpen} modal={true}>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
@@ -223,22 +212,29 @@ export default function StepThree({
                     </Button>
                   </PopoverTrigger>
 
-                  <PopoverContent className="w-[300px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search currency..." />
-                      <CommandList>
+                  <PopoverContent 
+                    className="w-[var(--radix-popover-trigger-width)] p-0 max-h-[300px] overflow-hidden"
+                    align="start"
+                    side="bottom"
+                    sideOffset={4}
+                  >
+                    <Command className="max-h-[300px]">
+                      <CommandInput placeholder="Search currency..." className="h-9" />
+                      <CommandList className="max-h-[250px] overflow-y-auto">
                         <CommandEmpty>No currency found.</CommandEmpty>
                         <CommandGroup>
                           {currencies?.currencies?.map((currency: any) => (
                             <CommandItem
                               key={currency}
+                              value={currency}
                               onSelect={() => {
                                 setValue("payCurrency", currency);
                                 setOpen(false);
                               }}
+                              className="cursor-pointer"
                             >
                               <div className="flex justify-between w-full">
-                                <span className="text-gray-500 text-sm">
+                                <span className="font-medium">
                                   {currency.toUpperCase()}
                                 </span>
                               </div>

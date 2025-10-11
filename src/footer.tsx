@@ -43,7 +43,7 @@ const Footer = () => {
     {
       icon: Truck,
       title: 'Free Shipping',
-      description: 'On orders over $50'
+      description: 'On orders over 100,000'
     },
     {
       icon: RotateCcw,

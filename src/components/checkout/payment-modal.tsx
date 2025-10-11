@@ -47,7 +47,7 @@ const PaymentStatusModal = ({
  
   const currentPaymentData = statusData || paymentData;
 
-  // Check if payment is complete and trigger callback
+  
   useEffect(() => {
     if (statusData?.payment_status === 'finished' || statusData?.payment_status === 'confirmed') {
       toast.success('Payment confirmed! 🎉');

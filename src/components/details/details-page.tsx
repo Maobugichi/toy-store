@@ -17,18 +17,47 @@ import TopSlide from '../top-slide';
 import ModernNav from '../sticky-nav';
 import ScrollToTop from '@/scroll-to-top';
 import { useCart } from '@/hooks/useCart';
+import ReviewSection from '../review';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const API_BASE = import.meta.env.VITE_API_URL;
+
+interface Review {
+  id: string;
+  user_id: string;
+  username: string;
+  review: string;
+  stars: number;
+  created_at: string;
+}
+
 
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
+  
 
-  const { data: products, isLoading, error } = useProducts();
+  const { data: products, isLoading, error:prodErr } = useProducts();
   const { id } = useParams();
   const { addItem , addingId } = useCart();
 
+  const { 
+      data: reviews = [], 
+      isLoading:reviewLoading, 
+      isError,
+      error 
+    } = useQuery<Review[]>({
+      queryKey: ["reviews"],
+      queryFn: async () => {
+        const res = await axios.get(`${API_BASE}/api/reviews`);
+        return res.data;
+      },
+    });
+
   if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
-  if (error) return <p>Failed to load products</p>;
+  if (prodErr) return <p>Failed to load products</p>;
 
   const product: Product = products.find((p:any) => p.id == id);
   
@@ -47,6 +76,8 @@ export default function ProductDetailsPage() {
     return product.primary_image || product.images.primary;
   };
 
+
+  
   
 
   return (
@@ -116,7 +147,7 @@ export default function ProductDetailsPage() {
                         currency: "NGN",
                     })}
               </div>
-              <p className="text-sm text-muted-foreground">Free shipping on orders over $100</p>
+              <p className="text-sm text-muted-foreground">Free shipping on orders over ₦100,000</p>
             </div>
 
            
@@ -203,7 +234,7 @@ export default function ProductDetailsPage() {
                 <CardContent className="p-4 text-center">
                   <Truck className="w-8 h-8 mx-auto mb-2 text-green-600" />
                   <p className="font-semibold">Free Shipping</p>
-                  <p className="text-sm text-muted-foreground">On orders over $100</p>
+                  <p className="text-sm text-muted-foreground">On orders over ₦100,000</p>
                 </CardContent>
               </Card>
               <Card>
@@ -222,7 +253,7 @@ export default function ProductDetailsPage() {
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="description">Description</TabsTrigger>
             <TabsTrigger value="specifications">Specifications</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews ({uiData.reviewCount})</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews ({reviews.length})</TabsTrigger>
           </TabsList>
           
           <TabsContent value="description" className="mt-6">
@@ -318,56 +349,7 @@ export default function ProductDetailsPage() {
           </TabsContent>
           
           <TabsContent value="reviews" className="mt-6">
-            <Card>
-              <CardContent className="p-8">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold">Customer Reviews</h3>
-                    <Button variant="outline">Write a Review</Button>
-                  </div>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold">{uiData.rating}</div>
-                      <div className="flex justify-center mb-2">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                      <div className="text-muted-foreground">{uiData.reviewCount} reviews</div>
-                    </div>
-                    <div className="col-span-2 space-y-4">
-                      <div className="p-4 border rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="flex">
-                            {[...Array(5)].map((_, i) => (
-                              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            ))}
-                          </div>
-                          <span className="font-semibold">Sarah M.</span>
-                        </div>
-                        <p className="text-muted-foreground">
-                          "Love this hat! Perfect fit and the vintage style is exactly what I was looking for. Great quality too."
-                        </p>
-                      </div>
-                      <div className="p-4 border rounded-lg">
-                        <div className="flex items-center gap-2 mb-2">
-                          <div className="flex">
-                            {[...Array(4)].map((_, i) => (
-                              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            ))}
-                            <Star className="w-4 h-4 text-slate-300" />
-                          </div>
-                          <span className="font-semibold">Mike R.</span>
-                        </div>
-                        <p className="text-muted-foreground">
-                          "Good hat, comfortable to wear. The mesh back keeps it cool in summer. Would recommend!"
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+           <ReviewSection reviews={reviews} isLoading={reviewLoading} isError={isError} error={error}/>
           </TabsContent>
         </Tabs>
       </div>

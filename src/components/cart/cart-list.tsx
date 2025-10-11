@@ -193,7 +193,7 @@ const CartSheet: React.FC = () => {
                                 {formatPrice(item.price)}
                             </p>
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between space-x-3">
                               
                                 <div className="flex items-center gap-1">
                                 <Button
@@ -314,7 +314,7 @@ const CartSheet: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="grid space-y-2">
                   <Link to={'/checkout'}>
                    <Button className="w-full" size="lg">
                     <Package className="w-4 h-4 mr-2" />
