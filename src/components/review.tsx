@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -25,9 +24,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectItem, SelectTrigger, SelectContent, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import api from "@/lib/axios-config";
 
-
-const API_BASE = import.meta.env.VITE_API_URL;
 
 const reviewSchema = z.object({
   
@@ -64,7 +62,8 @@ const ReviewSection:React.FC<ReviewProps> = ({reviews , isLoading , error , isEr
 
   const createReview = useMutation({
     mutationFn: async (values: ReviewFormValues) => {
-      const res = await axios.post(`${API_BASE}/api/reviews`, values , { withCredentials:true});
+      const res = await api.post("/api/reviews", values);
+      console.log(res)
       return res.data;
     },
     onSuccess: () => {

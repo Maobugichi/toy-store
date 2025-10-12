@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import api from "@/lib/axios-config"; // ✅ CHANGED: Import centralized api instead of axios
 import { toast } from "sonner";
 import { useState } from "react";
 
@@ -40,7 +40,6 @@ async function fetchRate() {
   return data.rates.USD;
 }
 
-const backendEndpoint = import.meta.env.VITE_API_URL;
 
 const NGN_TO_USD_RATE = await fetchRate();
 
@@ -98,35 +97,31 @@ export default function StepThree({
   const paymentMethod = watch("paymentMethod");
   const payCurrency = watch("payCurrency");
 
-  
+  // ✅ CHANGED: Use api.get() instead of axios.get()
   const { data: currencies, isLoading: loadingCurrencies } = useQuery({
     queryKey: ["currencies"],
     queryFn: async () => {
-      const res = await axios.get(`${backendEndpoint}/api/payments/currencies`, {
-        withCredentials: true,
-      });
+      const res = await api.get("/api/payments/currencies");
       return res.data;
     },
+    retry: 2,
   });
 
-  console.log(currencies)
+  console.log("currency" , currencies)
   
+
   const createInvoice = useMutation({
     mutationFn: async (payload: {
       price_amount: number;
       pay_currency: string;
     }) => {
-      const res = await axios.post(
-        `${backendEndpoint}/api/payments/create-payment`,
-        {
-          order_id: `ORDER-${Date.now()}`,
-          price_amount: payload.price_amount,
-          price_currency: "usd",
-          pay_currency: payload.pay_currency,
-          order_description: "Order payment via NOWPayments",
-        },
-        { withCredentials: true }
-      );
+      const res = await api.post("/api/payments/create-payment", {
+        order_id: `ORDER-${Date.now()}`,
+        price_amount: payload.price_amount,
+        price_currency: "usd",
+        pay_currency: payload.pay_currency,
+        order_description: "Order payment via NOWPayments",
+      });
       console.log("Payment created:", res.data);
       return res.data;
     },
