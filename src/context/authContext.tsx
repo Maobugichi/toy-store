@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartId, setCartId] = useState<number | null>(null);
 
   useEffect(() => {
-    // Load saved auth data on mount
+  
     const savedAuth = localStorage.getItem("auth");
     
     if (savedAuth) {
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       cartId: data.cartId 
     }));
     
-    // Store token separately (used by axios interceptor)
+    
     localStorage.setItem("authToken", data.token);
   };
 

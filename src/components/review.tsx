@@ -63,7 +63,9 @@ const ReviewSection:React.FC<ReviewProps> = ({reviews , isLoading , error , isEr
   const createReview = useMutation({
     mutationFn: async (values: ReviewFormValues) => {
       const res = await api.post("/api/reviews", values);
-      console.log(res)
+      console.log(res);
+       const token = localStorage.getItem("authToken")
+       console.log('token:'+  " " + token )
       return res.data;
     },
     onSuccess: () => {
