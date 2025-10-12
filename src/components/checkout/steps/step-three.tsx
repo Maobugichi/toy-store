@@ -98,7 +98,7 @@ export default function StepThree({
   const paymentMethod = watch("paymentMethod");
   const payCurrency = watch("payCurrency");
 
-  // ✅ Fetch currencies using TanStack Query
+  
   const { data: currencies, isLoading: loadingCurrencies } = useQuery({
     queryKey: ["currencies"],
     queryFn: async () => {
@@ -109,6 +109,7 @@ export default function StepThree({
     },
   });
 
+  console.log(currencies)
   
   const createInvoice = useMutation({
     mutationFn: async (payload: {

@@ -19,6 +19,17 @@ import { queryClient } from "./lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
 
 
+async function initErudaIfDebug() {
+  if (localStorage.getItem("debug") === "true") {
+    const eruda = await import("eruda");
+    eruda.default.init();
+    console.log("%c🪄 Debug mode active", "color: lime;");
+  }
+}
+
+
+initErudaIfDebug();
+
 const router = createHashRouter([
   {
     path: "/signup",

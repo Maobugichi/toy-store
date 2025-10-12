@@ -106,6 +106,17 @@ const Login = () => {
             {loading ? <ClipLoader size={20} color="white"/> : 'Submit' }
           </Button>
 
+           <button 
+                    className="bg-black text-white px-4 py-2 rounded" 
+                    onClick={() => {
+                        localStorage.setItem("debug", "true");
+                        location.reload();
+                    }}
+                    type="button"
+                >
+                    Enable Debug Mode
+                </button>
+
           <div className="bg-white shadow md:w-[95%] w-full border flex h-7 md:h-8 items-center justify-center gap-2 rounded-sm">
             <FcGoogle />
             <Button
