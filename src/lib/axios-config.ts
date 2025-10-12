@@ -34,7 +34,7 @@ api.interceptors.response.use(
       localStorage.removeItem("authToken");
       
      
-      if (!window.location.pathname.includes("login")) {
+      if (!window.location.pathname.includes("/login")) {
         window.location.href = "#/login";
       }
     }
