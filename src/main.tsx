@@ -17,18 +17,10 @@ import { rootLoader } from "./routes/utils";
 import CheckoutPage from "./components/checkout/checkout";
 import { queryClient } from "./lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
+import WatchlistPage from "./components/watchlist/watchlist-page";
 
 
-async function initErudaIfDebug() {
-  if (localStorage.getItem("debug") === "true") {
-    const eruda = await import("eruda");
-    eruda.default.init();
-    console.log("%c🪄 Debug mode active", "color: lime;");
-  }
-}
 
-
-initErudaIfDebug();
 
 const router = createHashRouter([
   {
@@ -49,6 +41,10 @@ const router = createHashRouter([
     path: "filter",
     element: <MainPage />,
     
+  },
+  {
+    path: "watchlist",
+    element: <WatchlistPage />,
   },
   {
     path: "/product/:id",

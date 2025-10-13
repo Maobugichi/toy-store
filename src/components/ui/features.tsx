@@ -86,7 +86,7 @@ const HeroFeature = () => {
       {/* Desktop Grid */}
       <div className="hidden md:grid grid-cols-3 gap-5">
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 h-40">
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-start space-x-4">
               <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg">
                 <Sparkles className="w-6 h-6 text-white" />
@@ -102,7 +102,7 @@ const HeroFeature = () => {
         </Card>
 
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 h-40">
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-start space-x-4">
               <div className="p-3 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg">
                 <TrendingUp className="w-6 h-6 text-white" />
@@ -118,7 +118,7 @@ const HeroFeature = () => {
         </Card>
 
         <Card className="bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/15 transition-all duration-300 transform hover:scale-105 h-40">
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-start space-x-4">
               <div className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg">
                 <Award className="w-6 h-6 text-white" />

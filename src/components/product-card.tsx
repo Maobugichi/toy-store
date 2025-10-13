@@ -4,6 +4,7 @@ import { Button } from "./ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import { ClipLoader } from "react-spinners"
 import { FiInfo } from 'react-icons/fi';
+import { AddToWatchlistButton } from "./watchlist/watchlist-btn"
 
 const ProductCard = ({
     className, 
@@ -84,8 +85,9 @@ const ProductCard = ({
                     </p>
                 </div>
 
-               
+                <AddToWatchlistButton productId={id} variant="outline" />
                 <div className="w-full flex flex-col md:flex-row items-center gap-2">
+    
                     <Button 
                         className="hidden md:block w-full md:w-[80%] font-family-heading text-xs md:text-sm h-9 md:h-10" 
                         onClick={handleNavigate}
