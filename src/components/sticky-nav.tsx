@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 
 import { 
   User, 
-  Heart,
 } from 'lucide-react';
 import { useAuth } from '@/context/authContext';
 
@@ -24,7 +23,7 @@ interface ModernNavProps {
 }
 
 const ModernNav: React.FC<ModernNavProps> = ({ 
-  wishlistCount = 0 
+ 
 }) => {
   
   const { user } = useAuth();
