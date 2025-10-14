@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 interface AddToWatchlistButtonProps {
   productId: number;
-  variant?: "default" | "link" | "secondary" | "destructive" | "outline" | "ghost"; // Fixed: removed "icon"
+  variant?: "default" | "link" | "secondary" | "destructive" | "outline" | "ghost"; 
   size?: "default" | "sm" | "lg" | "icon";
 }
 
