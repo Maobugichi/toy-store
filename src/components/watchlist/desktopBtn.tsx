@@ -36,7 +36,7 @@ export function AddToWatchlistButtonDesk({
 
   if (isLoading) {
     return (
-      <Button variant={variant} size={size} disabled>
+      <Button className="md:block hidden" variant={variant} size={size} disabled>
         <Loader2 className="w-4 h-4 animate-spin" />
       </Button>
     );
@@ -48,8 +48,20 @@ export function AddToWatchlistButtonDesk({
         variant={variant} 
         size={size}
         onClick={() => navigate("/watchlist")}
+        className="w-10 md:grid place-items-center border-none  hidden"
       >
-        <Heart className="w-4 h-4 mr-2" />
+        <Heart size={14} 
+            className="animate-pulse w-4 h-4 hidden md:block" 
+            stroke="url(#sparkleGradient)" 
+            />
+            <svg width="0" height="0">
+            <defs>
+                <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ec4899" /> {/* pink-400 */}
+                <stop offset="100%" stopColor="#a78bfa" /> {/* purple-500 */}
+                </linearGradient>
+            </defs>
+            </svg> 
         
       </Button>
     );

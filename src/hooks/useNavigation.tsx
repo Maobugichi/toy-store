@@ -7,7 +7,6 @@ const NavigationLoaderWrapper = ({ children }: { children: React.ReactNode }) =>
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    
     setLoading(true);
     const timer = setTimeout(() => setLoading(false), 200);
 

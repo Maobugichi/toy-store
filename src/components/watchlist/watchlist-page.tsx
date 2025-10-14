@@ -59,7 +59,7 @@ export default function WatchlistPage() {
   const [newWatchlistName, setNewWatchlistName] = useState<string>("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const [deleteWatchlistId, setDeleteWatchlistId] = useState<number | null>(null);
-
+  const [removingId, setRemovingId] = useState<number | null>(null);
   const { addItem , addingId } = useCart();
  
   const { data: watchlists, isLoading: loadingWatchlists } = useQuery({
@@ -85,13 +85,12 @@ export default function WatchlistPage() {
   if (isError) {
     console.log(error)
   }
-
-  
-  console.log(items)
  
   const deleteWatchlist = useMutation({
     mutationFn: async (watchlistId: number) => {
-      await api.delete(`/api/watchlist/${watchlistId}`);
+      await api.delete(`/api/watchlist/${watchlistId}`, {
+        headers: { "x-requires-auth": true }
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["watchlists"] });
@@ -109,7 +108,10 @@ export default function WatchlistPage() {
   
   const removeItem = useMutation({
     mutationFn: async ({ watchlistId, productId }: { watchlistId: number; productId: number }) => {
-      await api.delete(`/api/watchlist/${watchlistId}/items/${productId}`);
+      setRemovingId(productId);
+      await api.delete(`/api/watchlist/${watchlistId}/items/${productId}`, {
+        headers: { "x-requires-auth": true }
+      });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["watchlist-items", selectedWatchlist] });
@@ -118,6 +120,9 @@ export default function WatchlistPage() {
     onError: () => {
       toast.error("Failed to remove item");
     },
+    onSettled: () => {
+    setRemovingId(null);
+  },
   });
 
   if (watchlists && watchlists.length > 0 && !selectedWatchlist) {
@@ -154,7 +159,7 @@ export default function WatchlistPage() {
                 onClick={() => setSelectedWatchlist(watchlist.id)}
                 className={`px-6 md:py-2 p-1 rounded-4xl font-medium transition-all whitespace-nowrap ${
                   selectedWatchlist === watchlist.id
-                    ? "bg-gradient-to-br from-purple-50 via-white to-blue-50  text-black shadow-sm"
+                    ? "bg-gradient-to-r from-gray-100 to-pink-100  text-black shadow-sm"
                     : "bg-white hover:bg-gray-50 text-gray-700 border"
                 }`}
               >
@@ -181,7 +186,7 @@ export default function WatchlistPage() {
           </Card>
         )}
 
-        {/* Watchlist Items */}
+      
         {selectedWatchlistData && (
           <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -246,7 +251,11 @@ export default function WatchlistPage() {
                           })
                         }
                       >
-                        <Trash2 className="w-4 h-4" />
+                       {removingId === item.product_id ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                            <Trash2 className="w-4 h-4" />
+                        )}
                       </Button>
                     </div>
                     <CardHeader>

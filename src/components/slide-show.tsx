@@ -57,7 +57,8 @@ export function MultiCarousel({data}:any) {
                         price: item.price,
                         images: item.images});
                     }}
-                  isAdding={addingId == item.id} className="h-fit md:h-[420px] pt-3 pb-4  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
+                  extraClass="w-[78%] md:w-[17%]"
+                  isAdding={addingId == item.id} className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
             </div>
           ))}
         </div>

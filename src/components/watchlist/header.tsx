@@ -15,6 +15,7 @@ import type { SetStateAction } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/axios-config";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface Watchlist {
   id: number;
@@ -37,11 +38,14 @@ const WatchHeader: React.FC<WatchHeaderProp> = ({
   setNewWatchlistName,
   watchlists,
 }) => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const createWatchlist = useMutation({
     mutationFn: async (name: string) => {
-      const res = await api.post("/api/watchlists", { name });
+      const res = await api.post("/api/watchlist", { name }, {
+        headers: { "x-requires-auth": true }
+      });
       return res.data;
     },
     onSuccess: () => {
@@ -50,8 +54,15 @@ const WatchHeader: React.FC<WatchHeaderProp> = ({
       setIsCreateDialogOpen(false);
       toast.success("Watchlist created successfully!");
     },
-    onError: () => {
-      toast.error("Failed to create watchlist");
+    onError: (error: any) => {
+       console.log(error)
+       if (error.response?.status == 401) {
+         toast.error("Failed to create watchlist");
+         navigate('/login')
+       } else {
+        toast.error("Failed to add to watchlist");
+      }
+     
     },
   });
 

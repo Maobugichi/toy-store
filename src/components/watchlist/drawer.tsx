@@ -22,37 +22,40 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "@/lib/axios-config";
+import { useCart } from "@/hooks/useCart";
+import { ClipLoader } from "react-spinners";
 
 export function WatchlistDrawer() {
   const [open, setOpen] = useState(false);
+  const { addItem , addingId } = useCart();
   const queryClient = useQueryClient();
 
-  // Get first watchlist (default)
+
   const { data: watchlists } = useQuery({
     queryKey: ["watchlists"],
     queryFn: async () => {
-      const res = await api.get("/api/watchlists");
+      const res = await api.get("/api/watchlist");
       return res.data;
     },
   });
 
   const defaultWatchlistId = watchlists?.[0]?.id;
 
-  // Get items from default watchlist
+  
   const { data: items, isLoading } = useQuery({
     queryKey: ["watchlist-items", defaultWatchlistId],
     queryFn: async () => {
       if (!defaultWatchlistId) return [];
-      const res = await api.get(`/api/watchlists/${defaultWatchlistId}/items`);
+      const res = await api.get(`/api/watchlist/${defaultWatchlistId}/items`);
       return res.data;
     },
     enabled: !!defaultWatchlistId && open,
   });
 
-  // Remove item
+
   const removeItem = useMutation({
     mutationFn: async ({ productId }: { productId: number }) => {
-      await api.delete(`/api/watchlists/${defaultWatchlistId}/items/${productId}`);
+      await api.delete(`/api/watchlist/${defaultWatchlistId}/items/${productId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["watchlist-items", defaultWatchlistId] });
@@ -66,14 +69,14 @@ export function WatchlistDrawer() {
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <Heart className="w-5 h-5" />
+          <Heart  />
           {totalItems > 0 && (
-            <Badge
-              variant="destructive"
-              className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs"
-            >
-              {totalItems}
-            </Badge>
+             <Badge 
+                  variant="destructive" 
+                  className="absolute rounded-full top-1 right-1 w-3 h-3 p-1 flex items-center justify-center text-[8px]"
+              >
+                  {totalItems}
+              </Badge>
           )}
         </Button>
       </SheetTrigger>
@@ -124,9 +127,24 @@ export function WatchlistDrawer() {
                     ₦{item.price.toLocaleString()}
                   </p>
                   <div className="flex gap-2">
-                    <Button size="sm" className="flex-1">
-                      <ShoppingCart className="w-3 h-3 mr-1" />
-                      Add to Cart
+                    <Button  onClick={ () => {
+                      addItem({productId: item.id,
+                      quantity: 1,
+                      base_name: item.base_name,
+                      price: item.price,
+                      images: item.image_url});
+                    }} 
+                      className={`${addingId == item.id ? "bg-black/80" : "bg-black"} w-[90%] h-9 md:h-10`}
+                      disabled={addingId == item.id}
+                     >
+                       {addingId == item.id ? (
+                            <ClipLoader color="white" size={10} />
+                        ) : (
+                            <>
+                                <ShoppingCart className="w-4 h-4 md:w-10 md:h-10" />
+                                <span className="ml-2 text-md md:text-lg">Add to Cart</span>
+                            </>
+                        )}
                     </Button>
                     <Button
                       size="sm"
@@ -158,26 +176,3 @@ export function WatchlistDrawer() {
   );
 }
 
-// ==========================================
-// USAGE IN NAVBAR
-// ==========================================
-/*
-import { WatchlistDrawer } from "@/components/WatchlistDrawer";
-
-function Navbar() {
-  return (
-    <nav className="border-b">
-      <div className="flex items-center justify-between px-6 py-4">
-        <Logo />
-        
-        <div className="flex items-center gap-2">
-          <SearchButton />
-          <WatchlistDrawer />  {/* ← Add here *\/}
-          <CartButton />
-          <UserMenu />
-        </div>
-      </div>
-    </nav>
-  );
-}
-*/

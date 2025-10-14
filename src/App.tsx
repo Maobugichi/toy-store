@@ -17,7 +17,7 @@ function App({data}:any) {
       <Header/>
       <ModernNav/>
       <Hero/>
-      <div className='w-[90%] mx-auto space-y-8 md:py-5  h-fit py-10 md:h-[100vh]  flex flex-col justify-center'>
+      <div className='w-[90%] mx-auto space-y-8 md:py-5  h-fit py-10 md:h-[110vh]  flex flex-col justify-center'>
         <h2 className='text-3xl font-semibold font-family-heading md:text-4xl'>Featured</h2>
          <MultiCarousel data={data}/>
       </div>
