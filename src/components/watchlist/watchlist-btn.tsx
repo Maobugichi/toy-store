@@ -50,10 +50,10 @@ export function AddToWatchlistButton({
         variant={variant} 
         size={size}
         onClick={() => navigate("/watchlist")}
-        className="md:hidden"
+        className="w-10 grid place-items-center border-none  "
       >
         <Heart size={14} 
-            className="animate-pulse w-4 h-4" 
+            className="animate-pulse  w-4 h-4 block" 
             stroke="url(#sparkleGradient)" 
             />
             <svg width="0" height="0">
@@ -64,7 +64,6 @@ export function AddToWatchlistButton({
                 </linearGradient>
             </defs>
             </svg> 
-         
         
       </Button>
     );
