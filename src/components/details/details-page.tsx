@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Heart, Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,8 +11,7 @@ import { ClipLoader } from 'react-spinners';
 import BreadcrumbNav from '../crumb';
 import NewsLetter from '../newsletter';
 import Footer from '@/footer';
-import type { Product , UIData } from './types';
-
+import type { Product } from './types';
 import TopSlide from '../top-slide';
 import ModernNav from '../sticky-nav';
 import ScrollToTop from '@/scroll-to-top';
@@ -20,88 +19,118 @@ import { useCart } from '@/hooks/useCart';
 import ReviewSection from '../review';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { useAuth } from '@/context/authContext';
 
 const API_BASE = import.meta.env.VITE_API_URL;
-
-interface Review {
-  id: string;
-  user_id: string;
-  username: string;
-  review: string;
-  stars: number;
-  created_at: string;
-}
-
-
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
-  
-
-  const { data: products, isLoading, error:prodErr } = useProducts();
+  const { user } = useAuth();
+  const { data: products, isLoading, error: prodErr } = useProducts();
   const { id } = useParams();
-  const { addItem , addingId } = useCart();
+  const { addItem, addingId } = useCart();
 
+  // Validate and parse product ID
+  const productId = id ? parseInt(id) : null;
+
+  // Early return if invalid product ID
+  if (!productId || isNaN(productId)) {
+    return (
+      <div className="h-[80vh] grid place-items-center">
+        <div className="text-center">
+          <p className="text-xl font-semibold text-destructive">Invalid product ID</p>
+          <Link to="/shop">
+            <Button className="mt-4">Back to Shop</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Fetch reviews and stats for this specific product
   const { 
-      data: reviews = [], 
-      isLoading:reviewLoading, 
-      isError,
-      error 
-    } = useQuery<Review[]>({
-      queryKey: ["reviews"],
-      queryFn: async () => {
-        const res = await axios.get(`${API_BASE}/api/reviews`);
-        return res.data;
-      },
-    });
+    data: reviewData, 
+    isLoading: reviewLoading, 
+    isError: reviewError,
+    error: reviewErr 
+  } = useQuery({
+    queryKey: ["reviews", productId],
+    queryFn: async () => {
+      const res = await axios.get(`${API_BASE}/api/reviews/product/${productId}`);
+      return res.data;
+    },
+    enabled: !!productId,
+  });
 
-  if (isLoading) return <div className="h-[80vh] grid place-items-center"><ClipLoader size={40} /></div>;
-  if (prodErr) return <p>Failed to load products</p>;
+  const reviews = reviewData?.reviews || [];
+  const reviewStats = reviewData?.stats;
 
-  const product: Product = products.find((p:any) => p.id == id);
-  
-  const uiData: UIData = {
-    rating: 4.8,
-    reviewCount: 127
-  };
+  if (isLoading) {
+    return (
+      <div className="h-[80vh] grid place-items-center">
+        <ClipLoader size={40} />
+      </div>
+    );
+  }
+
+  if (prodErr) {
+    return (
+      <div className="h-[80vh] grid place-items-center">
+        <p className="text-destructive">Failed to load products</p>
+      </div>
+    );
+  }
+
+  const product: Product = products.find((p: any) => p.id == productId);
+
+  if (!product) {
+    return (
+      <div className="h-[80vh] grid place-items-center">
+        <div className="text-center">
+          <p className="text-xl font-semibold">Product not found</p>
+          <Link to="/shop">
+            <Button className="mt-4">Back to Shop</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const handleQuantityChange = (change: number): void => {
     setQuantity(Math.max(1, Math.min(product.stock_quantity, quantity + change)));
   };
 
-  
- 
   const getPrimaryImage = (): string => {
-    return product.primary_image || product.images.primary;
+    return product.primary_image || product.images?.primary || '/placeholder.png';
   };
-
-
-  
-  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-      <ScrollToTop/>
-      <TopSlide/>
-      <ModernNav/>
-      <div className="w-[95%] mx-auto px-4 space-y-8 py-8">
+      <ScrollToTop />
+      <TopSlide />
+      <ModernNav />
       
-       <BreadcrumbNav productName={product.base_name}/>
+      <div className="w-[95%] mx-auto px-4 space-y-8 py-8">
+        <BreadcrumbNav productName={product.base_name} />
 
+        {/* Product Info Section */}
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-        
+          {/* Image Gallery */}
           <div className="space-y-4">
             <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 shadow-lg">
               <img 
                 src={getPrimaryImage()} 
                 alt={product.name}
-                className="w-full h-full object-fit hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
               />
             </div>
             <div className="grid grid-cols-4 gap-3">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-square rounded-lg overflow-hidden bg-slate-100 cursor-pointer border-2 border-transparent hover:border-primary transition-colors">
+                <div 
+                  key={i} 
+                  className="aspect-square rounded-lg overflow-hidden bg-slate-100 cursor-pointer border-2 border-transparent hover:border-primary transition-colors"
+                >
                   <img 
                     src={getPrimaryImage()} 
                     alt={`${product.name} view ${i}`}
@@ -111,6 +140,8 @@ export default function ProductDetailsPage() {
               ))}
             </div>
           </div>
+
+          {/* Product Details */}
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -121,36 +152,52 @@ export default function ProductDetailsPage() {
                   {product.stock_quantity} in stock
                 </Badge>
               </div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">{product.base_name}</h1>
-              <p className="text-lg text-muted-foreground">{product.short_description}</p>
+              <h1 className="text-4xl font-bold text-foreground mb-2">
+                {product.base_name}
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                {product.short_description}
+              </p>
             </div>
 
-            
+            {/* Rating - Now using real review stats */}
             <div className="flex items-center gap-3">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <Star 
                     key={i} 
-                    className={`w-5 h-5 ${i < Math.floor(uiData.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
+                    className={`w-5 h-5 ${
+                      i < Math.floor(reviewStats?.avg_rating || 0) 
+                        ? 'fill-yellow-400 text-yellow-400' 
+                        : 'text-slate-300'
+                    }`}
                   />
                 ))}
               </div>
-              <span className="font-semibold">{uiData.rating}</span>
-              <span className="text-muted-foreground">({uiData.reviewCount} reviews)</span>
+              <span className="font-semibold">
+                {reviewStats?.avg_rating 
+                  ? Number(reviewStats.avg_rating).toFixed(1) 
+                  : 'No ratings yet'}
+              </span>
+              <span className="text-muted-foreground">
+                ({reviewStats?.review_count || 0} {reviewStats?.review_count === 1 ? 'review' : 'reviews'})
+              </span>
             </div>
 
-           
+            {/* Price */}
             <div className="space-y-1">
               <div className="text-3xl font-bold text-foreground">
                 {Number(product.price).toLocaleString("en-NG", {
-                        style: "currency",
-                        currency: "NGN",
-                    })}
+                  style: "currency",
+                  currency: "NGN",
+                })}
               </div>
-              <p className="text-sm text-muted-foreground">Free shipping on orders over ₦100,000</p>
+              <p className="text-sm text-muted-foreground">
+                Free shipping on orders over ₦100,000
+              </p>
             </div>
 
-           
+            {/* Product Specs */}
             <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg">
               <div>
                 <span className="text-sm font-medium text-muted-foreground">Size</span>
@@ -170,7 +217,7 @@ export default function ProductDetailsPage() {
               </div>
             </div>
 
-            
+            {/* Quantity and Actions */}
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <span className="font-medium">Quantity:</span>
@@ -198,15 +245,28 @@ export default function ProductDetailsPage() {
               </div>
 
               <div className="flex gap-3">
-                <Button onClick={() => (
-                  addItem({productId: product.id,
-                        quantity: quantity,
-                        base_name: product.base_name,
-                        price: product.price,
-                        images: product.images})
-                )} size="lg" className={`${product.id == addingId ? "bg-black/80" : "bg-black"} flex-1 h-14 text-lg font-semibold`}>
-                 {product.id == addingId ? <ClipLoader size={20} color="white"/> :<><ShoppingCart className="w-5 h-5 mr-2" /> <span>Add to Cart</span></> 
-                   }
+                <Button 
+                  onClick={() => addItem({
+                    productId: product.id,
+                    quantity: quantity,
+                    base_name: product.base_name,
+                    price: product.price,
+                    images: product.images
+                  })} 
+                  size="lg" 
+                  className={`${
+                    product.id == addingId ? "bg-black/80" : "bg-black"
+                  } flex-1 h-14 text-lg font-semibold`}
+                  disabled={product.id == addingId}
+                >
+                  {product.id == addingId ? (
+                    <ClipLoader size={20} color="white" />
+                  ) : (
+                    <>
+                      <ShoppingCart className="w-5 h-5 mr-2" />
+                      <span>Add to Cart</span>
+                    </>
+                  )}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -220,15 +280,16 @@ export default function ProductDetailsPage() {
                   <Share2 className="w-5 h-5" />
                 </Button>
               </div>
-              <Link to={`/checkout`}>
+
+              <Link to="/checkout">
                 <Button className="w-full bg-black text-white py-5" size="lg">
-                      <Package className="w-4 h-4 mr-2" />
-                      Proceed to Checkout
+                  <Package className="w-4 h-4 mr-2" />
+                  Proceed to Checkout
                 </Button>
               </Link>
             </div>
 
-           
+            {/* Trust Badges */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
                 <CardContent className="p-4 text-center">
@@ -248,12 +309,14 @@ export default function ProductDetailsPage() {
           </div>
         </div>
 
-        
+        {/* Tabs Section */}
         <Tabs defaultValue="description" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="description">Description</TabsTrigger>
             <TabsTrigger value="specifications">Specifications</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews ({reviews.length})</TabsTrigger>
+            <TabsTrigger value="reviews">
+              Reviews ({reviewStats?.review_count || 0})
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="description" className="mt-6">
@@ -349,12 +412,13 @@ export default function ProductDetailsPage() {
           </TabsContent>
           
           <TabsContent value="reviews" className="mt-6">
-           <ReviewSection reviews={reviews} isLoading={reviewLoading} isError={isError} error={error}/>
+            <ReviewSection productId={productId} />
           </TabsContent>
         </Tabs>
       </div>
-      <NewsLetter/>
-      <Footer/>
+
+      <NewsLetter />
+      <Footer />
     </div>
   );
 }
