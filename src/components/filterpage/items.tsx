@@ -55,6 +55,8 @@ const FilterItems: React.FC<FilterItemsProps> = ({ data }) => {
                                 images: item.images
                             });
                         }}
+                        width="w-[25%]"
+                        extraClass='w-[74%] md:w-[17%]'
                         isAdding={addingId === item.id}
                         className="h-auto md:h-[330px] flex flex-col"
                     />

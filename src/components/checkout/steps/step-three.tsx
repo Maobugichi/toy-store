@@ -115,12 +115,15 @@ export default function StepThree({
       price_amount: number;
       pay_currency: string;
     }) => {
-      const res = await api.post("/api/payments/create-payment", {
+      
+       const res = await api.post(`/api/payments/create-payment`,  {
         order_id: `ORDER-${Date.now()}`,
         price_amount: payload.price_amount,
         price_currency: "usd",
         pay_currency: payload.pay_currency,
         order_description: "Order payment via NOWPayments",
+      }, {
+              headers: { "x-requires-auth": true }
       });
       console.log("Payment created:", res.data);
       return res.data;

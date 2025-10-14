@@ -17,12 +17,14 @@ interface AddToWatchlistButtonProps {
   productId: number;
   variant?: "default" | "link" | "secondary" | "destructive" | "outline" | "ghost"; // Fixed: removed "icon"
   size?: "default" | "sm" | "lg" | "icon";
+  width:string
 }
 
 export function AddToWatchlistButton({ 
   productId, 
   variant = "outline", 
-  size = "default" 
+  size = "default" ,
+  width
 }: AddToWatchlistButtonProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -71,7 +73,7 @@ export function AddToWatchlistButton({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="border-none shadow-none flex items-start" asChild>
-        <Button className=" bg-black md:hidden w-[20%] grid  items-center" variant={variant} size={size}>
+        <Button className={`bg-black md:hidden ${width}  grid  items-center`} variant={variant} size={size}>
           <Heart size={14} 
             className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 

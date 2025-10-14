@@ -15,7 +15,8 @@ const ProductCard = ({
     id, 
     addToCart, 
     isAdding, 
-    extraClass='w-[71%] md:w-[17%]'
+    extraClass='w-[78%] md:w-[17%]',
+    width
     
 }: {
     className: string
@@ -27,6 +28,7 @@ const ProductCard = ({
     isAdding: boolean
     direction?: string;
     extraClass?:string
+    width:string
 }) => {
     const navigate = useNavigate();
     
@@ -105,7 +107,7 @@ const ProductCard = ({
                         )}
                     </Button>
                   
-                    <AddToWatchlistButton productId={id} variant="default" />
+                    <AddToWatchlistButton productId={id} variant="default" width={width} />
                 </div>
             </div>
         </div>

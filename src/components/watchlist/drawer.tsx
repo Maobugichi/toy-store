@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { toast } from "sonner";
 import {
   Sheet,
@@ -25,40 +24,66 @@ import api from "@/lib/axios-config";
 import { useCart } from "@/hooks/useCart";
 import { ClipLoader } from "react-spinners";
 
+interface Watchlist {
+  id: number;
+  name: string;
+  created_at: string;
+}
+
 export function WatchlistDrawer() {
   const [open, setOpen] = useState(false);
-  const { addItem , addingId } = useCart();
+  const [selectedWatchlistId, setSelectedWatchlistId] = useState<number | null>(null);
+  const { addItem, addingId } = useCart();
   const queryClient = useQueryClient();
 
-
+  // Fetch all watchlists with item counts
   const { data: watchlists } = useQuery({
     queryKey: ["watchlists"],
     queryFn: async () => {
       const res = await api.get("/api/watchlist");
-      return res.data;
+      return res.data as Watchlist[];
     },
   });
 
-  const defaultWatchlistId = watchlists?.[0]?.id;
-
-  
-  const { data: items, isLoading } = useQuery({
-    queryKey: ["watchlist-items", defaultWatchlistId],
+  // Fetch item counts for all watchlists to find the first populated one
+  const { data: watchlistsWithCounts } = useQuery({
+    queryKey: ["watchlists-counts", watchlists],
     queryFn: async () => {
-      if (!defaultWatchlistId) return [];
-      const res = await api.get(`/api/watchlist/${defaultWatchlistId}/items`);
-      return res.data;
+      if (!watchlists) return [];
+      const countsPromises = watchlists.map(async (w) => {
+        try {
+          const res = await api.get(`/api/watchlist/${w.id}/items`);
+          return { ...w, itemCount: res.data.length };
+        } catch {
+          return { ...w, itemCount: 0 };
+        }
+      });
+      return Promise.all(countsPromises);
     },
-    enabled: !!defaultWatchlistId && open,
+    enabled: !!watchlists && open,
   });
 
+  const defaultWatchlistId = watchlistsWithCounts?.find(w => w.itemCount > 0)?.id || watchlists?.[0]?.id;
+  const activeWatchlistId = selectedWatchlistId || defaultWatchlistId;
 
+ 
+  const { data: items, isLoading } = useQuery({
+    queryKey: ["watchlist-items", activeWatchlistId],
+    queryFn: async () => {
+      if (!activeWatchlistId) return [];
+      const res = await api.get(`/api/watchlist/${activeWatchlistId}/items`);
+      return res.data;
+    },
+    enabled: !!activeWatchlistId && open,
+  });
+
+  // Remove item mutation
   const removeItem = useMutation({
     mutationFn: async ({ productId }: { productId: number }) => {
-      await api.delete(`/api/watchlist/${defaultWatchlistId}/items/${productId}`);
+      await api.delete(`/api/watchlist/${activeWatchlistId}/items/${productId}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["watchlist-items", defaultWatchlistId] });
+      queryClient.invalidateQueries({ queryKey: ["watchlist-items", activeWatchlistId] });
       toast.success("Removed from watchlist");
     },
   });
@@ -66,29 +91,48 @@ export function WatchlistDrawer() {
   const totalItems = items?.length || 0;
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet  open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <Heart  />
+          <Heart />
           {totalItems > 0 && (
-             <Badge 
-                  variant="destructive" 
-                  className="absolute rounded-full top-1 right-1 w-3 h-3 p-1 flex items-center justify-center text-[8px]"
-              >
-                  {totalItems}
-              </Badge>
+            <Badge
+              variant="destructive"
+              className="absolute rounded-full top-1 right-1 w-3 h-3 p-1 flex items-center justify-center text-[8px]"
+            >
+              {totalItems}
+            </Badge>
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg">
+      <SheetContent className="w-full sm:max-w-lg flex flex-col">
         <SheetHeader>
-          <SheetTitle>My Watchlist</SheetTitle>
+          <SheetTitle>My Watchlists</SheetTitle>
           <SheetDescription>
-            {totalItems} item{totalItems !== 1 ? "s" : ""} in your watchlist
+            {totalItems} item{totalItems !== 1 ? "s" : ""} in {watchlists?.find(w => w.id === activeWatchlistId)?.name || "this watchlist"}
           </SheetDescription>
         </SheetHeader>
 
-        <ScrollArea className="h-[calc(100vh-200px)] mt-6">
+       
+        {watchlists && watchlists.length > 0 && (
+          <div className="flex px-5 gap-2 overflow-x-auto pb-2 scrollbar-hide mt-4">
+            {watchlists.map((watchlist) => (
+              <button
+                key={watchlist.id}
+                onClick={() => setSelectedWatchlistId(watchlist.id)}
+                className={`px-4 py-1 rounded-full font-medium text-sm transition-all whitespace-nowrap flex-shrink-0 ${
+                  activeWatchlistId === watchlist.id
+                    ? "bg-gradient-to-r from-zinc-300 via-pink-100 to-zinc-300 text-zinc-900 shadow-sm"
+                    : "bg-white hover:bg-gray-50 text-gray-700 border"
+                }`}
+              >
+                {watchlist.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <ScrollArea className="flex-1 mt-4">
           {isLoading && (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
@@ -98,17 +142,17 @@ export function WatchlistDrawer() {
           {!isLoading && (!items || items.length === 0) && (
             <div className="flex flex-col items-center justify-center py-12 text-center">
               <Heart className="w-16 h-16 text-gray-300 mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Your watchlist is empty</h3>
+              <h3 className="text-lg font-semibold mb-2">This watchlist is empty</h3>
               <p className="text-gray-600 mb-4">
                 Start adding products you love!
               </p>
               <Button asChild>
-                <Link to="/products">Browse Products</Link>
+                <Link to="/filter">Browse Products</Link>
               </Button>
             </div>
           )}
 
-          <div className="space-y-4">
+          <div className="space-y-4 px-5 pb-20">
             {items?.map((item: any) => (
               <div
                 key={item.id}
@@ -123,28 +167,32 @@ export function WatchlistDrawer() {
                   <h4 className="font-semibold text-sm line-clamp-2 mb-1">
                     {item.name}
                   </h4>
-                  <p className="text-purple-600 font-bold text-lg mb-2">
+                  <p className="text-zinc-900 font-bold text-lg mb-2">
                     ₦{item.price.toLocaleString()}
                   </p>
                   <div className="flex gap-2">
-                    <Button  onClick={ () => {
-                      addItem({productId: item.id,
-                      quantity: 1,
-                      base_name: item.base_name,
-                      price: item.price,
-                      images: item.image_url});
-                    }} 
-                      className={`${addingId == item.id ? "bg-black/80" : "bg-black"} w-[90%] h-9 md:h-10`}
-                      disabled={addingId == item.id}
-                     >
-                       {addingId == item.id ? (
-                            <ClipLoader color="white" size={10} />
-                        ) : (
-                            <>
-                                <ShoppingCart className="w-4 h-4 md:w-10 md:h-10" />
-                                <span className="ml-2 text-md md:text-lg">Add to Cart</span>
-                            </>
-                        )}
+                    <Button
+                      onClick={() => {
+                        addItem({
+                          productId: item.product_id,
+                          quantity: 1,
+                          base_name: item.base_name,
+                          price: item.price,
+                          images: item.image_url,
+                        });
+                      }}
+                      size="sm"
+                      className={`${addingId == item.product_id ? "bg-black/80" : "bg-black"} flex-1`}
+                      disabled={addingId == item.product_id}
+                    >
+                      {addingId == item.product_id ? (
+                        <ClipLoader color="white" size={10} />
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-3 h-3 mr-1" />
+                          <span className="text-xs">Add to Cart</span>
+                        </>
+                      )}
                     </Button>
                     <Button
                       size="sm"
@@ -152,7 +200,11 @@ export function WatchlistDrawer() {
                       onClick={() => removeItem.mutate({ productId: item.product_id })}
                       disabled={removeItem.isPending}
                     >
-                      <Trash2 className="w-3 h-3" />
+                      {removeItem.isPending ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-3 h-3" />
+                      )}
                     </Button>
                   </div>
                 </div>
@@ -175,4 +227,3 @@ export function WatchlistDrawer() {
     </Sheet>
   );
 }
-

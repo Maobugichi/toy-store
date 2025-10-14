@@ -1,13 +1,12 @@
 import  { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { toast } from 'sonner';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Clock, Copy, CheckCircle2, AlertCircle, Loader2, X, PartyPopper } from 'lucide-react';
+import api from '@/lib/axios-config';
 
-const backendEndpoint = import.meta.env.VITE_API_URL;
 
 interface PaymentStatusModalProps {
   paymentData: any;
@@ -30,10 +29,7 @@ const PaymentStatusModal = ({
     queryKey: ['paymentStatus', paymentData?.payment_id],
     queryFn: async () => {
       if (!paymentData?.payment_id) return null;
-      const res = await axios.get(
-        `${backendEndpoint}/api/payments/payment-status/${paymentData.payment_id}`,
-        { withCredentials: true }
-      );
+      const res = await api.post(`/api/payments/payment-status/${paymentData.payment_id}`);
       
       return res.data;
     },

@@ -58,6 +58,7 @@ export function MultiCarousel({data}:any) {
                         images: item.images});
                     }}
                   extraClass="w-[78%] md:w-[17%]"
+                  width="w-[20%]"
                   isAdding={addingId == item.id} className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
             </div>
           ))}
