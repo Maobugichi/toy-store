@@ -19,22 +19,21 @@ import { useCart } from '@/hooks/useCart';
 import ReviewSection from '../review';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useAuth } from '@/context/authContext';
+
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
-  const { user } = useAuth();
+ 
   const { data: products, isLoading, error: prodErr } = useProducts();
   const { id } = useParams();
   const { addItem, addingId } = useCart();
 
-  // Validate and parse product ID
+ 
   const productId = id ? parseInt(id) : null;
 
-  // Early return if invalid product ID
   if (!productId || isNaN(productId)) {
     return (
       <div className="h-[80vh] grid place-items-center">
@@ -51,9 +50,7 @@ export default function ProductDetailsPage() {
   // Fetch reviews and stats for this specific product
   const { 
     data: reviewData, 
-    isLoading: reviewLoading, 
-    isError: reviewError,
-    error: reviewErr 
+   
   } = useQuery({
     queryKey: ["reviews", productId],
     queryFn: async () => {
@@ -63,7 +60,7 @@ export default function ProductDetailsPage() {
     enabled: !!productId,
   });
 
-  const reviews = reviewData?.reviews || [];
+ 
   const reviewStats = reviewData?.stats;
 
   if (isLoading) {
