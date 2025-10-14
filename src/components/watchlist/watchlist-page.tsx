@@ -10,18 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,7 +24,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import {
-  Star,
   Plus,
   Trash2,
   Heart,
@@ -43,6 +33,9 @@ import {
   Loader2,
 } from "lucide-react";
 import api from "@/lib/axios-config";
+import WatchHeader from "./header";
+import { useCart } from "@/hooks/useCart";
+import { ClipLoader } from "react-spinners";
 
 interface Watchlist {
   id: number;
@@ -53,19 +46,21 @@ interface Watchlist {
 interface WatchlistItem {
   id: number;
   product_id: number;
+  base_name:string
   name: string;
-  price: number;
-  image_url: string;
+  price: string;
+  image_url: any;
   added_at: string;
 }
 
 export default function WatchlistPage() {
   const queryClient = useQueryClient();
   const [selectedWatchlist, setSelectedWatchlist] = useState<number | null>(null);
-  const [newWatchlistName, setNewWatchlistName] = useState("");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [newWatchlistName, setNewWatchlistName] = useState<string>("");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const [deleteWatchlistId, setDeleteWatchlistId] = useState<number | null>(null);
 
+  const { addItem , addingId } = useCart();
  
   const { data: watchlists, isLoading: loadingWatchlists } = useQuery({
     queryKey: ["watchlists"],
@@ -74,6 +69,7 @@ export default function WatchlistPage() {
       return res.data as Watchlist[];
     },
   });
+
 
 
   const { data: items, isLoading: loadingItems , error , isError } = useQuery({
@@ -90,24 +86,9 @@ export default function WatchlistPage() {
     console.log(error)
   }
 
-  // Create new watchlist
-  const createWatchlist = useMutation({
-    mutationFn: async (name: string) => {
-      const res = await api.post("/api/watchlist", { name });
-      return res.data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["watchlists"] });
-      setNewWatchlistName("");
-      setIsCreateDialogOpen(false);
-      toast.success("Watchlist created successfully!");
-    },
-    onError: () => {
-      toast.error("Failed to create watchlist");
-    },
-  });
-
-  // Delete watchlist
+  
+  console.log(items)
+ 
   const deleteWatchlist = useMutation({
     mutationFn: async (watchlistId: number) => {
       await api.delete(`/api/watchlist/${watchlistId}`);
@@ -125,7 +106,7 @@ export default function WatchlistPage() {
     },
   });
 
-  // Remove item from watchlist
+  
   const removeItem = useMutation({
     mutationFn: async ({ watchlistId, productId }: { watchlistId: number; productId: number }) => {
       await api.delete(`/api/watchlist/${watchlistId}/items/${productId}`);
@@ -139,7 +120,6 @@ export default function WatchlistPage() {
     },
   });
 
-  // Auto-select first watchlist
   if (watchlists && watchlists.length > 0 && !selectedWatchlist) {
     setSelectedWatchlist(watchlists[0].id);
   }
@@ -147,74 +127,16 @@ export default function WatchlistPage() {
   const selectedWatchlistData = watchlists?.find((w) => w.id === selectedWatchlist);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-gradient-to-br  rounded-2xl">
-                <Star className="w-8 h-8" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold  ">
-                  My Watchlists
-                </h1>
-                <p className="text-gray-600">Track your favorite products</p>
-              </div>
-            </div>
+        <WatchHeader
+          isCreateDialogOpen={isCreateDialogOpen}
+          setIsCreateDialogOpen={setIsCreateDialogOpen}
+          newWatchlistName={newWatchlistName}
+          setNewWatchlistName={setNewWatchlistName}
+          watchlists={watchlists}
+        />
 
-            <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="">
-                  <Plus className="w-4 h-4 mr-2" />
-                  New Watchlist
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Watchlist</DialogTitle>
-                  <DialogDescription>
-                    Give your watchlist a name to get started
-                  </DialogDescription>
-                </DialogHeader>
-                <Input
-                  placeholder="e.g., Birthday Gifts, Electronics"
-                  value={newWatchlistName}
-                  onChange={(e) => setNewWatchlistName(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && newWatchlistName.trim()) {
-                      createWatchlist.mutate(newWatchlistName);
-                    }
-                  }}
-                />
-                <DialogFooter>
-                  <Button
-                    onClick={() => createWatchlist.mutate(newWatchlistName)}
-                    disabled={!newWatchlistName.trim() || createWatchlist.isPending}
-                  >
-                    {createWatchlist.isPending ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Creating...
-                      </>
-                    ) : (
-                      "Create"
-                    )}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-
-          {watchlists && (
-            <Badge variant="secondary" className="text-sm">
-              {watchlists.length} watchlist{watchlists.length !== 1 ? "s" : ""}
-            </Badge>
-          )}
-        </div>
-
-        {/* Loading State */}
         {loadingWatchlists && (
           <div className="grid gap-4 md:grid-cols-4">
             {[...Array(4)].map((_, i) => (
@@ -230,9 +152,9 @@ export default function WatchlistPage() {
               <button
                 key={watchlist.id}
                 onClick={() => setSelectedWatchlist(watchlist.id)}
-                className={`px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap ${
+                className={`px-6 md:py-2 p-1 rounded-4xl font-medium transition-all whitespace-nowrap ${
                   selectedWatchlist === watchlist.id
-                    ? "bg-black text-white shadow-lg"
+                    ? "bg-gradient-to-br from-purple-50 via-white to-blue-50  text-black shadow-sm"
                     : "bg-white hover:bg-gray-50 text-gray-700 border"
                 }`}
               >
@@ -242,7 +164,6 @@ export default function WatchlistPage() {
           </div>
         )}
 
-        {/* Empty State - No Watchlists */}
         {!loadingWatchlists && (!watchlists || watchlists.length === 0) && (
           <Card className="border-dashed border-2">
             <CardContent className="flex flex-col items-center justify-center py-16">
@@ -280,7 +201,7 @@ export default function WatchlistPage() {
               </Button>
             </div>
 
-            {/* Loading Items */}
+           
             {loadingItems && (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {[...Array(6)].map((_, i) => (
@@ -289,7 +210,7 @@ export default function WatchlistPage() {
               </div>
             )}
 
-            {/* Empty Watchlist */}
+           
             {!loadingItems && (!items || items.length === 0) && (
               <Card className="border-dashed border-2">
                 <CardContent className="flex flex-col items-center justify-center py-16">
@@ -300,15 +221,15 @@ export default function WatchlistPage() {
               </Card>
             )}
 
-            {/* Items Grid */}
+            
             {!loadingItems && items && items.length > 0 && (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {items.map((item) => (
                   <Card
                     key={item.id}
-                    className="group hover:shadow-xl transition-all duration-300 overflow-hidden"
+                    className="group hover:shadow-xl  transition-all duration-300 overflow-hidden"
                   >
-                    <div className="relative">
+                    <div className="relative rounded-full">
                       <img
                         src={item.image_url || "/placeholder.png"}
                         alt={item.name}
@@ -329,20 +250,37 @@ export default function WatchlistPage() {
                       </Button>
                     </div>
                     <CardHeader>
-                      <CardTitle className="line-clamp-2">{item.name}</CardTitle>
+                      <CardTitle className="line-clamp-2 text-2xl">{item.name}</CardTitle>
                       <CardDescription>
                         Added {new Date(item.added_at).toLocaleDateString()}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="text-2xl font-bold text-purple-600">
+                      <div className="text-2xl font-bold ">
                         ₦{item.price.toLocaleString()}
                       </div>
                     </CardContent>
                     <CardFooter className="gap-2">
-                      <Button className="flex-1" size="sm">
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        Add to Cart
+                       <Button 
+                        onClick={ () => {
+                        addItem({productId: item.id,
+                        quantity: 1,
+                        base_name: item.base_name,
+                        price: item.price,
+                        images: item.image_url});
+                    }} 
+                        className={`${addingId == item.id ? "bg-black/80" : "bg-black"} w-[90%] h-9 md:h-10`}
+                        disabled={addingId == item.id}
+                        style={{ pointerEvents: "auto" }}
+                    >
+                        {addingId == item.id ? (
+                            <ClipLoader color="white" size={10} />
+                        ) : (
+                            <>
+                                <ShoppingCart className="w-4 h-4 md:w-10 md:h-10" />
+                                <span className="ml-2 text-md md:text-lg">Add to Cart</span>
+                            </>
+                        )}
                       </Button>
                       <Button variant="outline" size="icon">
                         <ExternalLink className="w-4 h-4" />
@@ -356,7 +294,7 @@ export default function WatchlistPage() {
         )}
       </div>
 
-      {/* Delete Confirmation Dialog */}
+     
       <AlertDialog open={!!deleteWatchlistId} onOpenChange={() => setDeleteWatchlistId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>

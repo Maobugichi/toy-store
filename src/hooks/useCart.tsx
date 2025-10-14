@@ -9,6 +9,7 @@ import {
 import { useAuth } from "@/context/authContext"
 import { getGuestCart, addGuestItem, updateGuestItem, removeGuestItem } from "@/components/cart/cart-storage"
 import { queryClient } from "@/lib/query-client"
+import { toast } from "sonner"
 
 
 interface ProductImage {
@@ -123,6 +124,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return { prevItems };
     },
     onSettled: (_data, _error) => {
+       toast.success("Success 🎉", {
+          description: "Item successfully added to cart",
+        });
       setAddingId(null);
       queryClient.invalidateQueries({ queryKey: cartKey });
     },

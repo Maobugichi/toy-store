@@ -19,7 +19,7 @@ interface AddToWatchlistButtonProps {
   size?: "default" | "sm" | "lg" | "icon";
 }
 
-export function AddToWatchlistButton({ 
+export function AddToWatchlistButtonDesk({ 
   productId, 
   variant = "outline", 
   size = "default" 
@@ -58,9 +58,20 @@ export function AddToWatchlistButton({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="border-none shadow-none flex items-start" asChild>
-        <Button className="flex bg-black md:hidden  items-center" variant={variant} size={size}>
-          <Heart className="w-4 h-4 " />
-         
+        <Button className="grid place-items-center hover:shadow-none w-10" variant={variant} size={size}>
+          <Heart 
+            size={14} 
+            className="animate-pulse w-4 h-4 hidden md:block" 
+            stroke="url(#sparkleGradient)" 
+            />
+            <svg width="0" height="0">
+            <defs>
+                <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ec4899" /> {/* pink-400 */}
+                <stop offset="100%" stopColor="#a78bfa" /> {/* purple-500 */}
+                </linearGradient>
+            </defs>
+            </svg> 
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">

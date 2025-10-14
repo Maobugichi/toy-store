@@ -7,10 +7,10 @@ import ProductCard from "./product-card"
 import { Link } from "react-router-dom"
 import { useCart } from "@/hooks/useCart"
 
-const slides = Array.from({ length: 10 }, (_, i) => `Slide ${i + 1}`)
+const slides = Array.from({ length: 10 }, (_, i) => `Slide ${i + 1}`);
 
 export function MultiCarousel({data}:any) {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, slidesToScroll: 1 })
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, slidesToScroll: 1 });
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollProgress, setScrollProgress] = useState(0)
 
@@ -57,7 +57,6 @@ export function MultiCarousel({data}:any) {
                         price: item.price,
                         images: item.images});
                     }}
-                   
                   isAdding={addingId == item.id} className="h-fit md:h-[420px] pt-3 pb-4  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
             </div>
           ))}

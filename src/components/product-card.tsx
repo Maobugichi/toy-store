@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { ClipLoader } from "react-spinners"
 import { FiInfo } from 'react-icons/fi';
 import { AddToWatchlistButton } from "./watchlist/watchlist-btn"
+import { AddToWatchlistButtonDesk } from "./watchlist/desktopBtn"
 
 const ProductCard = ({
     className, 
@@ -34,7 +35,7 @@ const ProductCard = ({
     return (
         <div 
             id={id.toString()} 
-            className={`${className} font-family-sans border rounded-2xl shadow p-2 md:p-3 space-y-2 md:space-y-5`}
+            className={`${className} relative font-family-sans border rounded-2xl shadow p-2 md:p-3 space-y-2 md:space-y-5`}
         >
             
             <div className="h-[140px] md:h-[45%] w-full border rounded-sm overflow-hidden">
@@ -51,22 +52,7 @@ const ProductCard = ({
                     <Badge className="rounded-full px-2 md:px-3 text-[9px] md:text-[10px] bg-gradient-to-r from-slate-100 to-slate-200 text-black">
                         TOY
                     </Badge>
-                    
-                    
-                  <Sparkle 
-                    size={14} 
-                    className="animate-pulse absolute right-2 hidden md:block" 
-                    stroke="url(#sparkleGradient)" 
-                    />
-                    <svg width="0" height="0">
-                    <defs>
-                        <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#ec4899" /> {/* pink-400 */}
-                        <stop offset="100%" stopColor="#a78bfa" /> {/* purple-500 */}
-                        </linearGradient>
-                    </defs>
-                    </svg>
-
+                    <AddToWatchlistButtonDesk productId={id} variant="outline"/>
                     <Link to={`/product/${id}`} className="md:hidden flex items-center gap-1">
                         <FiInfo size={18}/>
                     </Link>
@@ -84,9 +70,10 @@ const ProductCard = ({
                         })}
                     </p>
                 </div>
-
-                <AddToWatchlistButton productId={id} variant="outline" />
-                <div className="w-full flex flex-col md:flex-row items-center gap-2">
+                
+                
+               
+                <div className="w-full flex  items-center gap-1">
     
                     <Button 
                         className="hidden md:block w-full md:w-[80%] font-family-heading text-xs md:text-sm h-9 md:h-10" 
@@ -95,7 +82,6 @@ const ProductCard = ({
                         Buy Now
                     </Button>
                     
-
                     <Button 
                         onClick={() => addToCart({ 
                             productId: id, 
@@ -103,7 +89,7 @@ const ProductCard = ({
                             price, 
                             images: { primary: src } 
                         })} 
-                        className={`${isAdding ? "bg-black/80" : "bg-black"} w-full md:w-[17%] h-9 md:h-10`}
+                        className={`${isAdding ? "bg-black/80" : "bg-black"} w-[71%] md:w-[17%] h-9 md:h-10`}
                         disabled={isAdding}
                         style={{ pointerEvents: "auto" }}
                     >
@@ -112,10 +98,12 @@ const ProductCard = ({
                         ) : (
                             <>
                                 <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
-                                <span className="md:hidden ml-2 text-xs">Add to Cart</span>
+                                <span className="md:hidden ml-2 text-xs">Add</span>
                             </>
                         )}
                     </Button>
+                  
+                    <AddToWatchlistButton productId={id} variant="default" />
                 </div>
             </div>
         </div>
