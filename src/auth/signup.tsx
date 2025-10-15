@@ -29,7 +29,7 @@ const formSchema = z.object({
 function SignUp() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const url = import.meta.env.VITE_API_URL
+  
   const [loading , setLoading ] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

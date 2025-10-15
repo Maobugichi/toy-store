@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { useAuth } from "@/context/authContext";
 import { useSubscribeNewsletter } from "./hook";
-import { Loader2 } from "lucide-react"; 
 import { toast } from "sonner"; 
 import { ClipLoader } from "react-spinners";
 
