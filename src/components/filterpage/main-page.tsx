@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import {  useLocation } from "react-router-dom";
 import TopSlide from "../top-slide";
 import Footer from "@/footer";
-import NewsLetter from "../newsletter";
+import NewsLetter from "../newsletter/newsletter";
 import FilterItems from "./items";
 import ProductFilterDialog from "./filter-dialog";
 import ModernNav from "../sticky-nav";

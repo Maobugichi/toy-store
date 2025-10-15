@@ -1,9 +1,10 @@
-import axios from "axios"
+import api from "@/lib/axios-config";
+
 
 const filterLoader = async () => {
-    const url = import.meta.env.VITE_API_URL
+    
     try {
-        const response = await axios.get(`${url}/api/products/`, { withCredentials:true });
+        const response = await api.get(`/api/products/`);
         const products = response.data;
 
         for (let i = products.length - 1; i > 0; i--) {

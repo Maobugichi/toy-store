@@ -12,13 +12,13 @@ import {
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { useAuth } from "@/context/authContext";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
 import { handleLoginSuccess } from "./hook";
+import api from "@/lib/axios-config";
 
 
 
@@ -39,12 +39,12 @@ const Login = () => {
         password: "",
         },
     })
-    const url = import.meta.env.VITE_API_URL
+ 
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
       setLoading(true)
      try {
-        const response = await axios.post(`${url}/auth/login`,values,{withCredentials:true});
+        const response = await api.post(`/auth/login`,values);
         setLoading(false);
         login(response.data);
         await handleLoginSuccess();

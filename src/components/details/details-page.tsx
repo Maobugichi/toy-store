@@ -9,7 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useProducts } from '@/hooks/useProducts';
 import { ClipLoader } from 'react-spinners';
 import BreadcrumbNav from '../crumb';
-import NewsLetter from '../newsletter';
+import NewsLetter from '../newsletter/newsletter';
 import Footer from '@/footer';
 import type { Product } from './types';
 import TopSlide from '../top-slide';
@@ -18,10 +18,8 @@ import ScrollToTop from '@/scroll-to-top';
 import { useCart } from '@/hooks/useCart';
 import ReviewSection from '../review';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '@/lib/axios-config';
 
-
-const API_BASE = import.meta.env.VITE_API_URL;
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
@@ -54,7 +52,7 @@ export default function ProductDetailsPage() {
   } = useQuery({
     queryKey: ["reviews", productId],
     queryFn: async () => {
-      const res = await axios.get(`${API_BASE}/api/reviews/product/${productId}`);
+      const res = await api.get(`/api/reviews/product/${productId}`);
       return res.data;
     },
     enabled: !!productId,

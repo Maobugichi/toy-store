@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import axios from "axios"
 import { useAuth } from "@/context/authContext"
 import { useState } from "react"
 import { ClipLoader } from "react-spinners"
 import { handleLoginSuccess } from "./hook"
+import api from "@/lib/axios-config"
+import { toast } from "sonner"
 
 const formSchema = z.object({
   username: z.string().min(2, { message: "Username must be at least 2 characters" }),
@@ -42,10 +43,13 @@ function SignUp() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
      try {
-        const response = await axios.post(`${url}/auth/signup`,values,{withCredentials:true});
+        const response = await api.post(`/auth/signup`,values);
         setLoading(false)
         login(response.data);
-        handleLoginSuccess();
+        await handleLoginSuccess();
+         toast.success("Signup Successful! 🎉", {
+          description: "Welcome onboard theTOYshop!",
+        });
         navigate('/')   
      } catch(err) {
         console.log(err)
