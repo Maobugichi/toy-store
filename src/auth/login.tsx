@@ -63,6 +63,8 @@ const Login = () => {
     
   }
 
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
   return(
      <div className="h-screen grid place-items-center font-inter">
       <Form {...form}>
@@ -111,7 +113,7 @@ const Login = () => {
             <Button
               type="button"
               variant="ghost"
-              onClick={() => (window.location.href = "http://localhost:3000/auth/google")}
+              onClick={() => (window.location.href = `${API_BASE}/auth/google`)}
             >
               Continue with Google
             </Button>

@@ -31,7 +31,7 @@ function BreadcrumbNav({ productName }: BreadcrumbNavProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <Breadcrumb>
           <BreadcrumbList className="text-sm text-gray-500">
-            {/* Home link */}
+           
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
                 <Link to="/" className="hover:text-gray-900">
@@ -40,7 +40,6 @@ function BreadcrumbNav({ productName }: BreadcrumbNavProps) {
               </BreadcrumbLink>
             </BreadcrumbItem>
 
-            {/* Dynamic path segments */}
             {pathnames.map((value, index) => {
               const isLast = index === pathnames.length - 1;
               const to = `/${pathnames.slice(0, index + 1).join('/')}`;
@@ -52,7 +51,7 @@ function BreadcrumbNav({ productName }: BreadcrumbNavProps) {
                   <BreadcrumbItem>
                     {isLast ? (
                       <span className="text-gray-900 font-medium">
-                        {productId && productName ? productName : name}
+                        {productName}
                       </span>
                     ) : (
                       <BreadcrumbLink asChild>

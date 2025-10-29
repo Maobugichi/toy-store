@@ -39,10 +39,10 @@ const ProductCard = ({
     return (
         <div 
             id={id.toString()} 
-            className={`${className} relative font-family-sans border rounded-2xl shadow p-2 md:p-3 space-y-2 md:space-y-5`}
+            className={`${className} relative font-family-sans border shadow p-2 md:p-3 space-y-2 md:space-y-5`}
         >
             
-            <div className="h-[140px] md:h-[45%] w-full border rounded-sm overflow-hidden">
+            <div className="h-[140px] md:h-[45%] w-full border rounded-2xl overflow-hidden">
                 <img 
                     src={src} 
                     className="h-full rounded-sm w-full object-fill"
@@ -67,7 +67,7 @@ const ProductCard = ({
                     <h4 className="text-sm md:text-lg lg:text-xl whitespace-nowrap overflow-hidden text-ellipsis">
                         {name}
                     </h4>
-                    <p className="text-sm md:text-lg font-light mt-1">
+                    <p className="text-sm md:text-lg text-black/70  font-light mt-1">
                         {Number(price).toLocaleString("en-NG", {
                             style: "currency",
                             currency: "NGN",
@@ -80,7 +80,7 @@ const ProductCard = ({
                 <div className="w-full flex  items-center gap-1">
     
                     <Button 
-                        className="hidden md:block w-full md:w-[80%] font-family-heading text-xs md:text-sm h-9 md:h-10" 
+                        className="hidden md:block w-full md:w-[80%] font-family-heading text font-semibold md:text-md tracking-wider h-9 md:h-10" 
                         onClick={handleNavigate}
                     >
                         Buy Now

@@ -1,14 +1,26 @@
 import App from "@/App";
-import { useLoaderData } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+
+import { productsQueryOptions } from "./utils";
 import { ClipLoader } from "react-spinners";
 
 const Root = () => {
-    const data = useLoaderData();
+    const { data: products, isLoading, error } = useQuery(productsQueryOptions);
+
     
-    if (!data) return <ClipLoader/>
+    if (isLoading) return <div className="h-screen grid place-items-center"><ClipLoader/></div>;
+
+     if (error) {
+      console.log(error)
+      throw error
+    
+    }
+    
+
+   
     return (
         <>
-          <App data={data}/>
+          <App data={products}/>
         </>
     )
 }

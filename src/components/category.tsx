@@ -1,26 +1,22 @@
-import { motion } from "motion/react"
-import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
-type CategoryProps = {
-  gender: string
-  src: string
-  collection: any[]
-}
 
-const Category: React.FC<CategoryProps> = ({ gender, src, collection }) => {
-  const [filtered, setFiltered] = useState<any[]>([])
-  const navigate = useNavigate()
+const Category = ({ gender, src, isActive, onClick, collection , onNavigate }: any) => {
+   const [filtered, setFiltered] = useState<any[]>([])
+   const navigate = useNavigate()
  
   const handleNavigate = () => {
-   
+    onNavigate(false)
     const filteredItems = collection.filter(
-      (item) =>
+      (item:any) =>
         item.name?.toLowerCase().includes(gender.toLowerCase()) ||
         item.base_name?.toLowerCase().includes(gender.toLowerCase()) ||
         item.description?.toLowerCase().includes(gender.toLowerCase())
     )
-
+  
     setFiltered(filteredItems)
   }
 
@@ -31,37 +27,47 @@ const Category: React.FC<CategoryProps> = ({ gender, src, collection }) => {
   }, [filtered])
 
   return (
-    <motion.div
-      className="group text-white h-[90%] lg:w-1/2 grid place-items-center rounded-md w-[95%] mx-auto lg:mx-0"
-      initial={{ backgroundSize: "100% 100%" }}
-      whileHover={{ backgroundSize: "110% 110%" }}
-      transition={{ duration: 1, ease: "easeInOut", type: "tween" }}
-      style={{
-        backgroundImage: `url(${src})`,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-        backgroundSize: "cover",
-      }}
+    <div
+      onClick={onClick}
+      className="relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-700 ease-out h-full"
     >
-      <div className="grid place-items-center h-[20%]">
-        <h3 className="text-3xl">{gender}</h3>
-        <motion.button
-          initial={{ opacity: 0, y: 80 }}
-          whileInView={{ opacity: 1, y: 20 }}
-          transition={{
-            duration: 0.5,
-            ease: "linear",
-            type: "spring",
-            stiffness: 100,
-          }}
-          onClick={handleNavigate}
-          className="block lg:hidden lg:group-hover:block w-[200px] border-white border-2 h-16"
-        >
-          View Collection
-        </motion.button>
+      <div className="absolute inset-0">
+        <img
+          src={src}
+          alt={gender}
+          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
-    </motion.div>
-  )
-}
+      
+      <div className="relative h-full flex flex-col justify-end p-6 md:p-8 text-white">
+        <div className={`transition-all duration-500 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-90'}`}>
+          <h3 className={`font-bold mb-2 transition-all duration-500 ${
+            isActive ? 'text-4xl md:text-5xl' : 'text-2xl md:text-3xl'
+          }`}>
+            {gender}
+          </h3>
+          <p className={`text-white/80 mb-4 transition-all duration-500 ${
+            isActive ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          }`}>
+            Explore our curated collection
+          </p>
+          <Button 
+            className={`flex items-center gap-2 bg-white text-black px-8 text-lg tracking-wide py-6 rounded-full font-semibold hover:bg-white/90 transition-all duration-300 ${
+              isActive ? 'translate-x-0 opacity-100' : '-translate-x-4 opacity-0 pointer-events-none'
+            }`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNavigate();
+            } }
+          >
+            Shop Now
+            <ChevronRight className="w-5 h-5" />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Category

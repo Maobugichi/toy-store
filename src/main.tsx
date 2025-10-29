@@ -13,7 +13,6 @@ import { CartProvider } from "./hooks/useCart";
 import SignUp from "./auth/signup";
 import { AuthProvider } from "./context/authContext";
 import Login from "./auth/login";
-import { rootLoader } from "./routes/utils";
 import CheckoutPage from "./components/checkout/checkout";
 import { queryClient } from "./lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
@@ -34,7 +33,6 @@ const router = createHashRouter([
   {
     path: "/",
     element: <Root />,
-    loader:rootLoader,
     HydrateFallback: HydrateFallback,
   },
   {

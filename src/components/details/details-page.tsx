@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Heart, Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler, Package } from 'lucide-react';
+import {  Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -20,10 +20,11 @@ import ReviewSection from '../review';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/axios-config';
 
+import { AddToWatchlistButtonDesk } from '../watchlist/desktopBtn';
+
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
-  const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
  
   const { data: products, isLoading, error: prodErr } = useProducts();
   const { id } = useParams();
@@ -45,7 +46,7 @@ export default function ProductDetailsPage() {
     );
   }
 
-  // Fetch reviews and stats for this specific product
+ 
   const { 
     data: reviewData, 
    
@@ -101,7 +102,7 @@ export default function ProductDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+    <div className="min-h-screen font-family-sans bg-gradient-to-br from-slate-50 to-white">
       <ScrollToTop />
       <TopSlide />
       <ModernNav />
@@ -109,15 +110,15 @@ export default function ProductDetailsPage() {
       <div className="w-[95%] mx-auto px-4 space-y-8 py-8">
         <BreadcrumbNav productName={product.base_name} />
 
-        {/* Product Info Section */}
+       
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Image Gallery */}
+        
           <div className="space-y-4">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 shadow-lg">
+            <div className="aspect-square bg-white rounded-2xl overflow-hidden  shadow-lg">
               <img 
                 src={getPrimaryImage()} 
                 alt={product.name}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain hover:scale-105 transition-transform duration-500"
               />
             </div>
             <div className="grid grid-cols-4 gap-3">
@@ -136,7 +137,7 @@ export default function ProductDetailsPage() {
             </div>
           </div>
 
-          {/* Product Details */}
+        
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -155,7 +156,7 @@ export default function ProductDetailsPage() {
               </p>
             </div>
 
-            {/* Rating - Now using real review stats */}
+          
             <div className="flex items-center gap-3">
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -179,7 +180,7 @@ export default function ProductDetailsPage() {
               </span>
             </div>
 
-            {/* Price */}
+          
             <div className="space-y-1">
               <div className="text-3xl font-bold text-foreground">
                 {Number(product.price).toLocaleString("en-NG", {
@@ -192,7 +193,7 @@ export default function ProductDetailsPage() {
               </p>
             </div>
 
-            {/* Product Specs */}
+            
             <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg">
               <div>
                 <span className="text-sm font-medium text-muted-foreground">Size</span>
@@ -212,7 +213,7 @@ export default function ProductDetailsPage() {
               </div>
             </div>
 
-            {/* Quantity and Actions */}
+           
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <span className="font-medium">Quantity:</span>
@@ -263,28 +264,22 @@ export default function ProductDetailsPage() {
                     </>
                   )}
                 </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="h-14 w-14 p-0"
-                  onClick={() => setIsWishlisted(!isWishlisted)}
-                >
-                  <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`} />
-                </Button>
-                <Button variant="outline" size="lg" className="h-14 w-14 p-0">
+                <Button variant="outline" size="lg" className="h-14 w-14 p-0 rounded-xl"><AddToWatchlistButtonDesk productId={product.id} variant="outline"/></Button>
+                 
+                <Button variant="outline" size="lg" className="h-14 w-14 p-0 rounded-xl">
                   <Share2 className="w-5 h-5" />
                 </Button>
               </div>
 
               <Link to="/checkout">
-                <Button className="w-full bg-black text-white py-5" size="lg">
-                  <Package className="w-4 h-4 mr-2" />
+                <Button className="w-full bg-black text-white py-5 h-14" size="lg">
+                  <Package className="w-10 h-10 mr-2" />
                   Proceed to Checkout
                 </Button>
               </Link>
             </div>
 
-            {/* Trust Badges */}
+          
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Card>
                 <CardContent className="p-4 text-center">
@@ -304,7 +299,7 @@ export default function ProductDetailsPage() {
           </div>
         </div>
 
-        {/* Tabs Section */}
+    
         <Tabs defaultValue="description" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="description">Description</TabsTrigger>

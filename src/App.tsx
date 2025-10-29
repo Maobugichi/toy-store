@@ -17,13 +17,12 @@ function App({data}:any) {
       <Header/>
       <ModernNav/>
       <Hero/>
-      <div className='w-[90%] mx-auto space-y-8 md:py-5  h-fit py-10 md:h-[110vh]  flex flex-col justify-center'>
-        <h2 className='text-3xl font-semibold font-family-heading md:text-4xl'>Featured</h2>
+      <div className='w-[90%] mx-auto gap-4 h-fit py-16  flex flex-col justify-center'>
+        <h2 className="text-4xl md:text-5xl md:mb-2 font-bold mb-4">Featured</h2>
          <MultiCarousel data={data}/>
       </div>
      
       <CategorySection data={data}/>
-      <BannerSection/>
       <FaqSection/>
       <NewsLetter/>
       <Footer/>

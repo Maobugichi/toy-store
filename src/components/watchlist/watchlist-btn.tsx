@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 interface AddToWatchlistButtonProps {
   productId: number;
-  variant?: "default" | "link" | "secondary" | "destructive" | "outline" | "ghost"; // Fixed: removed "icon"
+  variant?: "default" | "link" | "secondary" | "destructive" | "outline" | "ghost"; 
   size?: "default" | "sm" | "lg" | "icon";
   width:string
 }
@@ -46,26 +46,21 @@ export function AddToWatchlistButton({
 
   if (!watchlists || watchlists.length === 0) {
     return (
-      <Button 
-        variant={variant} 
-        size={size}
-        onClick={() => navigate("/watchlist")}
-        className="w-10 grid place-items-center border-none  "
-      >
-        <Heart size={14} 
-            className="animate-pulse  w-4 h-4 block" 
+      <Button className={`bg-black md:hidden ${width}  grid  items-center`} variant={variant} size={size}>
+          <Heart size={14} 
+            className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 
             />
             <svg width="0" height="0">
             <defs>
                 <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ec4899" /> {/* pink-400 */}
-                <stop offset="100%" stopColor="#a78bfa" /> {/* purple-500 */}
+                <stop offset="0%" stopColor="#ec4899" />
+                <stop offset="100%" stopColor="#a78bfa" /> 
                 </linearGradient>
             </defs>
             </svg> 
-        
-      </Button>
+         
+        </Button>
     );
   }
 
@@ -80,8 +75,8 @@ export function AddToWatchlistButton({
             <svg width="0" height="0">
             <defs>
                 <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#ec4899" /> {/* pink-400 */}
-                <stop offset="100%" stopColor="#a78bfa" /> {/* purple-500 */}
+                <stop offset="0%" stopColor="#ec4899" />
+                <stop offset="100%" stopColor="#a78bfa" /> 
                 </linearGradient>
             </defs>
             </svg> 

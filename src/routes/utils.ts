@@ -1,12 +1,14 @@
-import axios from "axios";
+import { queryOptions } from "@tanstack/react-query";
+import api from "@/lib/axios-config";
 
-const rootLoader = async () => {
+
+const fetchProducts = async () => {
   const url = import.meta.env.VITE_API_URL;
   try {
-    const response = await axios.get(`${url}/api/products/`, { withCredentials: true });
+    const response = await api.get(`${url}/api/products/`);
     const products = response.data;
 
-    
+
     for (let i = products.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [products[i], products[j]] = [products[j], products[i]];
@@ -19,4 +21,10 @@ const rootLoader = async () => {
   }
 };
 
-export { rootLoader };
+
+export const productsQueryOptions = queryOptions({
+  queryKey: ["products"],
+  queryFn: fetchProducts,
+  staleTime: 1000 * 60 * 5, 
+});
+

@@ -63,7 +63,7 @@ export default function CategoryForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Name */}
+          
             <FormField
               control={form.control}
               name="name"

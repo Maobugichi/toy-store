@@ -1,105 +1,182 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import {  useRef } from 'react';
+import { ArrowRight, Sparkles, TrendingUp, Award, Star } from 'lucide-react';
+import { FeatureCard, MobileFeatureCarousel } from './ui/features';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight,  Sparkles, TrendingUp, Users, Award } from 'lucide-react';
-import HeroFeature from './ui/features';
+const Hero = () => {
+  const sectionRef = useRef(null);
+  const navigate = useNavigate();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
 
+ 
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
-const Hero: React.FC = () => {
-  const stats = [
-    { icon: Users, label: '10K+', sublabel: 'Happy Customers' },
-    { icon: Award, label: '5 Star', sublabel: 'Rated Products' },
-    { icon: TrendingUp, label: '99%', sublabel: 'Satisfaction' }
+  const y = useTransform(smoothProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(smoothProgress, [0, 0.5], [1, 0.3]);
+
+  const features = [
+    {
+      icon: Sparkles,
+      title: 'Premium Quality',
+      description: 'Handpicked materials'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Trending Styles',
+      description: 'Latest collections'
+    },
+    {
+      icon: Award,
+      title: 'Free Shipping',
+      description: 'Orders above $100'
+    }
   ];
- 
- 
-  return (
-    <section className="font-family-sans relative h-fit py-10  w-full bg-red-500">
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat "
-      
-      />
-      <img
-        src="https://res.cloudinary.com/dao2a3ib4/image/upload/f_auto,q_auto,w_auto/v1759243127/toy-hero_jwodbh.jpg"
-        alt="Hero background"
-        className="absolute inset-0 w-full h-full object-cover"
-        loading="eager"
-     
-      />
 
-        
-      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-transparent top-0" />
+  const handleExploreCollection = () => {
+    navigate('/filter');
+  };
+
+  const handleNewArrivals = () => {
+    navigate('/filter', { state: { filterType: 'newArrivals' } });
+  };
+
+  return (
+    <section ref={sectionRef} className="relative min-h-screen w-full bg-black overflow-hidden font-family-sans">
      
-      <div className="relative z-10 h-full flex flex-col justify-center px-6 space-y-5 sm:px-10 lg:px-16">
-        <div className="max-w-7xl mx-auto w-full">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <motion.div 
+        className="absolute inset-0 will-change-transform"
+        style={{ 
+          y,
+          opacity,
+          height: '100vh', 
+          top: '-1vh' 
+        }}
+      >
+        <img
+          src="https://res.cloudinary.com/dao2a3ib4/image/upload/f_auto,q_auto,w_auto/v1759243127/toy-hero_jwodbh.jpg"
+          alt="Hero background"
+          className="w-full h-full "
+          loading="eager"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
+      </motion.div>
+
+     
+      <div className="relative z-10 min-h-screen flex flex-col justify-between">
+      
+        <div className="flex-1 flex items-center px-6 sm:px-10 lg:px-16 pt-20 pb-16">
+          <div className="max-w-7xl mx-auto w-full">
+            <div className="max-w-4xl space-y-8">
             
-           
-            <div className="space-y-8">
-           
-              <Badge 
-                variant="secondary" 
-                className="bg-white/10 text-white border-white/20 backdrop-blur-sm hover:bg-white/20 transition-all duration-300"
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20"
               >
-                <Sparkles className="w-4 h-4 mr-2" />
-                New Collection 2025
-              </Badge>
+                <Sparkles className="w-4 h-4 text-yellow-400" />
+                <span className="text-white text-sm font-medium">New Collection 2025</span>
+              </motion.div>
 
              
-              <div className="space-y-4">
-               <h1 className="font-family-heading font-bold text-white leading-tight text-[clamp(2.5rem,5vw,4rem)] lg:text-[clamp(3rem,5vw,5rem)]">
-                Time. Of.{' '}
-                <span className="bg-gradient-to-r font-extrabold from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  YOUth.
-                </span>
-              </h1>
-
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white/90">
-                  Shop Style Like No Other.
-                </h2>
-              </div>
-
-          
-              <p className="text-lg sm:text-xl text-white/80 max-w-2xl leading-relaxed">
-                Discover timeless pieces with clean lines and effortless style. 
-                Curated collections that define your unique fashion journey.
-              </p>
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="space-y-4"
+              >
+                <h1 className="text-5xl sm:text-6xl font-family-heading lg:text-7xl xl:text-8xl font-bold text-white leading-[1.1] tracking-tight">
+                  <span className="inline-block">Time. Of. </span>
+                  <span className="inline-block bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+                    YOU<span className='text-white'>th.</span>
+                  </span>
+                </h1>
+                <p className="text-xl sm:text-2xl text-white/70 font-light max-w-2xl">
+                  Shop style like no other. Discover timeless pieces that define your unique journey.
+                </p>
+              </motion.div>
 
             
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/filter">
-                  <Button 
-                    size="lg" 
-                    className="group h-14 px-8 bg-black text-white hover:text-black hover:bg-white/90 font-semibold text-lg shadow-2xl transform hover:scale-105 transition-all duration-300"
-                  >
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="flex flex-col sm:flex-row gap-4 pt-4"
+              >
+                <button onClick={handleExploreCollection} className="group relative px-8 py-4 bg-white text-black font-semibold text-lg rounded-full overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20">
+                  <span className="relative z-10 flex items-center justify-center gap-2">
                     Explore Collection
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </button>
+                
+                <button onClick={handleNewArrivals} className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold text-lg rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300">
+                   New Arrivals
+                </button>
+              </motion.div>
 
-            
-              <div className="md:flex flex-wrap gap-6 pt-8 hidden ">
-                {stats.map((stat, index) => (
-                  <div key={index} className="flex items-center space-x-3 text-white/80">
-                    <div className="p-2 bg-white/10 rounded-full backdrop-blur-sm">
-                      <stat.icon className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-lg text-white">{stat.label}</div>
-                      <div className="text-sm text-white/60">{stat.sublabel}</div>
-                    </div>
+             
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex items-center gap-6 pt-8"
+              >
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 border-2 border-black"
+                    />
+                  ))}
+                </div>
+                <div className="text-white">
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    ))}
                   </div>
-                ))}
-              </div>
+                  <p className="text-sm text-white/70 mt-1">
+                    Loved by <span className="font-semibold text-white">tons</span> of customers
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
-        <HeroFeature/>
+
+      
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="relative px-6 sm:px-10 lg:px-16 pb-8"
+        >
+          <div className="max-w-7xl mx-auto">
+           
+            <div className="hidden md:grid grid-cols-3 gap-4">
+              {features.map((feature, index) => (
+                <FeatureCard key={index} {...feature} />
+              ))}
+            </div>
+
+            {/* Mobile Carousel */}
+            <div className="md:hidden">
+              <MobileFeatureCarousel features={features} />
+            </div>
+          </div>
+        </motion.div>
+
+       
       </div>
-     
     </section>
   );
 };

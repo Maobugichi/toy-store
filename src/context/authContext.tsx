@@ -42,7 +42,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(data.user);
     setCartId(data.cartId);
     
-    // Store user and cartId separately from token for security
     localStorage.setItem("auth", JSON.stringify({ 
       user: data.user, 
       cartId: data.cartId 

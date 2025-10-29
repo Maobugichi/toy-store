@@ -70,10 +70,10 @@ export function AddToWatchlistButtonDesk({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="border-none shadow-none flex items-start" asChild>
-        <Button className="grid place-items-center hover:shadow-none w-10" variant={variant} size={size}>
+        <Button className="grid place-items-center bg-transparent hover:shadow-none w-10" variant={variant} size={size}>
           <Heart 
             size={14} 
-            className="animate-pulse w-4 h-4 hidden md:block" 
+            className="animate-pulse hidden md:block" 
             stroke="url(#sparkleGradient)" 
             />
             <svg width="0" height="0">

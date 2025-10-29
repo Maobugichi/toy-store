@@ -59,7 +59,7 @@ export function MultiCarousel({data}:any) {
                     }}
                   extraClass="w-[80%] md:w-[17%]"
                   width="w-[20%]"
-                  isAdding={addingId == item.id} className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-lg border bg-white shadow-sm font-semibold" />
+                  isAdding={addingId == item.id} className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-3xl border bg-white shadow-sm font-semibold" />
             </div>
           ))}
         </div>
@@ -86,15 +86,15 @@ export function MultiCarousel({data}:any) {
       </div>
 
       
-      <div className="md:w-1/2 w-[90%] mx-auto">
+      <div className="md:w-1/2 grid space-y- h-20  place-items-center w-[90%] mx-auto ">
         <Progress value={scrollProgress} className="h-1" />
-      </div>
-    
-      <Link className="flex md:w-[15%] items-center justify-center py-3 bg-transparent hover:border text-black text-lg mx-auto mt-8" to='/filter'>
+        <Link className="flex  items-center justify-center py-3 bg-transparent px-3 hover:border text-black text-lg mx-auto mt-8" to='/filter'>
           View More 
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-       
        </Link>
+      </div>
+    
+      
     </div>
   )
 }
