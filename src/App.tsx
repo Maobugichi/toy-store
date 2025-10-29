@@ -7,7 +7,6 @@ import NewsLetter from './components/newsletter/newsletter'
 import Footer from './footer'
 import CategorySection from './components/category-section'
 import FaqSection from './components/faq-section'
-import BannerSection from './components/banner-section'
 import ScrollToTop from './scroll-to-top'
 
 function App({data}:any) {

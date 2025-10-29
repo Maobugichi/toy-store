@@ -1,9 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 import { 
+  ChevronDown,
   User, 
 } from 'lucide-react';
 import { useAuth } from '@/context/authContext';
@@ -27,6 +28,30 @@ const ModernNav: React.FC<ModernNavProps> = ({
 }) => {
   
   const { user } = useAuth();
+  const navigate = useNavigate();
+ 
+  const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
+
+ 
+
+  const categories = [
+    { name: 'Accessories', id: 1 },
+    { name: 'Clothing', id: 2 },
+    { name: 'Footwear', id: 3 }
+  ];
+
+  const handleCategoryClick = (category: { name: string; id: number }) => {
+    navigate('/filter', { 
+      state: { categoryId: category.id, categoryName: category.name } 
+    });
+   
+    setShopDropdownOpen(false);
+  };
+
+  const handleNewArrivals = () => {
+    navigate('/filter', { state: { filterType: 'newArrivals' } });
+  
+  };
 
   return (
     <nav className="w-full bg-white border-b relative  z-50 border-gray-200 pb-3 shadow-sm">
@@ -42,31 +67,60 @@ const ModernNav: React.FC<ModernNavProps> = ({
           </div>
 
        
-          <div className="hidden mt-3 md:flex items-center space-x-8">
-          
-            <Link to="/new-arrivals">
-              <Button variant="ghost" className="relative">
-                New Arrivals
-                <Badge 
-                  variant="secondary" 
-                  className="ml-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700"
-                >
-                  Hot
-                </Badge>
-              </Button>
-            </Link>
+          <div className="hidden mt-3 lg:flex items-center space-x-1">
+                <Link to="/filter">
+                  <Button variant="ghost" className="font-medium">
+                    Shop All
+                  </Button>
+                </Link>
 
-         
-          
-          </div>
+              
+                <div 
+                  className="relative"
+                  onMouseEnter={() => setShopDropdownOpen(true)}
+                  onMouseLeave={() => setShopDropdownOpen(false)}
+                >
+                  <Button 
+                    variant="ghost" 
+                    className="font-medium"
+                  >
+                    Categories
+                    <ChevronDown className={`ml-1 h-4 w-4 transition-transform ${shopDropdownOpen ? 'rotate-180' : ''}`} />
+                  </Button>
+
+                  {shopDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                      {categories.map((category) => (
+                        <button
+                          key={category.id}
+                          onClick={() => handleCategoryClick(category)}
+                          className="w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors"
+                        >
+                          {category.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <button onClick={handleNewArrivals}>
+                  <Button variant="ghost" className="relative font-medium">
+                    New Arrivals
+                    <Badge 
+                      variant="secondary" 
+                      className="ml-2 bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 text-xs"
+                    >
+                      New
+                    </Badge>
+                  </Button>
+                </button>
+            </div>
           </div>
         
-          <div className="md:flex mt-3 hidden items-center md:flex-1  mx-3">
-            <SearchCommand/>
-          </div>
+         
          
           <div className="flex items-center mt-3 space-x-2  shrink-0">
-            <div className="flex md:hidden items-center md:flex-1  mx-3">
+            <div className="flex items-center md:flex-1  mx-3">
               <SearchCommand/>
             </div>
             <WatchlistDrawer/>

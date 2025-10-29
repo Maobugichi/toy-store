@@ -34,12 +34,11 @@ const SearchCommand = () => {
     <div className="w-[90%] md:w-full">
       <Button
         variant="outline"
-        className="flex rounded-full w-full items-center gap-2"
+        className="flex rounded-full w-full md:w-[90%] items-center gap-2"
         onClick={() => setOpen(true)}
       >
         <Search className="h-4 w-4" />
-        <span className="hidden sm:inline">Search</span>
-        <kbd className="ml-auto text-xs hidden md:block text-muted-foreground">/</kbd>
+        
       </Button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>

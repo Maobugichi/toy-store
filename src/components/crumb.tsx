@@ -1,12 +1,12 @@
-// components/BreadcrumbNav.jsx
-import { Link, useLocation, useParams } from 'react-router-dom';
+
+import { Link, useLocation } from 'react-router-dom';
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from './ui/breadcrumb'; // Adjust path based on your Shadcn setup
+} from './ui/breadcrumb'; 
 
 // Define the props interface
 interface BreadcrumbNavProps {
@@ -15,8 +15,6 @@ interface BreadcrumbNavProps {
 
 function BreadcrumbNav({ productName }: BreadcrumbNavProps) {
   const location = useLocation();
-  const { productId } = useParams();
-
   
   const pathnames = location.pathname.split('/').filter((x) => x);
 

@@ -44,7 +44,7 @@ const MobileFeatureCarousel = ({ features }:any) => {
       
      
       <div className="flex justify-center gap-2 mt-4">
-        {features.map((_, index:number) => (
+        {features.map((_:any, index:number) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
