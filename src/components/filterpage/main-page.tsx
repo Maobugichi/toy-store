@@ -39,7 +39,7 @@ const MainPage: React.FC = () => {
     featured: false
   });
 
-  // Filter by category name if passed
+
   const data = (products as Product[] | undefined)?.filter(
    p => passedData ? p.name.toLowerCase().includes(passedData.toLowerCase()) : true
   ) ?? (products as Product[] ?? []);
@@ -72,7 +72,7 @@ const MainPage: React.FC = () => {
     return { materials, sizes, categories, colors };
   }, [data]);
 
-  // Get new arrivals (products from last 30 days)
+ 
   const getNewArrivals = (products: Product[]) => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -81,7 +81,7 @@ const MainPage: React.FC = () => {
       const createdAt = new Date(product.created_at);
       return createdAt >= thirtyDaysAgo;
     }).sort((a, b) => {
-      // Sort by newest first
+     
       return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
   };
@@ -91,12 +91,12 @@ const MainPage: React.FC = () => {
 
     let result = data;
 
-    // Apply new arrivals filter first if filterType is 'newArrivals'
+   
     if (filterType === 'newArrivals') {
       result = getNewArrivals(result);
     }
 
-    // Then apply other filters
+   
     result = result.filter((product: Product) => {
       const price = parseFloat(product.price);
 

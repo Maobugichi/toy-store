@@ -11,6 +11,8 @@ export function useWatchlists() {
       const res = await api.get("/api/watchlist");
       return res.data;
     },
+     staleTime: 5 * 60 * 1000, 
+    gcTime: 10 * 60 * 1000, 
   });
 }
 

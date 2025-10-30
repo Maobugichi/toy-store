@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import useEmblaCarousel from "embla-carousel-react"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from "./product-card"
 import { Link } from "react-router-dom"
@@ -12,9 +12,17 @@ const slides = Array.from({ length: 10 }, (_, i) => `Slide ${i + 1}`);
 export function MultiCarousel({data}:any) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, slidesToScroll: 1 });
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [scrollProgress, setScrollProgress] = useState(0)
+  
+
+  const scrollProgressMotion = useMotionValue(0)
+  const smoothProgress = useSpring(scrollProgressMotion, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  })
 
   const { addItem , addingId } = useCart();
+  
   useEffect(() => {
     if (!emblaApi) return
 
@@ -24,7 +32,7 @@ export function MultiCarousel({data}:any) {
 
     const onScroll = () => {
       const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()))
-      setScrollProgress(progress * 100)
+      scrollProgressMotion.set(progress * 100)
     }
 
     emblaApi.on("select", onSelect)
@@ -32,7 +40,7 @@ export function MultiCarousel({data}:any) {
 
     onSelect()
     onScroll()
-  }, [emblaApi])
+  }, [emblaApi, scrollProgressMotion])
 
   return (
     <div className="font-sans w-full  mx-auto relative space-y-5">
@@ -87,7 +95,16 @@ export function MultiCarousel({data}:any) {
 
       
       <div className="md:w-1/2 grid space-y- h-20  place-items-center w-[90%] mx-auto ">
-        <Progress value={scrollProgress} className="h-1" />
+        {/* Custom progress bar with motion */}
+        <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-black rounded-full"
+            style={{ 
+              width: useTransform(smoothProgress, (v) => `${v}%`)
+            }}
+          />
+        </div>
+        
         <Link className="flex  items-center justify-center py-3 bg-transparent px-3 hover:border text-black text-lg mx-auto mt-8" to='/filter'>
           View More 
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
