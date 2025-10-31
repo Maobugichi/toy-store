@@ -39,7 +39,7 @@ export function AddToWatchlistButton({
 
   if (isLoading) {
     return (
-      <Button className="md:hidden" variant={variant} size={size} disabled>
+      <Button className="md:hidden rounded-xl" variant={variant} size={size} disabled>
         <Loader2 className="w-4 h-4 animate-spin" />
       </Button>
     );
