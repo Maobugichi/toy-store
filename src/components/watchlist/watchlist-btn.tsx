@@ -46,7 +46,7 @@ export function AddToWatchlistButton({
 
   if (!watchlists || watchlists.length === 0) {
     return (
-      <Button className={`bg-blackmd:hidden ${width}  grid  items-center`} variant={variant} size={size}>
+      <Button className={`bg-blackmd:hidden rounded-xl ${width}  grid  items-center`} variant={variant} size={size}>
           <Heart size={14} 
             className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 
@@ -59,7 +59,6 @@ export function AddToWatchlistButton({
                 </linearGradient>
             </defs>
             </svg> 
-         
         </Button>
     );
   }
