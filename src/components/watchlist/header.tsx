@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { Star, Plus, Loader2, Bookmark } from "lucide-react";
+import { Star, Plus, Loader2 } from "lucide-react";
 import type { SetStateAction } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/axios-config";
@@ -87,7 +87,7 @@ const WatchHeader: React.FC<WatchHeaderProp> = ({
           <DialogTrigger asChild>
             <Button className="w-auto shrink-0 ">
               <Plus className="w-4 h-4 mr-2 hidden md:block" />
-              <Bookmark className="md:hidden block"/>
+              <Plus className="md:hidden block"/>
               <span className="md:block hidden">New Watchlist</span>
             </Button>
           </DialogTrigger>

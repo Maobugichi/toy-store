@@ -36,12 +36,8 @@ import api from "@/lib/axios-config";
 import WatchHeader from "./header";
 import { useCart } from "@/hooks/useCart";
 import { ClipLoader } from "react-spinners";
+import { useWatchlists } from "./hook";
 
-interface Watchlist {
-  id: number;
-  name: string;
-  created_at: string;
-}
 
 interface WatchlistItem {
   id: number;
@@ -62,13 +58,7 @@ export default function WatchlistPage() {
   const [removingId, setRemovingId] = useState<number | null>(null);
   const { addItem , addingId } = useCart();
  
-  const { data: watchlists, isLoading: loadingWatchlists } = useQuery({
-    queryKey: ["watchlists"],
-    queryFn: async () => {
-      const res = await api.get("/api/watchlist");
-      return res.data as Watchlist[];
-    },
-  });
+  const { data: watchlists, isLoading: loadingWatchlists } = useWatchlists();
 
 
 
@@ -129,7 +119,7 @@ export default function WatchlistPage() {
     setSelectedWatchlist(watchlists[0].id);
   }
 
-  const selectedWatchlistData = watchlists?.find((w) => w.id === selectedWatchlist);
+  const selectedWatchlistData = watchlists?.find((w:any) => w.id === selectedWatchlist);
 
   return (
     <div className="min-h-screen p-6">
@@ -153,7 +143,7 @@ export default function WatchlistPage() {
         
         {!loadingWatchlists && watchlists && watchlists.length > 0 && (
           <div className="flex gap-3 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-            {watchlists.map((watchlist) => (
+            {watchlists.map((watchlist:any) => (
               <button
                 key={watchlist.id}
                 onClick={() => setSelectedWatchlist(watchlist.id)}

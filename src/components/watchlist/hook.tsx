@@ -11,8 +11,10 @@ export function useWatchlists() {
       const res = await api.get("/api/watchlist");
       return res.data;
     },
-     staleTime: 5 * 60 * 1000, 
-    gcTime: 10 * 60 * 1000, 
+    staleTime: Infinity, 
+    gcTime: 1000 * 60 * 30, 
+    refetchOnMount: false,
+    refetchOnWindowFocus: false, 
   });
 }
 
@@ -28,6 +30,8 @@ export function useAddToWatchlist() {
       return res.data;
     },
     onSuccess: () => {
+     
+      queryClient.invalidateQueries({ queryKey: ["watchlists"] });
       queryClient.invalidateQueries({ queryKey: ["watchlist-items"] });
       toast.success("Added to watchlist!");
     },
@@ -42,4 +46,3 @@ export function useAddToWatchlist() {
     },
   });
 }
-

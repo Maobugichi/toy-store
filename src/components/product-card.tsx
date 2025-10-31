@@ -93,7 +93,7 @@ const ProductCard = ({
                             price, 
                             images: { primary: src } 
                         })} 
-                        className={`${isAdding ? "bg-black/80" : "bg-black"} ${extraClass}  h-9 md:h-10`}
+                        className={`${isAdding ? "bg-black/80" : "bg-black"} ${extraClass} rounded-xl  h-9 md:h-10`}
                         disabled={isAdding}
                         style={{ pointerEvents: "auto" }}
                     >

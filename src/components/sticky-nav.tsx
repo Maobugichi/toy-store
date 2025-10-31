@@ -103,7 +103,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
                   )}
                 </div>
 
-                <button onClick={handleNewArrivals}>
+                <div onClick={handleNewArrivals}>
                   <Button variant="ghost" className="relative font-medium">
                     New Arrivals
                     <Badge 
@@ -113,7 +113,7 @@ const ModernNav: React.FC<ModernNavProps> = ({
                       New
                     </Badge>
                   </Button>
-                </button>
+                </div>
             </div>
           </div>
         

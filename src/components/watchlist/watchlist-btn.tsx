@@ -46,7 +46,7 @@ export function AddToWatchlistButton({
 
   if (!watchlists || watchlists.length === 0) {
     return (
-      <Button className={`bg-black md:hidden ${width}  grid  items-center`} variant={variant} size={size}>
+      <Button className={`bg-blackmd:hidden ${width}  grid  items-center`} variant={variant} size={size}>
           <Heart size={14} 
             className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 
@@ -67,7 +67,7 @@ export function AddToWatchlistButton({
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger className="border-none shadow-none flex items-start" asChild>
-        <Button className={`bg-black md:hidden ${width}  grid  items-center`} variant={variant} size={size}>
+        <Button className={`bg-black md:hidden  rounded-xl  ${width}  grid  items-center`} variant={variant} size={size}>
           <Heart size={14} 
             className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 
