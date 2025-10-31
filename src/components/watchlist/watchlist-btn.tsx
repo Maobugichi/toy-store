@@ -29,6 +29,7 @@ export function AddToWatchlistButton({
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { data: watchlists, isLoading } = useWatchlists();
+  
   const addToWatchlist = useAddToWatchlist();
 
   const handleAdd = (watchlistId: number) => {
@@ -46,7 +47,9 @@ export function AddToWatchlistButton({
 
   if (!watchlists || watchlists.length === 0) {
     return (
-      <Button className={`bg-blackmd:hidden rounded-xl ${width}  grid  items-center`} variant={variant} size={size}>
+      <Button 
+      onClick={() => navigate("/watchlist")}
+      className={`bg-blackmd:hidden rounded-xl ${width}  grid  items-center`} variant={variant} size={size}>
           <Heart size={14} 
             className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 
