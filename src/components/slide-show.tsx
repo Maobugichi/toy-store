@@ -6,14 +6,25 @@ import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from "./product-card"
 import { Link } from "react-router-dom"
 import { useCart } from "@/hooks/useCart"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const slides = Array.from({ length: 10 }, (_, i) => `Slide ${i + 1}`);
 
-export function MultiCarousel({data}:any) {
+function ProductCardSkeleton() {
+  return (
+    <div className="h-fit md:h-[360px] pt-3 pb-4 items-center justify-center rounded-3xl border bg-white shadow-sm space-y-4 p-4">
+      <Skeleton className="w-full h-48 rounded-xl" />
+      <Skeleton className="h-4 w-3/4" />
+      <Skeleton className="h-4 w-1/2" />
+      <Skeleton className="h-10 w-full rounded-lg" />
+    </div>
+  );
+}
+
+export function MultiCarousel({data, isLoading}:any) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, slidesToScroll: 1 });
   const [selectedIndex, setSelectedIndex] = useState(0)
   
-
   const scrollProgressMotion = useMotionValue(0)
   const smoothProgress = useSpring(scrollProgressMotion, {
     stiffness: 100,
@@ -47,29 +58,43 @@ export function MultiCarousel({data}:any) {
      
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {data.slice(0,5).map((item:any,index:number) => (
-            <div
-              key={index}
-              className="flex-[0_0_70%] md:flex-[0_0_28%]  p-2" 
-            >
-              <ProductCard 
-                    key={item.id} 
-                    id={item.id}
-                    name={item.base_name}
-                    price={item.price}
-                    src={item.images?.primary}
-                    addToCart={async () => {
-                        addItem({productId: item.id,
-                        quantity: 1,
-                        base_name: item.base_name,
-                        price: item.price,
-                        images: item.images});
-                    }}
-                  extraClass="w-[80%] md:w-[17%]"
-                  width="w-[20%]"
-                  isAdding={addingId == item.id} className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-3xl border bg-white shadow-sm font-semibold" />
-            </div>
-          ))}
+          {isLoading ? (
+          
+            Array.from({ length: 5 }).map((_, index) => (
+              <div
+                key={index}
+                className="flex-[0_0_70%] md:flex-[0_0_28%]  p-2" 
+              >
+                <ProductCardSkeleton />
+              </div>
+            ))
+          ) : (
+            data?.slice(0,5).map((item:any,index:number) => (
+              <div
+                key={index}
+                className="flex-[0_0_70%] md:flex-[0_0_28%]  p-2" 
+              >
+                <ProductCard 
+                      key={item.id} 
+                      id={item.id}
+                      name={item.base_name}
+                      price={item.price}
+                      src={item.images?.primary}
+                      addToCart={async () => {
+                          addItem({productId: item.id,
+                          quantity: 1,
+                          base_name: item.base_name,
+                          price: item.price,
+                          images: item.images});
+                      }}
+                    extraClass="w-[80%] md:w-[17%]"
+                    width="w-[20%]"
+                    isAdding={addingId == item.id} 
+                    className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-3xl border bg-white shadow-sm font-semibold" 
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
 
@@ -79,7 +104,7 @@ export function MultiCarousel({data}:any) {
           variant="outline"
           className="rounded-full bg-white border-black md:border-none h-10 absolute top-32 -left-4 md:-left-10"
           onClick={() => emblaApi?.scrollPrev()}
-          disabled={selectedIndex === 0}
+          disabled={selectedIndex === 0 || isLoading}
         >
           <ChevronLeft/>
         </Button>
@@ -87,7 +112,7 @@ export function MultiCarousel({data}:any) {
           variant="outline"
           onClick={() => emblaApi?.scrollNext()}
           className="rounded-full border-black md:border-none h-10 absolute top-32 -right-4 md:-right-10"
-          disabled={selectedIndex === slides.length - 1} 
+          disabled={selectedIndex === slides.length - 1 || isLoading} 
         >
          <ChevronRight/>
         </Button>
@@ -95,7 +120,7 @@ export function MultiCarousel({data}:any) {
 
       
       <div className="md:w-1/2 grid space-y- h-20  place-items-center w-[90%] mx-auto ">
-        {/* Custom progress bar with motion */}
+    
         <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
           <motion.div 
             className="h-full bg-black rounded-full"

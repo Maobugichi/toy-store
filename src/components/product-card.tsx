@@ -77,7 +77,7 @@ const ProductCard = ({
                 
                 
                
-                <div className="w-full flex  items-center gap-1">
+                <div className="w-full flex  items-center space-x-1">
     
                     <Button 
                         className="hidden md:block w-full md:w-[80%] font-family-heading text font-semibold md:text-md tracking-wider h-9 md:h-10" 

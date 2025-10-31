@@ -9,7 +9,7 @@ import CategorySection from './components/category-section'
 import FaqSection from './components/faq-section'
 import ScrollToTop from './scroll-to-top'
 
-function App({data}:any) {
+function App({data, isLoading}:any) {
   return (
     <div className='overflow-hidden '>
       <ScrollToTop/>
@@ -18,7 +18,7 @@ function App({data}:any) {
       <Hero/>
       <div className='w-[90%] mx-auto gap-4 h-fit py-16  flex flex-col justify-center'>
         <h2 className="text-4xl md:text-5xl md:mb-2 font-bold mb-4">Featured</h2>
-         <MultiCarousel data={data}/>
+         <MultiCarousel data={data} isLoading={isLoading}/>
       </div>
      
       <CategorySection data={data}/>
