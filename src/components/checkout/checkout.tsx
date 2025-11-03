@@ -22,6 +22,7 @@ import StepTwo from './steps/step-two';
 import StepThree from './steps/step-three';
 import { ClipLoader } from 'react-spinners';
 import { Badge } from '../ui/badge';
+import ScrollToTop from '@/scroll-to-top';
 
 const CheckoutPage = () => {
   const { items, updatingId,  updateItem, removeItem , totalQuantity} = useCart();
@@ -80,7 +81,7 @@ const CheckoutPage = () => {
   };
 
 
- // 🧮 Subtotal (cart total)
+ 
 const subtotal = calculateTotal();
 
 
@@ -146,6 +147,7 @@ const formatPrice = (amount: number): string =>
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <ScrollToTop/>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>

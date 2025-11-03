@@ -21,6 +21,7 @@ import WatchlistPage from "./components/watchlist/watchlist-page";
 
 
 
+
 const router = createHashRouter([
   {
     path: "/signup",
@@ -56,11 +57,13 @@ const router = createHashRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <CartProvider>
           <Toaster richColors closeButton/> 
           <RouterProvider router={router} />
+         
         </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
