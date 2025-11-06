@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/authContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
@@ -70,7 +70,7 @@ const Login = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-fit p-6  rounded-2xl border-2 md:h-fit md:py-6 gap-3 flex flex-col w-[90%] items-center justify-center md:w-1/2 space-y-2 mx-auto"
+          className=" h-fit px-6 py-4  rounded-4xl border-2  gap-3 flex flex-col w-[90%] items-center justify-center md:w-[35%] space-y-4 mx-auto"
         >
           <div>
             <img src='https://res.cloudinary.com/dao2a3ib4/image/upload/v1759248907/toy-logoo_qt8unk.png' alt='toyshop logo' className='object-cover h-28 w-32'/>
@@ -80,9 +80,9 @@ const Login = () => {
             name="email"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-2xl">Email</FormLabel>
                 <FormControl>
-                  <Input className="py-6  placeholder:text-lg text-lg" placeholder="email" type="email" {...field} />
+                  <Input className="py-6 rounded-3xl placeholder:text-lg tracking-wider" placeholder="johndoe@gmail.com" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -94,31 +94,42 @@ const Login = () => {
             name="password"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Password</FormLabel>
+                <FormLabel className="text-2xl">Password</FormLabel>
                 <FormControl>
-                  <Input className="py-6 placeholder:text-lg text-lg" placeholder="password" type="password" {...field} />
+                  <Input className="py-6 rounded-3xl placeholder:text-lg tracking-widest" placeholder="**********" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className={`${loading ? "bg-black/80" : "bg-black"}  text-white text-sm font-bold py-5 md:text-lg h-8 md:h-12 w-full`}>
-            {loading ? <ClipLoader size={20} color="white"/> : 'Submit' }
-          </Button>
-
-      
-          <div className="bg-white shadow md:w-[95%] w-full border flex h-7 md:h-8 items-center justify-center gap-2 rounded-sm">
-            <FcGoogle />
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => (window.location.href = `${API_BASE}/auth/google`)}
-            >
-              Continue with Google
+          <div className="w-full grid space-y-3">
+            <Button type="submit" className={`${loading ? "bg-black/20" : "bg-black" } relative overflow-hidden  text-white text-sm md:text-lg h-8 md:h-12 py-5 rounded-3xl w-full`}>
+              <>
+                          <span className="absolute inset-0 bg-black rounded-xl" />
+                          <span className="absolute inset-0 bg-gradient-to-r from-black/0 via-white/20 to-black/0 animate-shimmer" />
+                </>
+              {loading ? <ClipLoader size={10} color="white" className="relative z-10"/> : <span className="relative z-10">Submit</span> }
             </Button>
-          </div>
 
+        
+            <div className="bg-white shadow border flex  items-center justify-center gap-2 text-sm md:text-lg h-8 md:h-12 py-5 rounded-3xl w-full">
+              <FcGoogle />
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => (window.location.href = `${API_BASE}/auth/google`)}
+              >
+                Continue with Google
+              </Button>
+            </div>
+          </div>
+          <span className="tracking-wide text-black/70">
+            Don't have an account?{" "}
+            <Link className="text-blue-700 underline" to="/signup/">
+              Signup here
+            </Link>
+          </span>
           
         </form>
       </Form>

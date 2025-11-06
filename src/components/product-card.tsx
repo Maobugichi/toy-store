@@ -80,10 +80,14 @@ const ProductCard = ({
                 <div className="w-full flex  items-center space-x-1">
     
                     <Button 
-                        className="hidden md:block w-full md:w-[80%] font-family-heading text font-semibold md:text-md tracking-wider h-9 md:h-10" 
+                        className="hidden relative overflow-hidden md:block rounded-xl w-full md:w-[80%] font-family-heading text font-semibold md:text-md tracking-wider h-9 md:h-10" 
                         onClick={handleNavigate}
                     >
-                        Buy Now
+                         <>
+                           <span className="absolute inset-0 bg-black rounded-" />
+                            <span className="absolute inset-0 bg-gradient-to-r from-black/0 via-white/20 to-black/0 animate-shimmer" />
+                        </>
+                       <span className="relative z-10 ">Buy Now</span> 
                     </Button>
                     
                     <Button 
@@ -93,7 +97,7 @@ const ProductCard = ({
                             price, 
                             images: { primary: src } 
                         })} 
-                        className={`${isAdding ? "bg-black/80" : "bg-black"} ${extraClass} rounded-xl  h-9 md:h-10`}
+                        className={`${isAdding ? "bg-black/80" : "bg-black"} ${extraClass} relative overflow-hidden rounded-xl  h-9 md:h-10`}
                         disabled={isAdding}
                         style={{ pointerEvents: "auto" }}
                     >
@@ -101,8 +105,12 @@ const ProductCard = ({
                             <ClipLoader color="white" size={10} />
                         ) : (
                             <>
-                                <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
-                                <span className="md:hidden ml-2 text-xs">Add</span>
+                                <ShoppingCart className="w-4 h-4 relative z-10 md:w-5 md:h-5" />
+                                <>
+                                <span className="absolute inset-0 bg-black rounded-" />
+                                <span className="absolute inset-0 bg-gradient-to-r from-black/0 via-white/20 to-black/0 animate-shimmer" />
+                                </>
+                                <span className="md:hidden ml-2 text-xs z-10">Add</span>
                             </>
                         )}
                     </Button>

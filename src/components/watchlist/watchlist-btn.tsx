@@ -49,7 +49,7 @@ export function AddToWatchlistButton({
     return (
       <Button 
       onClick={() => navigate("/watchlist")}
-      className={`bg-blackmd:hidden rounded-xl ${width}  grid  items-center`} variant={variant} size={size}>
+      className={`bg-black md:hidden rounded-xl ${width}  grid  items-center`} variant={variant} size={size}>
           <Heart size={14} 
             className="animate-pulse w-4 h-4" 
             stroke="url(#sparkleGradient)" 

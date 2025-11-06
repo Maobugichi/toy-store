@@ -1,17 +1,16 @@
 import { getGuestCart, clearGuestCart } from "@/components/cart/cart-storage";
-import axios from "axios";
 import { queryClient } from "@/lib/query-client";
+import api from "@/lib/axios-config";
 
 export async function handleLoginSuccess() {
-  const url = import.meta.env.VITE_API_URL;
+
   const guestCart = getGuestCart();
 
   try {
     if (guestCart.length > 0) {
-       await axios.post(
-        `${url}/api/cart/merge`,
+       await api.post(
+        `/api/cart/merge`,
         { guestCart },
-        { withCredentials: true }
       );
       clearGuestCart();
       queryClient.invalidateQueries({ queryKey: ["cart"] });

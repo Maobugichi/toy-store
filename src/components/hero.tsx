@@ -130,14 +130,21 @@ const Hero = () => {
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="flex items-center gap-6 pt-8"
               >
-                <div className="flex -space-x-3">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 border-2 border-black"
-                    />
-                  ))}
-                </div>
+               <div className="flex -space-x-3">
+                {[
+                  'https://images.unsplash.com/photo-1531384441138-2736e62e0919',
+                  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6',
+                  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+                  'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df'
+                ].map((img, i) => (
+                  <img
+                    key={i}
+                    src={`${img}?w=80&h=80&fit=crop&crop=faces`}
+                    alt={`User ${i + 1}`}
+                    className="w-10 h-10 rounded-full border-2 border-black object-cover"
+                  />
+                ))}
+              </div>
                 <div className="text-white">
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -145,7 +152,7 @@ const Hero = () => {
                     ))}
                   </div>
                   <p className="text-sm text-white/70 mt-1">
-                    Loved by <span className="font-semibold text-white">tons</span> of customers
+                    Loved by <span className="font-semibold text-white">YOU</span>
                   </p>
                 </div>
               </motion.div>
