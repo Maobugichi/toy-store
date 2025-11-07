@@ -16,7 +16,8 @@ const ProductCard = ({
     addToCart, 
     isAdding, 
     extraClass='w-[78%] md:w-[17%]',
-    width
+    width,
+    compare_at_price
     
 }: {
     className: string
@@ -29,6 +30,7 @@ const ProductCard = ({
     direction?: string;
     extraClass?:string
     width:string
+    compare_at_price:string
 }) => {
     const navigate = useNavigate();
     
@@ -36,18 +38,31 @@ const ProductCard = ({
         navigate(`/product/${id}`);
     };
 
+    
+  const currentPrice = Number(price);
+  const compareAtPrice = compare_at_price ? Number(compare_at_price) : null;
+  const hasDiscount = compareAtPrice !== null && compareAtPrice > currentPrice;
+  const discountPercentage = hasDiscount && compareAtPrice
+    ? Math.round(((compareAtPrice - currentPrice) / compareAtPrice) * 100)
+    : 0;
+
+
     return (
         <div 
             id={id.toString()} 
             className={`${className} relative font-family-sans border shadow p-2 md:p-3 space-y-2 md:space-y-5`}
         >
             
-            <div className="h-[140px] md:h-[45%] w-full border rounded-2xl overflow-hidden">
+            <div className="h-[140px] relative md:h-[45%] w-full border rounded-2xl ">
+                {hasDiscount && <Badge className="bg-red-500 absolute top-2 -right-1 z-10 text-white h-4 text-xs md:text-sm hover:bg-red-600">
+                    Save {discountPercentage}%
+                </Badge> }
                 <img 
                     src={src} 
                     className="h-full rounded-sm w-full object-fill"
                     alt={name}
                 />
+                 
             </div>
 
             <div className="w-full space-y-2 md:space-y-3">
@@ -63,16 +78,29 @@ const ProductCard = ({
                 </div>
 
                
-                <div className="w-full">
-                    <h4 className="text-sm md:text-lg lg:text-xl whitespace-nowrap font-family-heading overflow-hidden text-ellipsis">
+                <div className="w-full relative">
+                    <h4 className="text-sm  md:text-lg lg:text-xl whitespace-nowrap font-family-heading overflow-hidden text-ellipsis">
                         {name}
                     </h4>
-                    <p className="text-sm md:text-lg text-black/70  font-light mt-1">
-                        {Number(price).toLocaleString("en-NG", {
+                    <div className="text-sm flex  md:text-lg text-black/70 relative  font-light mt-1">
+                       {Number(price).toLocaleString("en-NG", {
                             style: "currency",
                             currency: "NGN",
                         })}
-                    </p>
+                         {hasDiscount && (
+                        <div className="flex absolute -right-1 flex-col bottom-0">
+                           
+                            <div className="text-xs text-muted-foreground line-through">
+                            {Number(compare_at_price).toLocaleString("en-NG", {
+                                style: "currency",
+                                currency: "NGN",
+                            })}
+                            </div>
+                           
+                        </div>
+                        )}
+                    </div>
+
                 </div>
                 
                 

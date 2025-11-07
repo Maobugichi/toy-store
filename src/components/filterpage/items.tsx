@@ -58,6 +58,7 @@ const FilterItems: React.FC<FilterItemsProps> = ({ data }) => {
                         width="w-[25%]"
                         extraClass='w-[74%] md:w-[17%]'
                         isAdding={addingId === item.id}
+                        compare_at_price={item.compare_at_price}
                         className="h-auto rounded-3xl md:h-[330px] flex flex-col"
                     />
                 ))}

@@ -16,7 +16,7 @@ const CategorySection = ({ data }: any) => {
   
   const categoryItem = [
     {
-      gender: "Hats",
+      gender: "Hat",
       src: testsrc,
     },
     {
@@ -96,7 +96,7 @@ const CategorySection = ({ data }: any) => {
 
     intervalRef.current = setInterval(() => {
       moveToNext();
-    }, 4000);
+    }, 6000);
 
     return () => {
       if (intervalRef.current) {

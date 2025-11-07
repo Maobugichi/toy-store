@@ -90,6 +90,7 @@ export function MultiCarousel({data, isLoading}:any) {
                     extraClass="w-[80%] md:w-[17%]"
                     width="w-[20%]"
                     isAdding={addingId == item.id} 
+                    compare_at_price={item.compare_at_price}
                     className="h-fit md:h-[360px] pt-3 pb-4  items-center justify-center rounded-3xl border bg-white shadow-sm font-semibold" 
                 />
               </div>

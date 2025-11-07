@@ -99,7 +99,7 @@ export default function CategoryForm() {
               )}
             />
 
-            {/* Description */}
+          
             <FormField
               control={form.control}
               name="description"

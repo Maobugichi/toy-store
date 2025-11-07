@@ -194,13 +194,13 @@ const ReviewSection: React.FC<ReviewProps> = ({ productId, currentUserId }) => {
   const stats = data?.stats;
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      {/* Header with Stats */}
-      <div className="flex justify-between items-center mb-6">
+    <div className="w-full spa mx-auto p-0  ">
+   
+      <div className="flex w-full space-y-4 justify-between items-center mb-6">
         <div>
-          <h2 className="text-2xl font-bold">Customer Reviews</h2>
+          <h2 className="text-2xl font-bold py-4 text-nowrap">Customer Reviews</h2>
           {stats && stats.review_count > 0 && (
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex md:items-center w-full flex-col md:flex-row gap-2 mt-1">
               <div className="flex items-center text-yellow-500">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -227,9 +227,9 @@ const ReviewSection: React.FC<ReviewProps> = ({ productId, currentUserId }) => {
         {!hasReviewed?.hasReviewed && (
           <Dialog open={open} onOpenChange={handleDialogClose}>
             <DialogTrigger asChild>
-              <Button>Write a Review</Button>
+              <Button className="w-26">Add Review</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md ">
               <DialogHeader>
                 <DialogTitle>
                   {editingReview ? "Edit your review" : "Share your review"}
@@ -327,7 +327,7 @@ const ReviewSection: React.FC<ReviewProps> = ({ productId, currentUserId }) => {
         )}
       </div>
 
-      {/* Reviews List */}
+ 
       {isLoading ? (
         <div className="text-center py-8 text-muted-foreground">
           Loading reviews...

@@ -13,7 +13,7 @@ interface Product {
   base_name: string;
   slug: string | null;
   price: string;
-  compare_at_price: string;
+  compare_at_price: string | null;  
   description: string;
   short_description: string;
   category_id: number | null;
@@ -34,6 +34,11 @@ interface Product {
   sort_order: number;
   created_at: string;
   updated_at: string;
+  
+  // New dynamic fields
+  features: string[] | null;
+  perfect_for: string[] | null;
+  product_details: string[] | null;
 }
 
 interface UIData {

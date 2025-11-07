@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {  Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler, Package } from 'lucide-react';
+import { Share2, ShoppingCart, Star, Truck, Shield, RotateCcw, Ruler, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,18 +19,15 @@ import { useCart } from '@/hooks/useCart';
 import ReviewSection from '../review';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/lib/axios-config';
-
 import { AddToWatchlistButtonDesk } from '../watchlist/desktopBtn';
-
+import { AddToWatchlistButton } from '../watchlist/watchlist-btn';
 
 export default function ProductDetailsPage() {
   const [quantity, setQuantity] = useState<number>(1);
- 
   const { data: products, isLoading, error: prodErr } = useProducts();
   const { id } = useParams();
   const { addItem, addingId } = useCart();
 
- 
   const productId = id ? parseInt(id) : null;
 
   if (!productId || isNaN(productId)) {
@@ -46,11 +43,7 @@ export default function ProductDetailsPage() {
     );
   }
 
- 
-  const { 
-    data: reviewData, 
-   
-  } = useQuery({
+  const { data: reviewData } = useQuery({
     queryKey: ["reviews", productId],
     queryFn: async () => {
       const res = await api.get(`/api/reviews/product/${productId}`);
@@ -59,7 +52,6 @@ export default function ProductDetailsPage() {
     enabled: !!productId,
   });
 
- 
   const reviewStats = reviewData?.stats;
 
   if (isLoading) {
@@ -101,6 +93,16 @@ export default function ProductDetailsPage() {
     return product.primary_image || product.images?.primary || '/placeholder.png';
   };
 
+
+
+  const currentPrice = Number(product.price);
+  const compareAtPrice = product.compare_at_price ? Number(product.compare_at_price) : null;
+  const hasDiscount = compareAtPrice !== null && compareAtPrice > currentPrice;
+  const discountPercentage = hasDiscount && compareAtPrice
+    ? Math.round(((compareAtPrice - currentPrice) / compareAtPrice) * 100)
+    : 0;
+
+  
   return (
     <div className="min-h-screen font-family-sans bg-gradient-to-br from-slate-50 to-white">
       <ScrollToTop />
@@ -110,11 +112,10 @@ export default function ProductDetailsPage() {
       <div className="w-[95%] mx-auto px-4 space-y-8 py-8">
         <BreadcrumbNav productName={product.base_name} />
 
-       
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
-        
+          {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-square bg-white rounded-2xl overflow-hidden  shadow-lg">
+            <div className="aspect-square bg-white rounded-2xl overflow-hidden shadow-lg">
               <img 
                 src={getPrimaryImage()} 
                 alt={product.name}
@@ -137,7 +138,7 @@ export default function ProductDetailsPage() {
             </div>
           </div>
 
-        
+         
           <div className="space-y-6">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -182,18 +183,34 @@ export default function ProductDetailsPage() {
 
           
             <div className="space-y-1">
-              <div className="text-3xl font-bold text-foreground">
-                {Number(product.price).toLocaleString("en-NG", {
-                  style: "currency",
-                  currency: "NGN",
-                })}
+              <div className="flex items-center gap-3">
+                <div className="text-3xl font-bold text-foreground">
+                  {Number(product.price).toLocaleString("en-NG", {
+                    style: "currency",
+                    currency: "NGN",
+                  })}
+                </div>
+                
+                {hasDiscount && (
+                  <div className='flex flex-col'>
+                    <div className="text-xl text-muted-foreground line-through">
+                      {Number(product.compare_at_price).toLocaleString("en-NG", {
+                        style: "currency",
+                        currency: "NGN",
+                      })}
+                    </div>
+                    <Badge className="bg-red-500 text-white hover:bg-red-600">
+                      Save {discountPercentage}%
+                    </Badge>
+                  </div>
+                )}
               </div>
               <p className="text-sm text-muted-foreground">
                 Free shipping on orders over ₦100,000
               </p>
             </div>
 
-            
+        
             <div className="grid grid-cols-2 gap-4 p-4 bg-slate-50 rounded-lg">
               <div>
                 <span className="text-sm font-medium text-muted-foreground">Size</span>
@@ -213,7 +230,7 @@ export default function ProductDetailsPage() {
               </div>
             </div>
 
-           
+          
             <div className="space-y-4">
               <div className="flex items-center gap-4">
                 <span className="font-medium">Quantity:</span>
@@ -264,8 +281,11 @@ export default function ProductDetailsPage() {
                     </>
                   )}
                 </Button>
-                <Button variant="outline" size="lg" className="h-14 w-14 p-0 rounded-xl"><AddToWatchlistButtonDesk productId={product.id} variant="outline"/></Button>
+                <Button variant="outline" size="lg" className="h-14 w-14 md:grid hidden p-0 rounded-xl">
+                  <AddToWatchlistButtonDesk productId={product.id} variant="outline"/>
                  
+                </Button>
+                 <AddToWatchlistButton productId={product.id}  width='h-14 w-14'/>
                 <Button variant="outline" size="lg" className="h-14 w-14 p-0 rounded-xl">
                   <Share2 className="w-5 h-5" />
                 </Button>
@@ -316,30 +336,34 @@ export default function ProductDetailsPage() {
                   <p className="text-lg leading-relaxed text-muted-foreground">
                     {product.description}
                   </p>
+                  
                   <Separator className="my-6" />
+                  
+                  {/* Dynamic Features and Perfect For */}
                   <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h3 className="text-xl font-semibold mb-3">Key Features</h3>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li>• Structured front panel for shape retention</li>
-                        <li>• Breathable mesh backing for comfort</li>
-                        <li>• Curved brim for sun protection</li>
-                        <li>• Adjustable snapback closure</li>
-                        <li>• Vintage 1930s-inspired design</li>
-                        <li>• Durable construction for everyday wear</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold mb-3">Perfect For</h3>
-                      <ul className="space-y-2 text-muted-foreground">
-                        <li>• Road trips and travel</li>
-                        <li>• Outdoor activities</li>
-                        <li>• Casual everyday wear</li>
-                        <li>• Festival and events</li>
-                        <li>• Adding retro style to outfits</li>
-                        <li>• Gift for vintage enthusiasts</li>
-                      </ul>
-                    </div>
+                    {/* Key Features */}
+                    {product.features && product.features.length > 0 && (
+                      <div>
+                        <h3 className="text-xl font-semibold mb-3">Key Features</h3>
+                        <ul className="space-y-2 text-muted-foreground">
+                          {product.features.map((feature, index) => (
+                            <li key={index}>• {feature}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {/* Perfect For */}
+                    {product.perfect_for && product.perfect_for.length > 0 && (
+                      <div>
+                        <h3 className="text-xl font-semibold mb-3">Perfect For</h3>
+                        <ul className="space-y-2 text-muted-foreground">
+                          {product.perfect_for.map((use, index) => (
+                            <li key={index}>• {use}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
                 </div>
               </CardContent>
@@ -350,31 +374,37 @@ export default function ProductDetailsPage() {
             <Card>
               <CardContent className="p-8">
                 <div className="grid md:grid-cols-2 gap-8">
+                  {/* Product Details - Dynamic */}
                   <div className="space-y-4">
                     <h3 className="text-xl font-semibold">Product Details</h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between">
-                        <span className="font-medium">Material:</span>
-                        <span>{product.material}</span>
+                    {product.product_details && product.product_details.length > 0 ? (
+                      <ul className="space-y-3 text-muted-foreground">
+                        {product.product_details.map((detail, index) => (
+                          <li key={index} className="flex items-start gap-2">
+                            <span className="text-foreground">•</span>
+                            <span>{detail}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="flex justify-between">
+                          <span className="font-medium">Material:</span>
+                          <span>{product.material}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="font-medium">Size:</span>
+                          <span>{product.size}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="font-medium">SKU:</span>
+                          <span>{product.sku}</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">Size:</span>
-                        <span>{product.size}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">Closure:</span>
-                        <span>Adjustable Snapback</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">Style:</span>
-                        <span>Trucker Hat</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="font-medium">Era:</span>
-                        <span>1930s Inspired</span>
-                      </div>
-                    </div>
+                    )}
                   </div>
+                  
+                  {/* Care Instructions */}
                   <div className="space-y-4">
                     <h3 className="text-xl font-semibold">Care Instructions</h3>
                     <div className="space-y-3 text-muted-foreground">
