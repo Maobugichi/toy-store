@@ -64,7 +64,7 @@ const ProductCard = ({
 
                
                 <div className="w-full">
-                    <h4 className="text-sm md:text-lg lg:text-xl whitespace-nowrap overflow-hidden text-ellipsis">
+                    <h4 className="text-sm md:text-lg lg:text-xl whitespace-nowrap font-family-heading overflow-hidden text-ellipsis">
                         {name}
                     </h4>
                     <p className="text-sm md:text-lg text-black/70  font-light mt-1">
