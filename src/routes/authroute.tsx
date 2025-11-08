@@ -7,56 +7,60 @@ const AuthCallback = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
-    useEffect(() => {
-        const handleCallback = async () => {
-            const authStatus = searchParams.get('auth');
-            console.log('Auth status:', authStatus);
-            
-            if (authStatus !== 'success') {
-                navigate('/login?error=auth_failed', { replace: true });
-                return;
-            }
+   useEffect(() => {
+    const handleCallback = async () => {
+        const authStatus = searchParams.get('auth');
+        console.log('Auth status:', authStatus);
+        
+        // DEBUG: Log all cookies
+        console.log('All cookies:', document.cookie);
+        console.log('Search params data:', searchParams.get('data'));
+        
+        if (authStatus !== 'success') {
+            navigate('/login?error=auth_failed', { replace: true });
+            return;
+        }
 
-            const urlData = searchParams.get('data');
-            console.log('URL data:', urlData);
+        const urlData = searchParams.get('data');    
+        if (urlData) {
+            try {
+                const userData = JSON.parse(decodeURIComponent(urlData));
+                
+                login(userData)
+                console.log('Auth successful:', userData);
+                navigate('/', { replace: true });
+            } catch (error) {
+                console.error('Error parsing auth data:', error);
+                navigate('/login?error=parse_failed', { replace: true });
+            }
+        } else {
+            console.log('No URL data, checking cookies...');
+            const authData = getCookie('auth_data');
+            console.log('auth_data cookie value:', authData);
             
-            if (urlData) {
-                // Development mode - data in URL
+            if (authData) {
                 try {
-                    const userData = JSON.parse(decodeURIComponent(urlData));
+                    const userData = JSON.parse(decodeURIComponent(authData));
                     
                     login(userData)
-                    console.log('Auth successful:', userData);
+                    
+                    // Clear cookie with exact same attributes
+                    document.cookie = 'auth_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.thetoyshop.net.ng; secure=true; sameSite=none';
+                    
                     navigate('/', { replace: true });
                 } catch (error) {
-                    console.error('Error parsing auth data:', error);
+                    console.error('Error parsing cookie data:', error);
                     navigate('/login?error=parse_failed', { replace: true });
                 }
             } else {
-                // Production mode - data in cookie
-                const authData = getCookie('auth_data');
-                
-                if (authData) {
-                    try {
-                        const userData = JSON.parse(decodeURIComponent(authData));
-                        
-                        login(userData)
-                        document.cookie = 'auth_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.thetoyshop.net.ng';
-                        
-                        navigate('/', { replace: true });
-                    } catch (error) {
-                        console.error('Error parsing cookie data:', error);
-                        navigate('/login?error=parse_failed', { replace: true });
-                    }
-                } else {
-                    console.error('No auth data found in URL or cookies');
-                    navigate('/login?error=no_data', { replace: true });
-                }
+                console.error('No auth data found in URL or cookies');
+                navigate('/login?error=no_data', { replace: true });
             }
-        };
+        }
+    };
 
-        handleCallback();
-    }, [navigate, searchParams]);
+    handleCallback();
+}, [navigate, searchParams]);
 
     const getCookie = (name: string): string | null => {
         const value = `; ${document.cookie}`;
