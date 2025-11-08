@@ -1,3 +1,4 @@
+import { handleLoginSuccess } from '@/auth/hook';
 import { useAuth } from '@/context/authContext';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -23,6 +24,7 @@ const AuthCallback = () => {
                     const userData = JSON.parse(decodeURIComponent(urlData));
                     
                     login(userData);
+                    await handleLoginSuccess();
                     console.log('Auth successful:', userData);
                     navigate('/', { replace: true });
                 } catch (error) {
