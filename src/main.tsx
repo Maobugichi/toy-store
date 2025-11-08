@@ -18,9 +18,7 @@ import { queryClient } from "./lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
 import WatchlistPage from "./components/watchlist/watchlist-page";
 import AuthCallback from "./routes/authroute";
-
-
-
+import { productsQueryOptions } from "./routes/utils";
 
 
 const router = createHashRouter([
@@ -36,6 +34,11 @@ const router = createHashRouter([
     path: "/",
     element: <Root />,
     HydrateFallback: HydrateFallback,
+    loader: async () => {
+   
+      await queryClient.ensureQueryData(productsQueryOptions);
+      return null;
+    }
   },
   {
     path: "filter",
