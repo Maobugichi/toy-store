@@ -3,74 +3,40 @@ import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const AuthCallback = () => {
-    const { login } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    const { login } = useAuth();
 
-   useEffect(() => {
-    const handleCallback = async () => {
-        const authStatus = searchParams.get('auth');
-        console.log('Auth status:', authStatus);
-        
-        // DEBUG: Log all cookies
-        console.log('All cookies:', document.cookie);
-        console.log('Search params data:', searchParams.get('data'));
-        
-        if (authStatus !== 'success') {
-            navigate('/login?error=auth_failed', { replace: true });
-            return;
-        }
-
-        const urlData = searchParams.get('data');    
-        if (urlData) {
-            try {
-                const userData = JSON.parse(decodeURIComponent(urlData));
-                
-                login(userData)
-                console.log('Auth successful:', userData);
-                navigate('/', { replace: true });
-            } catch (error) {
-                console.error('Error parsing auth data:', error);
-                navigate('/login?error=parse_failed', { replace: true });
-            }
-        } else {
-            console.log('No URL data, checking cookies...');
-            const authData = getCookie('auth_data');
-            console.log('auth_data cookie value:', authData);
+    useEffect(() => {
+        const handleCallback = async () => {
+            const authStatus = searchParams.get('auth');
             
-            if (authData) {
+            if (authStatus !== 'success') {
+                navigate('/login?error=auth_failed', { replace: true });
+                return;
+            }
+
+            const urlData = searchParams.get('data');
+            
+            if (urlData) {
                 try {
-                    const userData = JSON.parse(decodeURIComponent(authData));
+                    const userData = JSON.parse(decodeURIComponent(urlData));
                     
-                    login(userData)
-                    
-                    // Clear cookie with exact same attributes
-                    document.cookie = 'auth_data=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.thetoyshop.net.ng; secure=true; sameSite=none';
-                    
+                    login(userData);
+                    console.log('Auth successful:', userData);
                     navigate('/', { replace: true });
                 } catch (error) {
-                    console.error('Error parsing cookie data:', error);
+                    console.error('Error parsing auth data:', error);
                     navigate('/login?error=parse_failed', { replace: true });
                 }
             } else {
-                console.error('No auth data found in URL or cookies');
+                console.error('No auth data found');
                 navigate('/login?error=no_data', { replace: true });
             }
-        }
-    };
+        };
 
-    handleCallback();
-}, [navigate, searchParams]);
-
-    const getCookie = (name: string): string | null => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) {
-            const cookieValue = parts.pop()?.split(';').shift();
-            return cookieValue || null;
-        }
-        return null;
-    };
+        handleCallback();
+    }, [navigate, searchParams]);
 
     return (
         <div className="flex items-center justify-center min-h-screen">
