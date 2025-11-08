@@ -17,6 +17,7 @@ import CheckoutPage from "./components/checkout/checkout";
 import { queryClient } from "./lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
 import WatchlistPage from "./components/watchlist/watchlist-page";
+import AuthCallback from "./routes/authroute";
 
 
 
@@ -53,6 +54,10 @@ const router = createHashRouter([
     path: "/checkout",
     element: <CheckoutPage />,
   },
+  {
+    path:"/auth/callback",
+    element:<AuthCallback />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

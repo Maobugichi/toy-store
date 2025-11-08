@@ -1,8 +1,6 @@
 import axios from "axios";
 
-
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
-
 
 export const api = axios.create({
   baseURL: API_BASE,
@@ -12,13 +10,13 @@ export const api = axios.create({
   }
 });
 
-
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("authToken")
+    const token = localStorage.getItem("authToken");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // Note: Google OAuth token in httpOnly cookie is automatically sent with withCredentials: true
     return config;
   },
   (error) => {
@@ -29,12 +27,18 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-     const originalRequest = error.config;
+    const originalRequest = error.config;
     if (error.response?.status === 401 && originalRequest?.headers["x-requires-auth"]) {
       
       localStorage.removeItem("authToken");
-      localStorage.removeItem("auth")
+      localStorage.removeItem("auth");
      
+      // Also clear the httpOnly cookie by calling logout endpoint
+      fetch(`${API_BASE}/auth/logout`, {
+        method: "POST",
+        credentials: "include"
+      }).catch(console.error);
+      
       if (!window.location.pathname.includes("/login")) {
         window.location.href = "#/login";
       }

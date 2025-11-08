@@ -54,7 +54,7 @@ const ProductCard = ({
         >
             
             <div className="h-[140px] relative md:h-[45%] w-full border rounded-2xl ">
-                {hasDiscount && <Badge className="bg-red-500 absolute top-2 -right-1 z-10 text-white h-4 text-xs md:text-sm hover:bg-red-600">
+                {hasDiscount && <Badge className="bg-red-500 absolute top-2 py-2 -right-1 z-10 text-white h-5 text-xs  hover:bg-red-600">
                     Save {discountPercentage}%
                 </Badge> }
                 <img 

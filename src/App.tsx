@@ -9,7 +9,10 @@ import CategorySection from './components/category-section'
 import FaqSection from './components/faq-section'
 import ScrollToTop from './scroll-to-top'
 
+
 function App({data, isLoading}:any) {
+
+
   return (
     <div className='overflow-hidden '>
       <ScrollToTop/>

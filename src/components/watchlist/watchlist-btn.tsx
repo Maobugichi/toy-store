@@ -28,7 +28,7 @@ export function AddToWatchlistButton({
 }: AddToWatchlistButtonProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { data: watchlists, isLoading } = useWatchlists();
+  const { data: watchlists, isFetching } = useWatchlists();
   
   const addToWatchlist = useAddToWatchlist();
 
@@ -37,7 +37,7 @@ export function AddToWatchlistButton({
     setOpen(false);
   };
 
-  if (isLoading) {
+  if (isFetching && !watchlists) {
     return (
       <Button className="md:hidden rounded-xl" variant={variant} size={size} disabled>
         <Loader2 className="w-4 h-4 animate-spin" />

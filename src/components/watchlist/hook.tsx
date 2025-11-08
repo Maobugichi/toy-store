@@ -12,8 +12,7 @@ export function useWatchlists() {
       return res.data;
     },
     staleTime: Infinity, 
-    gcTime: 1000 * 60 * 30, 
-    refetchOnMount: false,
+    gcTime: Infinity,
     refetchOnWindowFocus: false, 
   });
 }

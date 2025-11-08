@@ -285,7 +285,7 @@ export default function ProductDetailsPage() {
                   <AddToWatchlistButtonDesk productId={product.id} variant="outline"/>
                  
                 </Button>
-                 <AddToWatchlistButton productId={product.id}  width='h-14 w-14'/>
+                 <AddToWatchlistButton productId={product.id}  width='h-14 w-14 py-5'/>
                 <Button variant="outline" size="lg" className="h-14 w-14 p-0 rounded-xl">
                   <Share2 className="w-5 h-5" />
                 </Button>

@@ -26,7 +26,7 @@ export function AddToWatchlistButtonDesk({
 }: AddToWatchlistButtonProps) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { data: watchlists, isLoading } = useWatchlists();
+  const { data: watchlists, isFetching } = useWatchlists();
   const addToWatchlist = useAddToWatchlist();
 
   const handleAdd = (watchlistId: number) => {
@@ -34,7 +34,7 @@ export function AddToWatchlistButtonDesk({
     setOpen(false);
   };
 
-  if (isLoading) {
+  if (isFetching && !watchlists) {
     return (
       <Button className="md:block hidden rounded-xl" variant={variant} size={size} disabled>
         <Loader2 className="w-4 h-4 animate-spin" />
