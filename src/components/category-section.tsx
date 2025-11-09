@@ -111,7 +111,7 @@ const CategorySection = ({ data }: any) => {
   };
 
   return (
-    <section className="w-full min-h-screen py-16 md:py-20">
+    <section className="w-full h-fit md:min-h-screen pt-16 pb-28  md:py-20">
       <div className="h-full w-[90%] max-w-7xl mx-auto space-y-10">
         <div className="flex items-center justify-between">
           <div>
@@ -155,8 +155,8 @@ const CategorySection = ({ data }: any) => {
           ))}
         </div>
 
-        {/* Mobile: Stacked cards */}
-        <div className="md:hidden relative w-full h-[500px]"
+     
+        <div className="md:hidden relative w-full  h-[500px]"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -204,7 +204,7 @@ const CategorySection = ({ data }: any) => {
                   onNavigate={setIsAutoPlaying}
                 />
                 
-                {/* Top indicator for drag */}
+             
                 {isTop && (
                   <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-white/30 rounded-full z-10" />
                 )}
@@ -212,7 +212,7 @@ const CategorySection = ({ data }: any) => {
             );
           })}
 
-          {/* Controls */}
+        
           <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-3 bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200">
             <button
               onClick={moveToPrevious}

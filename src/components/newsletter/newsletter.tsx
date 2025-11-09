@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "../ui/input";
 import { useAuth } from "@/context/authContext";
 import { useSubscribeNewsletter } from "./hook";
 import { toast } from "sonner"; 
@@ -58,38 +57,42 @@ const NewsLetter = () => {
         </div>
 
       
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full md:w-[45%] h-[50%] space-x-2 space-y-4 md:space-y-0 flex flex-col md:flex-row items-center"
-        >
-          <div className="w-full md:w-[75%]">
-            <Input
-              type="email"
-              placeholder="Enter your Email"
-              className="h-12 rounded-4xl md:h-16 placeholder:text-lg md:placeholder:text-xl"
-              {...register("email")}
-              disabled={isPending}
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-            )}
-          </div>
+      <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full md:w-[45%] space-y-2"
+    >
+  <div className="relative w-full">
+    <input
+      type="email"
+      placeholder="Enter your Email"
+      className="w-full h-12 md:h-16 pl-4 md:pl-6 pr-32 md:pr-36 rounded-full border-2 border-gray-300 focus:border-black focus:outline-none text-base md:text-lg placeholder:text-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed"
+      {...register("email", {
+        required: "Email is required",
+        pattern: {
+          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+          message: "Invalid email address"
+        }
+      })}
+      disabled={isPending}
+    />
+    
+    <button
+      type="submit"
+      disabled={isPending}
+      className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 bg-black hover:bg-gray-800 disabled:bg-gray-400 text-white py-2 md:py-3 px-4 md:px-6 text-sm md:text-base font-medium tracking-wide rounded-full transition-all duration-200 flex items-center justify-center gap-2 min-w-[100px] md:min-w-[120px]"
+    >
+      {isPending ? (
+        <ClipLoader size={20} color="white" />
+      ) : (
+        "Subscribe"
+      )}
+    </button>
+  </div>
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className="bg-black  w-full md:w-32 hover:bg-white hover:text-black transition-colors duration-300 hover:border-2 hover:border-black hover:shadow text-white py-2 md:py-4 px-7 text-lg tracking-wider rounded-4xl flex items-center justify-center gap-2"
-          >
-            {isPending ? (
-              <>
-                <ClipLoader className="text-white"/>
-                
-              </>
-            ) : (
-              "Subscribe"
-            )}
-          </button>
-        </form>
+  {errors.email && (
+    <p className="text-red-500 text-sm pl-4">{errors.email.message}</p>
+  )}
+</form>
       </div>
     </section>
   );
