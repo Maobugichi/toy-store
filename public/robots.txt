@@ -1,3 +1,14 @@
 User-agent: *
 Allow: /
+
+# Block private pages
+Disallow: /checkout
+Disallow: /login
+Disallow: /signup
+Disallow: /#/checkout
+Disallow: /#/login
+Disallow: /#/signup
+
+# Tell Google where sitemap is
 Sitemap: https://thetoyshop.net.ng/sitemap.xml
+
