@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://thetoyshop.net.ng/sitemap.xml
