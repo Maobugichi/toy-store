@@ -11,7 +11,7 @@ import ScrollToTop from './scroll-to-top'
 import { useQuery } from '@tanstack/react-query'
 import { productsQueryOptions } from './routes/utils'
 
-// Skeleton Components
+
 function CarouselSkeleton() {
   return (
     <div className="flex gap-4 overflow-hidden">

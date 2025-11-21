@@ -35,7 +35,6 @@ const router = createHashRouter([
     element: <Root />,
     HydrateFallback: HydrateFallback,
     loader: async () => {
-   
       await queryClient.ensureQueryData(productsQueryOptions);
       return null;
     }

@@ -14,12 +14,14 @@ const Root = () => {
 export function HydrateFallback() {
   return (
     <div style={{ 
-      display: 'flex', 
+      display: 'flex',
+      gap:20, 
       justifyContent: 'center', 
       alignItems: 'center', 
       height: '100vh' 
     }}>
       <ClipLoader />
+      <span className="animate-pulse">loading products...</span>
     </div>
   );
 }
