@@ -2,8 +2,6 @@ import App from "@/App";
 import { ClipLoader } from "react-spinners";
 
 const Root = () => {
-    
-
     return (
         <>
           <App />
@@ -21,7 +19,7 @@ export function HydrateFallback() {
       height: '100vh' 
     }}>
       <ClipLoader />
-      <span className="animate-pulse">loading products...</span>
+      <p className="animate-pulse text-lg text-gray-500">loading products...</p>
     </div>
   );
 }

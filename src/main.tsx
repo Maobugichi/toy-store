@@ -20,6 +20,7 @@ import WatchlistPage from "./components/watchlist/watchlist-page";
 import AuthCallback from "./routes/authroute";
 import { productsQueryOptions } from "./routes/utils";
 
+queryClient.prefetchQuery(productsQueryOptions);
 
 const router = createHashRouter([
   {
