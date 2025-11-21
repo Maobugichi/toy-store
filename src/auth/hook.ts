@@ -3,9 +3,7 @@ import { queryClient } from "@/lib/query-client";
 import api from "@/lib/axios-config";
 
 export async function handleLoginSuccess() {
-
   const guestCart = getGuestCart();
-
   try {
     if (guestCart.length > 0) {
        await api.post(

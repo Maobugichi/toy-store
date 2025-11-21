@@ -16,7 +16,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // Note: Google OAuth token in httpOnly cookie is automatically sent with withCredentials: true
+  
     return config;
   },
   (error) => {
@@ -33,7 +33,7 @@ api.interceptors.response.use(
       localStorage.removeItem("authToken");
       localStorage.removeItem("auth");
      
-      // Also clear the httpOnly cookie by calling logout endpoint
+     
       fetch(`${API_BASE}/auth/logout`, {
         method: "POST",
         credentials: "include"

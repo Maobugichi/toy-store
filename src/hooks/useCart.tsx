@@ -57,7 +57,6 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { cartId, user } = useAuth()
   const isGuest = !user
-  
   const [addingId, setAddingId] = useState<number | null>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [removingId, setRemovingId] = useState<number | null>(null);

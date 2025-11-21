@@ -95,8 +95,8 @@ const Hero = () => {
               >
                 <h1 className="text-5xl sm:text-6xl font-family-heading lg:text-7xl xl:text-8xl font-bold text-white leading-[1.1] tracking-tight">
                   <span className="inline-block">Time. Of. </span>
-                  <span className="inline-block bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-                    YOU<span className='text-white'>th.</span>
+                 <span className="inline-block text-white text-[1.1em] font-extrabold">
+                    YOU<span className='font-normal'>th.</span>
                   </span>
                 </h1>
                 <p className="text-xl sm:text-2xl text-white/70 font-light max-w-2xl">
@@ -144,7 +144,7 @@ const Hero = () => {
                     className="w-10 h-10 rounded-full border-2 border-black object-cover"
                   />
                 ))}
-              </div>
+               </div>
                 <div className="text-white">
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -175,7 +175,7 @@ const Hero = () => {
               ))}
             </div>
 
-            {/* Mobile Carousel */}
+         
             <div className="md:hidden">
               <MobileFeatureCarousel features={features} />
             </div>
