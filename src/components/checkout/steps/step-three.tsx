@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import api from "@/lib/axios-config"; // ✅ CHANGED: Import centralized api instead of axios
+import api from "@/config/axios-config"; // ✅ CHANGED: Import centralized api instead of axios
 import { toast } from "sonner";
 import { useState } from "react";
 
@@ -32,7 +32,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Lock, ChevronDown } from "lucide-react";
-import PaymentStatusModal from "../payment-modal"; 
+import PaymentStatusModal from "@/features/checkout/components/paymentModal/paymentStatusModal";
 
 async function fetchRate() {
   const res = await fetch("https://api.exchangerate-api.com/v4/latest/NGN");
@@ -97,7 +97,7 @@ export default function StepThree({
   const paymentMethod = watch("paymentMethod");
   const payCurrency = watch("payCurrency");
 
-  // ✅ CHANGED: Use api.get() instead of axios.get()
+ 
   const { data: currencies, isLoading: loadingCurrencies } = useQuery({
     queryKey: ["currencies"],
     queryFn: async () => {
@@ -107,8 +107,6 @@ export default function StepThree({
     retry: 2,
   });
 
-  console.log("currency" , currencies)
-  
 
   const createInvoice = useMutation({
     mutationFn: async (payload: {
@@ -319,7 +317,7 @@ export default function StepThree({
         </CardContent>
       </Card>
 
-      {/* Payment Status Modal with Auto-Polling */}
+    
       <PaymentStatusModal
         paymentData={paymentData}
         isOpen={showPaymentModal}

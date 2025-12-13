@@ -4,21 +4,23 @@ import {
   createHashRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root, { HydrateFallback } from "@/routes/root";
+import Root from "@/routes/root";
+import { HydrateFallback } from "@/ui/atoms/hydrateFallback";
 import "./index.css";
-import ProductDetails from "./components/details/details-page";
-import MainPage from "./components/filterpage/main-page";
+import ProductDetailsPage from "./pages/productDetails";
+import MainPage from "@/pages/products";
 import {  QueryClientProvider } from '@tanstack/react-query';
-import { CartProvider } from "./hooks/useCart";
-import SignUp from "./auth/signup";
-import { AuthProvider } from "./context/authContext";
-import Login from "./auth/login";
-import CheckoutPage from "./components/checkout/checkout";
-import { queryClient } from "./lib/query-client";
+import { CartProvider } from "@/hooks/useCart";
+import SignUp from "@/pages/auth/signup";
+import { AuthProvider } from "@/context/authContext";
+import Login from "@/pages/auth/login";
+import CheckoutPage from "./pages/checkout";
+import { queryClient } from "@/lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
-import WatchlistPage from "./components/watchlist/watchlist-page";
-import AuthCallback from "./routes/authroute";
-import { productsQueryOptions } from "./routes/utils";
+import WatchlistPage from "@/pages/wishlist/watchlist-page";
+import AuthCallback from "./features/auth/context/authCallback";
+import { productsQueryOptions } from "./features/products/services/fetchProduts";
+import { FilterContextProvider } from "./features/products/hooks/useProductFilters";
 
 queryClient.prefetchQuery(productsQueryOptions);
 
@@ -51,7 +53,7 @@ const router = createHashRouter([
   },
   {
     path: "/product/:id",
-    element: <ProductDetails />,
+    element: <ProductDetailsPage />,
   },
   {
     path: "/checkout",
@@ -65,14 +67,14 @@ const router = createHashRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+       <FilterContextProvider>
         <CartProvider>
           <Toaster richColors closeButton/> 
           <RouterProvider router={router} />
-         
         </CartProvider>
+      </FilterContextProvider>  
       </AuthProvider>
     </QueryClientProvider>
   </React.StrictMode>

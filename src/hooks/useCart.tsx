@@ -5,9 +5,9 @@ import {
   addToCart,
   updateCartItem,
   removeCartItem,
-} from "@/components/cart/cart"
+} from "@/features/cart/cart"
 import { useAuth } from "@/context/authContext"
-import { getGuestCart, addGuestItem, updateGuestItem, removeGuestItem } from "@/components/cart/cart-storage"
+import { getGuestCart, addGuestItem, updateGuestItem, removeGuestItem } from "@/features/cart/cart-storage"
 import { queryClient } from "@/lib/query-client"
 import { toast } from "sonner"
 

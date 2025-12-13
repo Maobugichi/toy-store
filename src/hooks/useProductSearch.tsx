@@ -20,7 +20,7 @@ export function useProductSearch(query: string) {
         });
         const products = res.data;
 
-        // Search in multiple fields
+       
         const filtered = products.filter((p: any) => {
           const searchQuery = query.toLowerCase();
           return (

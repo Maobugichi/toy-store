@@ -17,23 +17,62 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
-import StepOne from './steps/step-one';
-import StepTwo from './steps/step-two';
 import StepThree from './steps/step-three';
 import { ClipLoader } from 'react-spinners';
 import { Badge } from '../ui/badge';
-import ScrollToTop from '@/scroll-to-top';
+import ShippingStep from '@/features/checkout/components/steps/shippingInfo';
+import ShippingMethodStep from '@/features/checkout/components/steps/shippingMethodStep';
+import { useCheckout } from '@/features/checkout/hooks/useCheckout';
+import PaymentStep from '@/features/checkout/components/steps/paymentStep';
+import { calculateTotal } from '@/features/checkout/utils/checkOutHelper';
+import useScrollToTop from '@/hooks/useScrollToTop';
+
+
+
+const SHIPPING_OPTIONS = [
+  {
+    id: "standard",
+    name: "Standard Shipping",
+    price: 5000,
+    time: "5-7 business days",
+    description: "Free on orders over ₦100,000"
+  },
+  {
+    id: "express",
+    name: "Express Shipping",
+    price: 15000,
+    time: "2-3 business days",
+    description: "Faster delivery with tracking"
+  },
+  {
+    id: "overnight",
+    name: "Overnight Shipping",
+    price: 25000,
+    time: "Next business day",
+    description: "Guaranteed next-day delivery"
+  }
+  ];
+
 
 const CheckoutPage = () => {
   const { items, updatingId,  updateItem, removeItem , totalQuantity} = useCart();
-  const [currentStep, setCurrentStep] = useState<number>(1);
-  const [shippingMethod, setShippingMethod] = useState<string>('standard');
+  //const [currentStep, setCurrentStep] = useState<number>(1);
+  //const [shippingMethod, setShippingMethod] = useState<string>('standard');
  
+  useScrollToTop()
   const [promoCode, setPromoCode] = useState<string>('');
   const [promoApplied, setPromoApplied] = useState<boolean>(false);
   const [giftMessage, setGiftMessage] = useState<string>('');
 
-
+  const {
+    currentStep,
+    shippingMethod,
+    handleShippingSubmit,
+    handleShippingMethodSubmit,
+    handleShippingMethodChange,
+    handleBack,
+    handleComplete,
+  } = useCheckout();
 
   const steps = [
     { number: 1, title: "Information", description: "Contact & shipping" },
@@ -41,54 +80,13 @@ const CheckoutPage = () => {
     { number: 3, title: "Payment", description: "Payment details" }
   ];
 
-  const shippingOptions = [
-    {
-      id: "standard",
-      name: "Standard Delivery (NIPOST / Courier)",
-      price: 4000,
-      time: "3–5 business days (nationwide)",
-      description: "Free delivery for orders over ₦100,000",
-    },
-    {
-      id: "express",
-      name: "Express Delivery (GIG Logistics)",
-      price: 6500,
-      time: "1–2 business days (major cities)",
-      description: "Fast tracked delivery to Lagos, Abuja, Port Harcourt, etc.",
-    },
-    {
-      id: "same_day",
-      name: "Same Day Delivery (Lagos Only)",
-      price: 8000,
-      time: "Same day (orders before 12PM)",
-      description: "Delivered same day within Lagos metro areas.",
-    },
-    {
-      id: "pickup",
-      name: "Pickup Station (DHL Partner)",
-      price: 3000,
-      time: "1–3 business days",
-      description: "Pick up your order from a nearby DHL or partner location.",
-    },
-  ];
+  
+ const subtotal = calculateTotal(items);
 
-   const calculateSubtotal = (price: string, quantity: number): number => {
-    return parseFloat(price) * quantity;
-  };
-
-  const calculateTotal = (): number => {
-    return items.reduce((sum, item) => sum + calculateSubtotal(item.price, item.quantity), 0);
-  };
+ const discount = promoApplied ? subtotal * 0.1 : 0;
 
 
- 
-const subtotal = calculateTotal();
-
-
-const discount = promoApplied ? subtotal * 0.1 : 0;
-
-
-const selectedShipping = shippingOptions.find(
+const selectedShipping = SHIPPING_OPTIONS.find(
   (option) => option.id === shippingMethod
 );
 const shippingCost = subtotal >= 100000 ? 0 : selectedShipping?.price ?? 4000;
@@ -102,11 +100,7 @@ const formatPrice = (amount: number): string =>
     style: "currency",
     currency: "NGN",
     minimumFractionDigits: 2,
-  }).format(amount);
-
-
-  
-  
+}).format(amount);  
 
   const applyPromoCode = () => {
     if (promoCode.toLowerCase() === 'save10') {
@@ -147,7 +141,7 @@ const formatPrice = (amount: number): string =>
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <ScrollToTop/>
+     
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
@@ -163,11 +157,20 @@ const formatPrice = (amount: number): string =>
          
           <div className="lg:col-span-2">
            
-            <StepOne currentStep={currentStep} setCurrentStep={setCurrentStep}/>
-            <StepTwo subtotal={subtotal} shippingOptions={shippingOptions} currentStep={currentStep} shippingMethod={shippingMethod} setCurrentStep={setCurrentStep} setShippingMethod={setShippingMethod}/>
-
+            <ShippingStep currentStep={currentStep}  onNext={handleShippingSubmit}/>
+            <ShippingMethodStep
+            currentStep={currentStep}
+            subtotal={subtotal}
+            shippingOptions={SHIPPING_OPTIONS}
+            selectedMethod={shippingMethod}
+            onMethodChange={handleShippingMethodChange}
+            onNext={handleShippingMethodSubmit}
+            
+            onBack={handleBack}
+           />
+        <PaymentStep subtotal={subtotal} currentStep={currentStep} onBack={handleBack} shippingCost={shippingCost}/>
            
-           <StepThree currentStep={currentStep} setCurrentStep={setCurrentStep} subtotal={subtotal} shippingCost={shippingCost}/>
+         
           </div>
 
          
@@ -266,7 +269,7 @@ const formatPrice = (amount: number): string =>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>{formatPrice(calculateTotal())}</span>
+                    <span>{formatPrice(calculateTotal(items))}</span>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-sm text-green-600">
