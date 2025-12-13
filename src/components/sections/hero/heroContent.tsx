@@ -1,7 +1,7 @@
 import { HeroBadge } from './heroBadge';
 import { HeroHeading } from './heroHeading';
 import { HeroActions } from './heroActions';
-import { HeroSocialProof } from './heroSocialProof';
+//import { HeroSocialProof } from './heroSocialProof';
 
 export const HeroContent = () => {
   return (

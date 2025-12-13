@@ -1,5 +1,5 @@
 import api from '@/config/axios-config';
-import type { Product } from '@/types';
+import type { Product } from '../types/product.types';
 
 export const productsApi = {
   getAll: async (): Promise<Product[]> => {

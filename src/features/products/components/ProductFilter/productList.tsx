@@ -3,7 +3,7 @@ import ProductCard from './product-card';
 import { PaginationControls } from './paginationControls';
 import { usePagination } from '../../hooks/usePagination';
 import { useCart } from '@/hooks/useCart';
-import type { Product } from '@/types';
+import type { Product } from '../../types/product.types';
 
 interface ProductListProps {
   products: Product[];

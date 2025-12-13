@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ShippingFormData, ShippingMethodData } from '../validation/checkoutSchema';
+import type { ShippingFormData } from '../validation/checkoutSchema';
 
 export const useCheckout = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);

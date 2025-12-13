@@ -17,10 +17,10 @@ interface ProductActionsProps {
 
 export const ProductActions = ({
   productId,
-  quantity,
-  baseName,
-  price,
-  images,
+  //quantity,
+  //baseName,
+  //price,
+  //images,
   onAddToCart,
   isAddingToCart,
 }: ProductActionsProps) => {

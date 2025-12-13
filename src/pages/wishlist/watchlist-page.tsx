@@ -52,15 +52,13 @@ interface WatchlistItem {
 export default function WatchlistPage() {
   const queryClient = useQueryClient();
   const [selectedWatchlist, setSelectedWatchlist] = useState<number | null>(null);
-  const [newWatchlistName, setNewWatchlistName] = useState<string>("");
+  //const [newWatchlistName, setNewWatchlistName] = useState<string>("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState<boolean>(false);
   const [deleteWatchlistId, setDeleteWatchlistId] = useState<number | null>(null);
   const [removingId, setRemovingId] = useState<number | null>(null);
   const { addItem , addingId } = useCart();
  
   const { data: watchlists, isLoading: loadingWatchlists } = useWatchlists();
-
-
 
   const { data: items, isLoading: loadingItems , error , isError } = useQuery({
     queryKey: ["watchlist-items", selectedWatchlist],
@@ -124,8 +122,6 @@ export default function WatchlistPage() {
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-       
-
         {loadingWatchlists && (
           <div className="grid gap-4 md:grid-cols-4">
             {[...Array(4)].map((_, i) => (

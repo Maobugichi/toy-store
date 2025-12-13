@@ -17,7 +17,6 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
-import StepThree from './steps/step-three';
 import { ClipLoader } from 'react-spinners';
 import { Badge } from '../ui/badge';
 import ShippingStep from '@/features/checkout/components/steps/shippingInfo';
@@ -71,7 +70,7 @@ const CheckoutPage = () => {
     handleShippingMethodSubmit,
     handleShippingMethodChange,
     handleBack,
-    handleComplete,
+    //handleComplete,
   } = useCheckout();
 
   const steps = [

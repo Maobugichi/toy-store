@@ -1,8 +1,8 @@
 import type { Product } from '../types/product.types';
-import type { FilterState, FilterOptions  } from '../types/filter.types';
+import type { FilterState  } from '../types/filter.types';
 
 
-export const filterProducts = (products: Product[], filters: FilterOptions): Product[] => {
+export const filterProducts = (products: Product[]): Product[] => {
   let filtered:Product[] = [...products];
 
 

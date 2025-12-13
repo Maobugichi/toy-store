@@ -1,4 +1,4 @@
-import type { Product } from "@/types";
+import type { Product } from "@/features/products/types/product.types";
 
 export const formatPrice = (price: string | number): string => {
   return `₦${parseFloat(price.toString()).toLocaleString('en-NG')}`;

@@ -1,7 +1,7 @@
 import { CommandEmpty, CommandGroup } from "@/components/ui/command";
 import { Loader2 } from "lucide-react";
 import { SearchResultItem } from "./searchResultItem";
-import type { Product } from "@/types";
+import type { Product } from "@/features/products/types/product.types";
 
 interface SearchResultsProps {
   query: string;

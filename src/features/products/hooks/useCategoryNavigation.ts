@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { filterProductsByCategory } from '../utils/categoryHelper';
-import type { Product } from '../types/category.types';
+import type { Product } from '../types/product.types';
 
 export const useCategoryNavigation = (products: Product[]) => {
   const navigate = useNavigate();

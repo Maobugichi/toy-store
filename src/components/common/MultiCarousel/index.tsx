@@ -2,7 +2,7 @@ import { CarouselContainer } from './carouselContainer';
 import { CarouselControls } from './carouselControls';
 import { CarouselProgress } from './carouselProgress';
 import { useCarouselLogic } from './useCarouselLogic';
-import type { Product } from '@/types';
+import type { Product } from '@/features/products/types/product.types';
 
 interface MultiCarouselProps {
   data?: Product[];
@@ -13,7 +13,7 @@ export function MultiCarousel({ data, isLoading }: MultiCarouselProps) {
   const { 
     emblaRef, 
     emblaApi, 
-    selectedIndex, 
+    //selectedIndex, 
     smoothProgress,
     canScrollPrev,
     canScrollNext 

@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { RotateCcw, Ruler, Shield } from 'lucide-react';
-import { ReviewSection } from '@/pages/reviews/components';
+import { ReviewSection } from '@/features/reviews/components';
 import type { Product } from '../../types/product.types';
 
 interface ProductTabsProps {
@@ -68,7 +68,7 @@ export const ProductTabs = ({ product, productId, reviewCount }: ProductTabsProp
                 <h3 className="text-xl font-semibold">Product Details</h3>
                 {product.product_details && product.product_details.length > 0 ? (
                   <ul className="space-y-3 text-muted-foreground">
-                    {product.product_details.map((detail, index) => (
+                    {product.product_details.map((detail:any, index:number) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-foreground">•</span>
                         <span>{detail}</span>

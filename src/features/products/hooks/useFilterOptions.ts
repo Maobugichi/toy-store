@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { Product } from '@/types';
+import type { Product } from '../types/product.types';
 
 export const useFilterOptions = (products?: Product[]) => {
   const maxPrice = useMemo(() => {

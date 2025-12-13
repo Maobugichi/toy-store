@@ -1,6 +1,6 @@
 import { CommandItem } from "@/components/ui/command";
 import { useNavigate } from "react-router-dom";
-import type { Product } from "@/types";
+import type { Product } from "@/features/products/types/product.types";
 import { formatPrice , formatProductName } from "./utils";
 
 interface SearchResultItemProps {

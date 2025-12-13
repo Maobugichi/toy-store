@@ -1,7 +1,7 @@
 import ProductCard from '@/features/products/components/ProductFilter/product-card';
 import { ProductCardSkeleton } from './productCardSkeleton';
 import { useCart } from '@/hooks/useCart';
-import type { Product } from '@/types';
+import type { Product } from '@/features/products/types/product.types';
 
 interface CarouselContainerProps {
   emblaRef: any;
