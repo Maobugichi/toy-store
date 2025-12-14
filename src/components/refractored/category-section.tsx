@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import Category from './refractored/category';
+//import Category from './refractored/category';
+import Category from './category';
 import hood from "@/assets/hood-tee.jpg"
 import testsrc from "@/assets/toy-hero2.jpg"
 import place from "@/assets/banner.jpg"
