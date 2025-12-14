@@ -51,7 +51,7 @@ export function CarouselContainer({ emblaRef, data, isLoading }: CarouselContain
               width="w-[20%]"
               isAdding={addingId === product.id}
               compare_at_price={product.compare_at_price}
-              className="h-fit md:h-[360px] pt-3 pb-4 items-center justify-center rounded-3xl border bg-white shadow-sm font-semibold"
+              className="h-fit md:h-[360px] pt-3 pb-4 items-center justify-center rounded-3xl border bg-white shadow-sm font-semibold md:w-[300px]"
             />
           </div>
         ))}

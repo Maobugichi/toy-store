@@ -21,7 +21,7 @@ export const CarouselControls = ({
   onDotClick,
 }: CarouselControlsProps) => {
   return (
-    <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 flex items-center gap-3 bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200">
+    <div className=" flex items-center justify-center gap-3 w-[70%] md:w-[40%] bg-white/90 backdrop-blur-md rounded-2xl px-4 py-2 shadow-lg border border-gray-200">
       <button
         onClick={onPrevious}
         className="w-10 h-10 bg-transparent rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-gray-900 hover:scale-110 group"

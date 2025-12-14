@@ -59,7 +59,7 @@ const ProductCard = ({
                 </Badge> }
                 <img 
                     src={src} 
-                    className="h-full rounded-sm w-full object-fill"
+                    className="h-full rounded-2xl w-full object-fill"
                     alt={name}
                 />
                  
@@ -114,7 +114,7 @@ const ProductCard = ({
                          <>
                            <span className="absolute inset-0 bg-black rounded-" />
                             <span className="absolute inset-0 bg-gradient-to-r from-black/0 via-white/20 to-black/0 animate-shimmer" />
-                        </>
+                         </>
                        <span className="relative z-10 ">Buy Now</span> 
                     </Button>
                     

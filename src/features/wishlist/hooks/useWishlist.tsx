@@ -9,6 +9,7 @@ export const useWishlists = (enabled = true) => {
     queryKey: ['wishlists'],
     queryFn: wishlistApi.fetchWatchlists,
     enabled,
+    
   });
 };
 

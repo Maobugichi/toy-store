@@ -16,16 +16,19 @@ export function WishlistDrawer() {
   const [open, setOpen] = useState(false);
   const [selectedWishlistId, setSelectedWishlistId] = useState<number | null>(null);
 
-  const { data: wishlists } = useWishlists(open);
-  const { data: wishlistsWithCounts } = useWishlistsWithCounts(wishlists, open);
+  // Always fetch wishlists and counts (remove 'open' dependency)
+  const { data: wishlists } = useWishlists();
+  const { data: wishlistsWithCounts } = useWishlistsWithCounts(wishlists);
 
   const defaultWishlistId =
     wishlistsWithCounts?.find((w) => w.itemCount! > 0)?.id ??
     wishlists?.[0]?.id ??
     null;
 
-  const activeWishlistId:number | null = selectedWishlistId || defaultWishlistId;
-  const { data: items, isLoading } = useWishlistItems(activeWishlistId, open);
+  const activeWishlistId: number | null = selectedWishlistId || defaultWishlistId;
+  
+  // Always fetch items for the active wishlist to show the badge count
+  const { data: items, isLoading } = useWishlistItems(activeWishlistId);
 
   const activeWishlist = wishlists?.find((w) => w.id === activeWishlistId);
   const totalItems = items?.length || 0;
@@ -46,7 +49,7 @@ export function WishlistDrawer() {
         </Button>
       </SheetTrigger>
 
-      <SheetContent className="w-full sm:max-w-lg  flex flex-col">
+      <SheetContent className="w-full sm:max-w-lg flex flex-col">
         <WishlistHeader 
           totalItems={totalItems} 
           wishlistName={activeWishlist?.name} 
@@ -60,13 +63,12 @@ export function WishlistDrawer() {
           />
         )}
         <ScrollArea className='h-72'>
-           <WishlistContent
+          <WishlistContent
             items={items}
             isLoading={isLoading}
             wishlistId={activeWishlistId!}
           />
         </ScrollArea>
-        
 
         {totalItems > 0 && <WishlistFooter />}
       </SheetContent>

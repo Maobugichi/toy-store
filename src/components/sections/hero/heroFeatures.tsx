@@ -10,15 +10,15 @@ export const HeroFeatures = () => {
       className="relative px-6 sm:px-10 lg:px-16 pb-8"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Desktop Grid */}
-        <div className="hidden md:grid grid-cols-3 gap-4">
+        
+        <div className="hidden lg:grid grid-cols-3 gap-4">
           {HERO_FEATURES.map((feature, index) => (
             <FeatureCard key={index} {...feature} />
           ))}
         </div>
 
-        {/* Mobile Carousel */}
-        <div className="md:hidden">
+        
+        <div className="lg:hidden">
           <MobileFeatureCarousel features={HERO_FEATURES} />
         </div>
       </div>

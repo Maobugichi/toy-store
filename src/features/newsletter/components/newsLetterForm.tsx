@@ -37,7 +37,7 @@ export const NewsletterForm = () => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full md:w-[45%] space-y-2"
+      className="w-full lg:w-[45%] space-y-2 [@media(width:1024px)_and_(height:1366px)]:w-full"
     >
       <div className="relative w-full">
         <input

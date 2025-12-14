@@ -43,7 +43,7 @@ const CategorySection = ({ data }: CategorySectionProps) => {
   };
 
   return (
-    <section className="w-full h-fit md:min-h-screen pt-16 pb-28 md:py-20">
+    <section className="w-full h-fit  py-20">
       <div className="h-full w-[90%] max-w-7xl mx-auto space-y-10">
       
         <div className="flex items-center justify-between">
@@ -71,7 +71,7 @@ const CategorySection = ({ data }: CategorySectionProps) => {
         />
 
       
-        <div className="relative">
+        <div className="relative grid place-items-center">
           <CategoryStack 
             categories={CATEGORY_ITEMS}
             cardStack={cardStack}

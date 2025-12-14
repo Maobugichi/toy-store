@@ -11,11 +11,11 @@ const Hero = () => {
   return (
     <section 
       ref={sectionRef} 
-      className="relative min-h-screen w-full bg-black overflow-hidden font-family-sans"
+      className="relative [@media(min-width:400px)_and_(max-width:430px)]:h-[80vh]  w-full bg-black overflow-hidden font-family-sans"
     >
       <HeroBackground y={y} opacity={opacity} />
 
-      <div className="relative z-10 min-h-screen flex flex-col justify-between">
+      <div className="relative z-10  flex flex-col justify-between">
         <HeroContent />
         <HeroFeatures />
       </div>

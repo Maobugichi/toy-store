@@ -17,7 +17,7 @@ import Login from "@/pages/auth/login";
 import CheckoutPage from "./pages/checkout";
 import { queryClient } from "@/lib/query-client";
 import { Toaster } from "@/components/ui/sonner";
-import WatchlistPage from "@/pages/wishlist/watchlist-page";
+import WatchlistPage from "@/pages/wishlist";
 import AuthCallback from "./features/auth/context/authCallback";
 import { productsQueryOptions } from "./features/products/services/fetchProduts";
 import { FilterContextProvider } from "./features/products/hooks/useProductFilters";

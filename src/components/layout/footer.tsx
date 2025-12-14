@@ -67,7 +67,7 @@ const Footer = () => {
      
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
             {features.map((feature, index) => (
               <div key={index} className="flex items-center space-x-3">
                 <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -104,11 +104,11 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-gray-400" />
-                <span className="text-gray-200">1-800-SHOP-HUB</span>
+                <span className="text-gray-200">09034816347</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-gray-400" />
-                <span className="text-gray-200">123 Commerce St, City, State 12345</span>
+                <span className="text-gray-200">Ago, Lagos State.</span>
               </div>
             </div>
 

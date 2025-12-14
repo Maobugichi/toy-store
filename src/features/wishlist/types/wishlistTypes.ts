@@ -12,6 +12,8 @@ export interface WishlistItem {
   base_name: string;
   price: string;
   image_url: any;
-  added_at?: string;
+  added_at: string | number | Date;
 }
+
+
 
