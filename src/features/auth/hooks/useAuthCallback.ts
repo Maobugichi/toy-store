@@ -1,42 +1,46 @@
 import { useAuth } from "@/context/authContext";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { handleLoginSuccess } from "@/services/mergecartService";
 
 export const useAuthCallback = () => {
-     const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const { login } = useAuth();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { login } = useAuth();
+  const hasProcessed = useRef(false);
 
-    useEffect(() => {
-        const handleCallback = async () => {
-            const authStatus = searchParams.get('auth');
-            
-            if (authStatus !== 'success') {
-                navigate('/login?error=auth_failed', { replace: true });
-                return;
-            }
+  useEffect(() => {
+    // Prevent multiple executions
+    if (hasProcessed.current) return;
 
-            const urlData = searchParams.get('data');
-            
-            if (urlData) {
-                try {
-                    const userData = JSON.parse(decodeURIComponent(urlData));
-                    
-                    login(userData);
-                    await handleLoginSuccess();
-                    console.log('Auth successful:', userData);
-                    navigate('/', { replace: true });
-                } catch (error) {
-                    console.error('Error parsing auth data:', error);
-                    navigate('/login?error=parse_failed', { replace: true });
-                }
-            } else {
-                console.error('No auth data found');
-                navigate('/login?error=no_data', { replace: true });
-            }
-        };
+    const handleCallback = async () => {
+      const authStatus = searchParams.get('auth');
+      
+      if (authStatus !== 'success') {
+        navigate('/login?error=auth_failed', { replace: true });
+        return;
+      }
 
-        handleCallback();
-    }, [navigate, searchParams , login]);
-}
+      const urlData = searchParams.get('data');
+      
+      if (urlData) {
+        try {
+          hasProcessed.current = true; // Mark as processed
+          const userData = JSON.parse(decodeURIComponent(urlData));
+          login(userData);
+          await handleLoginSuccess();
+          console.log('Auth successful:', userData);
+          navigate('/', { replace: true });
+        } catch (error) {
+          console.error('Error parsing auth data:', error);
+          navigate('/login?error=parse_failed', { replace: true });
+        }
+      } else {
+        console.error('No auth data found');
+        navigate('/login?error=no_data', { replace: true });
+      }
+    };
+
+    handleCallback();
+  }, [navigate, searchParams, login]);
+};

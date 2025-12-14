@@ -32,7 +32,7 @@ export const WishlistItem = ({ item, wishlistId }: WishlistItemProps) => {
       <img
         src={item.image_url || '/placeholder.png'}
         alt={item.name}
-        className="w-20 h-20 object-cover rounded"
+        className="w-20 h-20 object-fit rounded"
       />
       <div className="flex-1 min-w-0">
         <h4 className="font-semibold text-sm line-clamp-2 mb-1">
@@ -45,15 +45,19 @@ export const WishlistItem = ({ item, wishlistId }: WishlistItemProps) => {
           <Button
             onClick={handleAddToCart}
             size="sm"
-            className={`${isAdding ? 'bg-black/80' : 'bg-black'} flex-1`}
+            className={`${isAdding ? 'bg-black/80' : 'bg-black'} flex-1 relative rounded-xl`}
             disabled={isAdding}
           >
             {isAdding ? (
               <ClipLoader color="white" size={10} />
             ) : (
               <>
-                <ShoppingCart className="w-3 h-3 mr-1" />
-                <span className="text-xs">Add to Cart</span>
+                <ShoppingCart className="relative z-10 w-3 h-3 mr-1" />
+                <span className="text-xs text-white relative z-10">Add to Cart</span>
+                 <>
+                  <span className="absolute inset-0 bg-black rounded-xl" />
+                  <span className="absolute inset-0 bg-gradient-to-r from-black/0 via-white/20 to-black/0 animate-shimmer" />
+                </>
               </>
             )}
           </Button>

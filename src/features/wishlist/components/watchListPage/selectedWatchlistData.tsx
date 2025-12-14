@@ -103,11 +103,11 @@ export const SelectedWatchlistData = ({selectedWatchlist , removingId , setRemov
 
          
               {!loadingItems && items && items.length > 0 && (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                <div className="grid gap-6  md:grid-cols-2 lg:grid-cols-4">
                   {items.map((item) => (
                     <Card
                       key={item.id}
-                      className="group hover:shadow-xl p-4 rounded-2xl transition-all duration-300 overflow-hidden"
+                      className="group hover:shadow-xl p-4 rounded-3xl transition-all duration-300 overflow-hidden"
                     >
                       <div className="relative rounded-full">
                         <img
@@ -157,7 +157,7 @@ export const SelectedWatchlistData = ({selectedWatchlist , removingId , setRemov
                           price: item.price,
                           images: item.image_url});
                       }} 
-                          className={`${addingId == item.id ? "bg-black/80" : "bg-black"} w-[80%] shrink h-9 md:h-10`}
+                          className={`${addingId == item.id ? "bg-black/80" : "bg-black"} w-[80%] shrink relative  h-9 md:h-10`}
                           disabled={addingId == item.id}
                           style={{ pointerEvents: "auto" }}
                       >
@@ -165,9 +165,14 @@ export const SelectedWatchlistData = ({selectedWatchlist , removingId , setRemov
                               <ClipLoader color="white" size={10} />
                           ) : (
                               <>
-                                  <ShoppingCart className="w-4 h-4 md:w-10 md:h-10" />
-                                  <span className="ml-2 text-md md:text-lg">Add to Cart</span>
+                                  <ShoppingCart className="relative z-10 w-4 h-4 md:w-10 md:h-10" />
+                                  <span className="ml-2 text-md md:text-lg relative z-10">Add to Cart</span>
+                                  <>
+                                    <span className="absolute inset-0 bg-black rounded-xl" />
+                                    <span className="absolute inset-0 bg-gradient-to-r from-black/0 via-white/20 to-black/0 animate-shimmer" />
+                                  </>
                               </>
+                               
                           )}
                         </Button>
                         <Button variant="outline" size="icon">
