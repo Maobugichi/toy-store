@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import {
-  createHashRouter,
+  createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import Root from "@/routes/root";
@@ -24,7 +24,7 @@ import { FilterContextProvider } from "./features/products/hooks/useProductFilte
 
 queryClient.prefetchQuery(productsQueryOptions);
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
